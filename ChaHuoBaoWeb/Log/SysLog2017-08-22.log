@@ -1,0 +1,23 @@
+ --------------------------易哲软件--------------------------
+ ------------------------易哲软件自动运行---------------------
+ --------------------------易哲软件--------------------------
+
+2017-08-22 00:30:11,899 [37] DEBUG log4netlogger [(null)] - System.InvalidOperationException: 序列不包含任何元素
+   在 System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.<>c__11`1.<GetElementFunction>b__11_0(IEnumerable`1 sequence)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   在 System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   在 System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   在 ChaHuoBaoWeb.WebService.APP_GetYunDanDetail.ProcessRequest(HttpContext context) 位置 D:\魏明良的工作目录\定制软件\查货宝\ChaHuoBaoWeb\WebService\APP_GetYunDanDetail.ashx.cs:行号 39
+
+
+2017-08-22 00:30:36,834 [36] DEBUG log4netlogger [(null)] - System.InvalidOperationException: 序列不包含任何元素
+   在 System.Linq.Enumerable.First[TSource](IEnumerable`1 source)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.<>c__11`1.<GetElementFunction>b__11_0(IEnumerable`1 sequence)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   在 System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   在 System.Linq.Queryable.First[TSource](IQueryable`1 source)
+   在 ChaHuoBaoWeb.WebService.APP_GetYunDanDetail.ProcessRequest(HttpContext context) 位置 D:\魏明良的工作目录\定制软件\查货宝\ChaHuoBaoWeb\WebService\APP_GetYunDanDetail.ashx.cs:行号 39
+

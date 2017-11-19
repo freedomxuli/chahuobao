@@ -1,0 +1,87 @@
+ --------------------------易哲软件--------------------------
+
+2017-09-04 10:38:15,920 [7] INFO  log4netlogger [(null)] - 计划任务：获取运单位置2017-09-04 10:38:15
+
+
+2017-09-04 10:39:26,859 [11] ERROR log4netlogger [(null)] - System.InvalidOperationException: 到值类型“Decimal”的强制转换失败，因为具体化值为 null。结果类型的泛型参数或查询必须使用可以为 null 的类型。
+   在 System.Data.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   在 System.Data.Common.Internal.Materialization.Shaper.GetColumnValueWithErrorHandling[TColumn](Int32 ordinal)
+   在 lambda_method(Closure , Shaper )
+   在 System.Data.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   在 System.Data.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   在 System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.<>c__11`1.<GetElementFunction>b__11_3(IEnumerable`1 sequence)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   在 System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   在 System.Linq.Queryable.Sum[TSource](IQueryable`1 source, Expression`1 selector)
+   在 ChaHuoBaoWeb.WebService.AliData.GetYunyingtabledata() 位置 D:\魏明良的工作目录\定制软件\查货宝\源代码\Web\ChaHuoBaoWeb\WebService\AliData.ashx.cs:行号 418
+   在 ChaHuoBaoWeb.WebService.AliData.ProcessRequest(HttpContext context) 位置 D:\魏明良的工作目录\定制软件\查货宝\源代码\Web\ChaHuoBaoWeb\WebService\AliData.ashx.cs:行号 83
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+
+2017-09-04 10:39:26,859 [8] ERROR log4netlogger [(null)] - System.InvalidOperationException: 到值类型“Decimal”的强制转换失败，因为具体化值为 null。结果类型的泛型参数或查询必须使用可以为 null 的类型。
+   在 System.Data.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   在 System.Data.Common.Internal.Materialization.Shaper.GetColumnValueWithErrorHandling[TColumn](Int32 ordinal)
+   在 lambda_method(Closure , Shaper )
+   在 System.Data.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   在 System.Data.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   在 System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.<>c__11`1.<GetElementFunction>b__11_3(IEnumerable`1 sequence)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   在 System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   在 System.Linq.Queryable.Sum[TSource](IQueryable`1 source, Expression`1 selector)
+   在 ChaHuoBaoWeb.WebService.AliData.GetYunyingtabledata() 位置 D:\魏明良的工作目录\定制软件\查货宝\源代码\Web\ChaHuoBaoWeb\WebService\AliData.ashx.cs:行号 418
+   在 ChaHuoBaoWeb.WebService.AliData.ProcessRequest(HttpContext context) 位置 D:\魏明良的工作目录\定制软件\查货宝\源代码\Web\ChaHuoBaoWeb\WebService\AliData.ashx.cs:行号 83
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+ ------------------------易哲软件自动运行---------------------
+ --------------------------易哲软件--------------------------
+
+2017-09-04 10:43:28,962 [11] INFO  log4netlogger [(null)] - 计划任务：获取运单位置2017-09-04 10:43:28
+
+
+2017-09-04 10:44:30,993 [12] ERROR log4netlogger [(null)] - System.InvalidOperationException: 到值类型“Decimal”的强制转换失败，因为具体化值为 null。结果类型的泛型参数或查询必须使用可以为 null 的类型。
+   在 System.Data.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   在 System.Data.Common.Internal.Materialization.Shaper.GetColumnValueWithErrorHandling[TColumn](Int32 ordinal)
+   在 lambda_method(Closure , Shaper )
+   在 System.Data.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   在 System.Data.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   在 System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.<>c__11`1.<GetElementFunction>b__11_3(IEnumerable`1 sequence)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   在 System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   在 System.Linq.Queryable.Sum[TSource](IQueryable`1 source, Expression`1 selector)
+   在 ChaHuoBaoWeb.WebService.AliData.GetYunyingtabledata() 位置 D:\魏明良的工作目录\定制软件\查货宝\源代码\Web\ChaHuoBaoWeb\WebService\AliData.ashx.cs:行号 418
+   在 ChaHuoBaoWeb.WebService.AliData.ProcessRequest(HttpContext context) 位置 D:\魏明良的工作目录\定制软件\查货宝\源代码\Web\ChaHuoBaoWeb\WebService\AliData.ashx.cs:行号 83
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+
+2017-09-04 10:44:31,011 [16] ERROR log4netlogger [(null)] - System.InvalidOperationException: 到值类型“Decimal”的强制转换失败，因为具体化值为 null。结果类型的泛型参数或查询必须使用可以为 null 的类型。
+   在 System.Data.Common.Internal.Materialization.Shaper.ErrorHandlingValueReader`1.GetValue(DbDataReader reader, Int32 ordinal)
+   在 System.Data.Common.Internal.Materialization.Shaper.GetColumnValueWithErrorHandling[TColumn](Int32 ordinal)
+   在 lambda_method(Closure , Shaper )
+   在 System.Data.Common.Internal.Materialization.Coordinator`1.ReadNextElement(Shaper shaper)
+   在 System.Data.Common.Internal.Materialization.Shaper`1.SimpleEnumerator.MoveNext()
+   在 System.Linq.Enumerable.Single[TSource](IEnumerable`1 source)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.<>c__11`1.<GetElementFunction>b__11_3(IEnumerable`1 sequence)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.ExecuteSingle[TResult](IEnumerable`1 query, Expression queryRoot)
+   在 System.Data.Objects.ELinq.ObjectQueryProvider.System.Linq.IQueryProvider.Execute[S](Expression expression)
+   在 System.Data.Entity.Internal.Linq.DbQueryProvider.Execute[TResult](Expression expression)
+   在 System.Linq.Queryable.Sum[TSource](IQueryable`1 source, Expression`1 selector)
+   在 ChaHuoBaoWeb.WebService.AliData.GetYunyingtabledata() 位置 D:\魏明良的工作目录\定制软件\查货宝\源代码\Web\ChaHuoBaoWeb\WebService\AliData.ashx.cs:行号 418
+   在 ChaHuoBaoWeb.WebService.AliData.ProcessRequest(HttpContext context) 位置 D:\魏明良的工作目录\定制软件\查货宝\源代码\Web\ChaHuoBaoWeb\WebService\AliData.ashx.cs:行号 83
+   在 System.Web.HttpApplication.CallHandlerExecutionStep.System.Web.HttpApplication.IExecutionStep.Execute()
+   在 System.Web.HttpApplication.ExecuteStep(IExecutionStep step, Boolean& completedSynchronously)
+
+ ------------------------易哲软件自动运行---------------------
+ --------------------------易哲软件--------------------------
+
+2017-09-04 10:45:25,241 [16] INFO  log4netlogger [(null)] - 计划任务：获取运单位置2017-09-04 10:45:25
+
+ ------------------------易哲软件自动运行---------------------

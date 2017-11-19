@@ -1,0 +1,15 @@
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\Common.dll
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\Common.pdb
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\FluentScheduler.dll
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\Newtonsoft.Json.dll
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\ServiceStack.Common.dll
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\ServiceStack.Interfaces.dll
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\ServiceStack.Text.dll
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\FluentScheduler.pdb
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\FluentScheduler.xml
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\ServiceStack.Common.xml
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\ServiceStack.Interfaces.xml
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\bin\Release\ServiceStack.Text.xml
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\obj\Release\Common.csprojResolveAssemblyReference.cache
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\obj\Release\Common.dll
+D:\魏明良的工作目录\定制软件\查货宝\Library\Common\obj\Release\Common.pdb

@@ -1,0 +1,121 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = null;
+}
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <title>运单轨迹</title>
+    <link rel="stylesheet" href="http://cache.amap.com/lbs/static/main1119.css" />
+    <script type="text/javascript" src="http://webapi.amap.com/maps?v=1.4.1&key=4de8fc02064b304db7e4ec8ca9c18b50"></script>
+    <script type="text/javascript" src="http://cache.amap.com/lbs/static/addToolbar.js"></script>
+    <script type="text/javascript" src="../../Scripts/jquery-1.7.1.min.js"></script>
+</head>
+<body>
+    <div id="container">
+    </div>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.ajax({
+                //提交数据的类型 POST GET
+                type: "POST",
+                //提交的网址
+                url: "/Map/APP_GetYunDanDetail/",
+                //提交的数据
+                data: { UserID: "@ViewData["UserID"]", YunDanDenno: "@ViewData["YunDanDenno"]" },
+                //返回数据的格式
+                datatype: "json", //"xml", "html", "script", "json", "jsonp", "text".
+                //在请求之前调用的函数
+                //beforeSend: function () { $("#msg").html("logining"); },
+                //成功返回之后调用的函数             
+                success: function (data) {
+                    var jsondata = data;
+                    if (jsondata.sign == "1") {
+                        var qishizhan_lng = jsondata.location_result.qishizhan_lng;
+
+                        var qishizhan_lat = jsondata.location_result.qishizhan_lat;
+                        var daodazhan_lng = jsondata.location_result.daodazhan_lng;
+                        var daodazhan_lat = jsondata.location_result.daodazhan_lat;
+
+                        var locationlst = jsondata.location_result.locationlst;
+
+                        console.log(qishizhan_lng);
+                        console.log(qishizhan_lat);
+                        console.log(daodazhan_lng);
+                        console.log(daodazhan_lat);
+
+                        jiazaimap(qishizhan_lng, qishizhan_lat, daodazhan_lng, daodazhan_lat, locationlst);
+                    }
+                    else {
+                        alert(jsondata.msg);
+                    }
+                },
+                error: function () {
+                    //请求出错处理
+
+                    alert('请求定位发生异常！');
+                }
+            });
+        })
+    </script>
+    <script type="text/javascript">
+        // 百度地图API功能
+        function jiazaimap(qishizhan_lng, qishizhan_lat, daodazhan_lng, daodazhan_lat, locationlst) {
+            //初始化地图对象，加载地图
+            var map = new AMap.Map("container", { resizeEnable: true });
+            var infoWindow = new AMap.InfoWindow({ offset: new AMap.Pixel(0, -30) });
+            var marker_start = new AMap.Marker({
+                position: [qishizhan_lng, qishizhan_lat],
+                map: map,
+                icon: new AMap.Icon({
+                    image: "../../Images/start.png"
+                })
+            });
+            var marker_end = new AMap.Marker({
+                position: [daodazhan_lng, daodazhan_lat],
+                map: map,
+                icon: new AMap.Icon({
+                    image: "../../Images/end.png"
+                })
+            });
+            for (var i = 0, marker; i < locationlst.length; i++) {
+                console.log(locationlst[i].Gps_lng);
+                console.log(locationlst[i].Gps_lat);
+                var marker = new AMap.Marker({
+                    position: [locationlst[i].Gps_lng, locationlst[i].Gps_lat],
+                    map: map,
+                    icon: new AMap.Icon({
+                        image: "../../Images/zaitu.png"
+                    })
+                });
+                marker.content =locationlst[i].Gps_info+"("+getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time))+")";
+                marker.on('click', markerClick);
+                marker.emit('click', { target: marker });
+            }
+            function markerClick(e) {
+                infoWindow.setContent(e.target.content);
+                infoWindow.open(map, e.target.getPosition());
+            }
+            map.setFitView();
+        }
+        //yyyy-MM-dd HH:mm:SS
+        function getDateTime(date) {
+            var year = date.getFullYear();
+            var month = date.getMonth() + 1;
+            var day = date.getDate();
+            var hh = date.getHours();
+            var mm = date.getMinutes();
+            var ss = date.getSeconds();
+            return year + "-" + (month < 10 ? "0" + month : month) + "-" + (day < 10 ? "0" + day : day) + " " + (hh < 10 ? "0" + hh : hh) + ":" + (mm < 10 ? "0" + mm : mm) + ":" + (ss < 10 ? "0" + ss : ss);
+        }
+        //调用的是这个方法
+        function ConvertJSONDateToJSDate(jsondate) {
+            var date = new Date(parseInt(jsondate.replace("/Date(", "").replace(")/", ""), 10));
+            return date;
+        }
+    </script>
+</body>
+</html>

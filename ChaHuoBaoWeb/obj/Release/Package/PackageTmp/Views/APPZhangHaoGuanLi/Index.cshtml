@@ -1,0 +1,303 @@
+﻿@{
+    Layout = null;
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width" />
+    <title>BootStrap框架 - Bootstrap Table</title>
+    <link href="../../Content/bootstarp/bootstarp_css/bootstrap.min.css?v=3.3.6" rel="stylesheet" />
+    <link href="../../Content/bootstarp/bootstarp_css/font-awesome.css?v=4.4.0" rel="stylesheet" />
+    <link href="../../Content/bootstarp/bootstarp_css/bootstrap-table.min.css" rel="stylesheet" />
+    <link href="../../Content/bootstarp/bootstarp_css/animate.css" rel="stylesheet" />
+    <link href="../../Content/bootstarp/bootstarp_css/style.css?v=4.1.0" rel="stylesheet" />
+    <link href="../../Content/bootstarp/bootstarp_css/bootstrap.css" rel="stylesheet" />
+    <link href="../../Content/bootstarp/bootstarp_css/bootstrap-table.css" rel="stylesheet" />
+    <!-- 日期框JS -->
+    <script src="../../Content/H/js/plugins/layer/laydate/laydate.js" type="text/javascript"></script>
+    <!-- 日期框 -->
+    <link type="text/css" rel="stylesheet" href="http://www.zi-han.net/theme/hplus/js/plugins/layer/laydate/need/laydate.css" />
+    <link type="text/css" rel="stylesheet" href="http://www.zi-han.net/theme/hplus/js/plugins/layer/laydate/skins/default/laydate.css"
+        id="LayDateSkin" />
+    <style type="text/css">
+        
+    </style>
+</head>
+<body class="gray-bg">
+    <div class="wrapper wrapper-content animated fadeInRight">
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                用户统计</div>
+            <div class="panel-body">
+                <form id="formSearch" name="formSearch" class="form-horizontal" role="form" action=""
+                method="post">
+                <div id="wherebar" class="form-group" style="margin-top: 7px">
+                    <label class="control-label col-sm-1" for="UserName" style="margin-top: 7px">
+                        用户名</label>
+                    <div class="col-sm-3" style="margin-top: 7px">
+                        <input name="UserName" type="text" class="form-control" id="UserName" />
+                    </div>
+                    <label class="control-label col-sm-1" for="UserCity" style="margin-top: 7px">
+                        所属区域</label>
+                    <div class="col-sm-3" style="margin-top: 7px">
+                        <input name="UserCity" type="text" class="form-control" id="UserCity" />
+                    </div>
+                    <div class="col-sm-3" style="margin-top: 7px">
+                        <button type="button" id="btnSearch" class="btn btn-primary">
+                            查询</button>
+                    </div>
+                </div>
+                </form>
+            </div>
+        </div>
+        <div class="ibox-content">
+            <table id="exampleTableEvents" data-height="400">
+                <thead>
+                    <tr>
+                        <th>
+                        </th>
+                        <th data-field="id" data-footer-formatter="totalTextFormatter">
+                            序号
+                        </th>
+                        <th data-field="UserName">
+                            用户名
+                        </th>
+                        <th data-field="UserPassword">
+                            密码
+                        </th>
+                        <th data-field="UserCity">
+                            所属区域
+                        </th>
+                        <th data-field="UserCreateTime">
+                            创建时间
+                        </th>
+                        @*<th data-field="UserRemainder" data-footer-formatter="sumFormatter">
+                            余额（剩余次数）
+                        </th>*@
+                        <th data-field="UserRemainder">
+                            余额（剩余次数）
+                        </th>
+                        <th data-field="UserWxEnable" data-formatter="displaycheck">
+                            微信查询
+                        </th>
+                        @*<th data-field="UserWxEnable">
+                            微信查询
+                        </th>*@
+                        <th data-field="zuyongshebei">
+                            租用设备
+                        </th>
+                        <th data-field="zaiyongshebei">
+                            在用设备
+                        </th>
+                        <th data-field="UserRemark">
+                            备注
+                        </th>
+                    </tr>
+                </thead>
+            </table>
+            <div id="toolbar" class="btn-group pull-right" style="margin-right: 20px;">
+                @*      <button id="btn_edit" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true" style="border-radius: 0">
+                    </span>修改
+                </button>
+                <button id="btn_delete" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>删除
+                </button>
+                <button id="btn_add" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>新增
+                </button>*@
+                <button id="btn_edit" type="button" class="btn btn-default">
+                    <span class="glyphicon glyphicon-pencil" aria-hidden="true" >
+                    </span>修改
+                </button>
+                <button id="btn_chongzhi" type="button" class="btn btn-default">
+                    <span aria-hidden="true" class="glyphicon glyphicon-usd"></span>充值
+                </button>
+                <button id="daochu" type="button" class="btn btn-default">
+                    <span aria-hidden="true" class="glyphicon glyphicon-save"></span>导出
+                </button>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/jquery.min.js"></script>
+    <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap.js"></script>
+    <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap-table.js"></script>
+    <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/layer.js"></script>
+    <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap-table-export.js"></script>
+    <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/tableExport.js"></script>
+    <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap-table-zh-CN.js"></script>
+    <script type="text/javascript">
+        var $table = $("#exampleTableEvents");
+        var TableInit = function () {
+            var oTable = new Object();
+            oTable.QueryUrl = '@Url.Content("~/APPZhangHaoGuanLi/Index")' + '?rnd=' + +Math.random();
+            oTable.Init = function () {
+                $table.bootstrapTable({
+                    method: 'post',
+                    contentType: "application/x-www-form-urlencoded",
+                    url: oTable.QueryUrl, //请求数据的地址
+                    height: $(window).height() + 70,
+                    striped: true,     //使表格带有条纹
+                    pagination: true,    //在表格底部显示分页工具栏
+                    pageNumber: 1,
+                    pageSize: 10,
+                    pageList: [10, 20, 30, 0],
+                    uniqueId: "id",
+                    columns: [{ checkbox: true}], //确定显示按钮
+                    clickToSelect: true, //是否启用点击选中行
+                    showToggle: true,   //名片格式
+                    cardView: false, //设置为True时显示名片（card）布局
+                    showColumns: true, //显示隐藏列  
+                    showRefresh: false,  //显示刷新按钮
+                    search: false, //是否显示右上角的搜索框
+                    sidePagination: "server", //表格分页的位置
+                    queryParams: oTable.queryParams, //参数
+                    singleSelect: true, //单选checkbox 
+                    //                    columns: [{ checkbox: true}], //确定显示按钮
+                    //                    clickToSelect: true, //是否启用点击选中行
+                    toolbarAlign: 'right', //工具栏对齐方式
+                    buttonsAlign: 'right', //按钮对齐方式
+                    toolbar: "#toolbar", //设置工具栏的Id或者class
+                    queryParamsType: "",
+                    silent: true,  //刷新事件必须设置
+                    //                    showFooter: true, //显示表尾数据，通常用于显示合计值
+
+                    showExport: false,  //是否显示导出按钮  
+                    //                    showExport: true,  //是否显示导出按钮  
+                    //                    exportDataType: 'basic', //导出表格方式（默认basic：只导出当前页的表格数据；all：导出所有数据；selected：导出选中的数据）
+                    //                    exportTypes: ['excel'],  //导出文件类型  
+                    //                    exportOptions: {
+                    //                        fileName: 'APP账户报表',  //文件名称设置  
+                    //                        worksheetName: 'appuser'  //表格工作区名称  
+                    //                    },
+
+                    formatLoadingMessage: function () {
+                        return "请稍等，正在加载中...";
+                    },
+                    formatNoMatches: function () {  //没有匹配的结果
+                        return '无符合条件的记录';
+                    },
+                    onLoadError: function (data) {
+                        $('#exampleTableEvents').bootstrapTable('removeAll');
+                    }
+                });
+            }
+            oTable.queryParams = function (params) {
+                var temp = {
+                    pageSize: params.pageSize,
+                    pageIndex: params.pageNumber,
+                    sortName: params.sortName,
+                    sortOrder: params.sortOrder,
+                    UserName: $('#UserName').val(),
+                    UserCity: $('#UserCity').val()
+
+                };
+                return temp;
+                //                $('#wherebar').find('input[name]').each(function () {
+                //                    params[$(this).attr('name')] = $(this).val();
+                //                });
+                //                return params;
+            }
+            return oTable;
+        }
+        function queryParams(params) {
+            // var params = {};
+            $('#wherebar').find('input[name]').each(function () {
+                params[$(this).attr('name')] = $(this).val();
+            });
+            console.log(params);
+            return params;
+        }
+        //初始化表格
+        $(function () {
+            var myTable = new TableInit();
+            myTable.Init();
+        });
+        //查询
+        $("#btnSearch").click(function () {
+            $table.bootstrapTable('destroy');
+            var myTable = new TableInit();
+            myTable.Init();
+        });
+
+        //选中行修改样式
+        $("#exampleTableEvents").on('click-row.bs.table', function (e, row, element) {
+            eee = element;
+            $('.success').removeClass('success'); //去除之前选中的行的，选中样式
+            $(element).addClass('success'); //添加当前选中的 success样式用于区别
+        });
+        //充值
+        var json = {};
+        $("#btn_chongzhi").click(function () {
+            json = {};
+            var $table = $("#exampleTableEvents");
+            json = $table.bootstrapTable('getSelections');
+            if (json == "") {
+                alert("请选中要充值的用户");
+                return;
+            }
+            var UserID = json[0].UserID;
+            location.href = "/APPZhangHaoGuanLi/ChongZhi/?UserID=" + UserID;
+        });
+        //修改
+        $("#btn_edit").click(function () {
+            json = {};
+            var $table = $("#exampleTableEvents");
+            json = $table.bootstrapTable('getSelections');
+            if (json == "") {
+                alert("请选中要修改的用户");
+                return;
+            }
+            var UserID = json[0].UserID;
+            location.href = "/APPZhangHaoGuanLi/Edit/?UserID=" + UserID;
+        });
+        //导出
+        $("#daochu").click(function () {
+
+            window.location.href = "/APPZhangHaoGuanLi/Export?UserName=" + $('#UserName').val()
+             + "&" + "UserCity=" + $('#UserCity').val();
+
+        });
+
+        //通过判断单元格的值，来格式化单元格，返回的值即为格式化后包含的元素  
+        function displaycheck(value, row, index) {
+            var a = "";
+            if (value == true) {
+                a = '<i class="fa fa-check"></i>';
+            }
+            if (value == false) {
+                a = '<i class="fa fa-times"></i>';
+            }
+            return a;
+        }
+
+        //footerFormatter的几种选择
+
+        function runningFormatter(value, row, index) {
+            return index;
+        }
+
+        function totalTextFormatter(data) {
+            return '合计';
+        }
+
+        function totalFormatter(data) {
+            return data.length;
+        }
+
+        function sumFormatter(data) {
+            field = this.field;
+            return data.reduce(function (sum, row) {
+                return sum + (+row[field]);
+            }, 0);
+        }
+
+        function avgFormatter(data) {
+            return sumFormatter.call(this, data) / data.length;
+        }
+
+
+    </script>
+</body>
+</html>

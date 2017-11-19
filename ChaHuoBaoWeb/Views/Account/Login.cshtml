@@ -1,0 +1,111 @@
+﻿@{
+    ViewBag.Title = "登陆";
+    Layout = null;
+}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <title>查货宝后台登录</title>
+    <link href="../../H/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../H/css/font-awesome.css?v=4.4.0" rel="stylesheet">
+    <link href="../../H/css/animate.css" rel="stylesheet">
+    <link href="../../H/css/style.css" rel="stylesheet">
+    <link href="../../H/css/login.css" rel="stylesheet">
+    <!--[if lt IE 9]>
+    <meta http-equiv="refresh" content="0;ie.html" />
+    <![endif]-->
+    <script>
+        if (window.top !== window.self) {
+            window.top.location = window.location;
+        }
+    </script>
+</head>
+<body class="signin">
+    <div class="signinpanel">
+        <div class="row">
+            <div class="col-sm-7">
+            </div>
+            <div class="col-sm-5">
+                @*<form method="post" action="/Account/Login">*@
+                <h4 class="no-margins">
+                    登录：</h4>
+                <input type="text" id="yonghuming" name="yonghuming" class="form-control uname" placeholder="用户名" value="@User.Identity.Name" />
+                <input type="password" id="mima" name="mima" class="form-control pword m-b" placeholder="密码" />
+                </br> @*<a href="">忘记密码了？</a>*@
+                <button id="btn_denglu" class="btn btn-success btn-block">
+                    登录</button>
+                @*<button id="btn_denglu" type="button" class="btn btn-primary block full-width m-b">
+                    登 录</button>*@ @*</form>*@
+            </div>
+        </div>
+        <div class="signup-footer">
+            @* <div class="pull-left">
+                &copy; 2015 All Rights Reserved. H+
+            </div>*@
+        </div>
+    </div>
+</body>
+<!-- 全局js -->
+<script src="../../H/js/jquery.min.js" type="text/ecmascript"></script>
+@*<script src="../../H/js/bootstrap.min.js?v=3.4.0" type="text/ecmascript"></script>
+<!-- 自定义js -->
+<script src="../../H/js/content.js?v=1.0.0" type="text/ecmascript"></script>
+<script src="../../H/js/plugins/layer/layer.min.js" type="text/ecmascript"> </script>
+<script src="../../H/js/demo/layer-demo.js" type="text/ecmascript"></script>*@
+<script type="text/ecmascript">
+    (function () {
+        //按回车实现登录
+        document.onkeydown = function (e) {
+            if (!e) e = window.event;
+            if ((e.keyCode || e.which) === 13) {
+                var obtnLogin = document.getElementById("btn_denglu");
+                obtnLogin.focus();
+            }
+        }
+        //检查是否填写用户名密码
+        function checkLogin() {
+            if ($("#yonghuming").val() === "") {
+                alert("请输入用户名");
+            } else if ($("#mima").val() === "") {
+                alert("请输入密码");
+            } else {
+                var param = {
+                    yonghuming: $("#yonghuming").val(),
+                    mima: $("#mima").val()
+                }
+                $.ajax({
+                    type: "post",
+                    url: "Login",
+                    contentType: "application/json; charset=utf-8",
+                    cache: false,
+                    data: JSON.stringify(param),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.sign === "1") {
+                            location.href = "/Home/Index";
+                        }
+                        else { alert(data.msg) }
+                    }
+                });
+            }
+        }
+        //单机登录事件
+        $("#btn_denglu").on("click", function () {
+            checkLogin();
+        });
+
+        var pageJs = {
+            Init: function () {
+                checkCookie();
+            }
+        }
+        window.Login = pageJs;
+        Login.Init();
+    })();
+
+
+
+</script>
+</html>
