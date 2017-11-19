@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using ChaHuoBaoWeb.Models;
 using System.IO;
+using ChaHuoBaoWeb.Filters;
+using System.Collections;
+using Common;
 
 namespace ChaHuoBaoWeb.Controllers
 {
@@ -95,6 +98,159 @@ namespace ChaHuoBaoWeb.Controllers
 
         }
 
+        public ActionResult SHIndex()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SHIndex(string UserName, string OrderDenno, string ZhiFuZhuangTai,string ChongZhiSH, DateTime? startDate, DateTime? endDate, string sortName, string sortOrder, int pageIndex = 1, int pageSize = 10)
+        {
+            IEnumerable<ChongZhi> chongzhiModel = accountdb.ChongZhi.Include("uesrmodell");
+            chongzhiModel = chongzhiModel.Where(p => p.ChongZhiDescribe == "公对公");
+            if (!string.IsNullOrEmpty(UserName))
+            {
+                chongzhiModel = chongzhiModel.Where(p => p.uesrmodell.UserName == UserName);
+            }
+            if (!string.IsNullOrEmpty(OrderDenno))
+            {
+                chongzhiModel = chongzhiModel.Where(p => p.OrderDenno == OrderDenno);
+            }
+            if (!string.IsNullOrEmpty(startDate.ToString()))
+            {
+                chongzhiModel = chongzhiModel.Where(x => x.ChongZhiTime >= startDate);
+            }
+            if (!string.IsNullOrEmpty(endDate.ToString()))
+            {
+                chongzhiModel = chongzhiModel.Where(x => x.ChongZhiTime <= Convert.ToDateTime(endDate).AddDays(1).AddMilliseconds(-1));
+            }
+            if (ZhiFuZhuangTai != "0")
+            {
+                bool zhuangtai = true;
+                if (ZhiFuZhuangTai == "1") { zhuangtai = true; }
+                if (ZhiFuZhuangTai == "2") { zhuangtai = false; }
+                chongzhiModel = chongzhiModel.Where(p => p.ZhiFuZhuangTai == zhuangtai);
+            }
+            if (ChongZhiSH != "0")
+            {
+                bool zhuangtai = true;
+                if (ChongZhiSH == "1") { zhuangtai = true; }
+                if (ChongZhiSH == "2") { zhuangtai = false; }
+                chongzhiModel = chongzhiModel.Where(p => p.ChongZhiSH == zhuangtai);
+            }
+            chongzhiModel = chongzhiModel.OrderByDescending(p => p.ChongZhiTime);
+            var total = chongzhiModel.Count();
+            var currentPersonList = chongzhiModel
+                               .Skip((pageIndex - 1) * pageSize)
+                               .Take(pageSize).ToList();
+            int n = (pageIndex - 1) * pageSize;
+            List<ChongZhilist> chongzhiModels = new List<ChongZhilist>();
+            foreach (var obj in currentPersonList)
+            {
+                ChaHuoBaoWeb.Models.ChaHuoBaoModels db = new ChaHuoBaoModels();
+                ChaHuoBaoWeb.Models.ChongZhiGDG gdgmodel = db.ChongZhiGDG.Where(g => g.OrderDenno == obj.OrderDenno).First();
+
+                n = n + 1;
+                string zhifuzhuangtai = "";
+                ChongZhilist chongzhione = new ChongZhilist();
+                if (obj.ZhiFuZhuangTai == true)
+                {
+                    zhifuzhuangtai = "已支付";
+                }
+                else
+                {
+                    zhifuzhuangtai = "未支付";
+                }
+
+                string shzhuangtai = "";
+                if (obj.ChongZhiSH == true)
+                {
+                    shzhuangtai = "已审核";
+                }
+                else
+                {
+                    shzhuangtai = "未审核";
+                }
+
+                chongzhione.xuhao = n;
+                chongzhione.OrderDenno = obj.OrderDenno;
+                chongzhione.UserName = obj.uesrmodell.UserName;
+                chongzhione.ChongZhiCiShu = obj.ChongZhiCiShu;
+                chongzhione.ChongZhiTime = obj.ChongZhiTime;
+                chongzhione.ZhiFuZhuangTai = zhifuzhuangtai;
+                chongzhione.ChongZhiRemark = obj.ChongZhiRemark;
+                chongzhione.ChongZhiJinE = obj.ChongZhiJinE;
+                chongzhione.ChongZhiSH = shzhuangtai;
+                chongzhione.DGZZCompany = gdgmodel.DGZZCompany;
+                chongzhione.DGZH = gdgmodel.DGZH;
+                chongzhione.DKPZH = gdgmodel.DKPZH;
+                chongzhiModels.Add(chongzhione);
+            }
+            var rows = chongzhiModels.Select(p => new
+            {
+                id = p.xuhao,
+                OrderDenno = p.OrderDenno,
+                UserName = p.UserName,
+                ChongZhiTime = p.ChongZhiTime.ToString(),
+                ChongZhiCiShu = p.ChongZhiCiShu,
+                ZhiFuZhuangTai = p.ZhiFuZhuangTai,
+                ChongZhiRemark = p.ChongZhiRemark,
+                ChongZhiJinE = p.ChongZhiJinE,
+                ChongZhiSH = p.ChongZhiSH,
+                DGZZCompany = p.DGZZCompany,
+                DGZH = p.DGZH,
+                DKPZH = p.DKPZH
+            });
+
+            return Json(new { total = total, rows = rows, state = true, msg = "加载成功" }, JsonRequestBehavior.AllowGet);
+
+        }
+
+        //审核
+        //审核
+        //审核
+        [PermissionAuthorize]
+        public string DataShenhe()
+        {
+            string OrderDenno = HttpContext.Request["OrderDenno"];
+            Hashtable hash = new Hashtable();
+            hash["sign"] = "0";
+            hash["msg"] = "用户注册失败！";
+            try
+            {
+                ChaHuoBaoWeb.Models.ChaHuoBaoModels db = new ChaHuoBaoModels();
+                ChaHuoBaoWeb.Models.ChongZhi chongzhimodel = db.ChongZhi.Where(g => g.OrderDenno == OrderDenno).First();
+                if (chongzhimodel.ChongZhiSH == true)
+                {
+                    hash["sign"] = "0";
+                    hash["msg"] = "此单据已审核！";
+                }
+                else
+                {
+                    chongzhimodel.ChongZhiSH = true;
+
+                    db.SaveChanges();
+
+                    ChaHuoBaoWeb.Models.ChaHuoBaoModels db2 = new ChaHuoBaoModels();
+
+                    ChaHuoBaoWeb.Models.User use = db2.User.Where(x => x.UserID == chongzhimodel.UserID).First();
+
+                    use.UserRemainder = use.UserRemainder + chongzhimodel.ChongZhiCiShu;
+
+                    db2.SaveChanges();
+
+                    hash["sign"] = "1";
+                    hash["msg"] = "审核成功";
+                }
+            }
+            catch (Exception ex)
+            {
+                hash["sign"] = "0";
+                hash["msg"] = ex.Message;
+            }
+
+            return JsonHelper.ToJson(hash);
+        }
 
         ////导出excel充值订单表内容
         public FileResult Export(string UserName, string OrderDenno, string ZhiFuZhuangTai, DateTime? startDate, DateTime? endDate, string sortName, string sortOrder)
@@ -211,6 +367,14 @@ namespace ChaHuoBaoWeb.Controllers
             public string ChongZhiRemark { get; set; }
 
             public decimal ChongZhiJinE { get; set; }
+
+            public string ChongZhiSH { get; set; }
+
+            public string DGZZCompany { get; set; }
+
+            public string DGZH { get; set; }
+
+            public string DKPZH { get; set; }
         }
     }
 }

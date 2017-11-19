@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using ChaHuoBaoWeb.Models;
 using System.IO;
+using ChaHuoBaoWeb.Filters;
+using System.Collections;
+using Common;
 
 namespace ChaHuoBaoWeb.Controllers
 {
@@ -28,7 +31,6 @@ namespace ChaHuoBaoWeb.Controllers
             if (!string.IsNullOrEmpty(GpsDingDanDenno))
             {
                 dingdanModel = dingdanModel.Where(p => p.GpsDingDanDenno == GpsDingDanDenno);
-
             }
             if (!string.IsNullOrEmpty(UserName))
             {
@@ -198,6 +200,159 @@ namespace ChaHuoBaoWeb.Controllers
 
             public string GpsDingDanRemark { get; set; }
 
+            public string GpsDingDanSH { get; set; }
+
+            public string DGZZCompany { get; set; }
+
+            public string DGZH { get; set; }
+
+            public string DKPZH { get; set; }
+        }
+
+        public ActionResult SHIndex()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult SHIndex(string GpsDingDanDenno, string UserName, DateTime? startDate, DateTime? endDate, string GpsDingDanSH, string sortName, string sortOrder, int pageIndex = 1, int pageSize = 10)
+        {
+
+            IEnumerable<GpsDingDan> dingdanModel = accountdb.GpsDingDan.Include("userModel");
+            dingdanModel = dingdanModel.Where(p => p.GpsDingDanZhiFuLeiXing == "公对公");
+            if (!string.IsNullOrEmpty(GpsDingDanDenno))
+            {
+                dingdanModel = dingdanModel.Where(p => p.GpsDingDanDenno == GpsDingDanDenno);
+
+            }
+            if (!string.IsNullOrEmpty(UserName))
+            {
+                dingdanModel = dingdanModel.Where(p => p.userModel.UserName == UserName);
+            }
+            if (GpsDingDanSH != "0")
+            {
+                bool shenhezhuangtai = true;
+
+                if (GpsDingDanSH == "1") { shenhezhuangtai = true; }
+                if (GpsDingDanSH == "2") { shenhezhuangtai = false; }
+
+                dingdanModel = dingdanModel.Where(p => p.GpsDingDanSH == shenhezhuangtai);
+
+            }
+            if (!string.IsNullOrEmpty(startDate.ToString()))
+            {
+                dingdanModel = dingdanModel.Where(p => p.GpsDingDanTime >= startDate);
+            }
+            if (!string.IsNullOrEmpty(endDate.ToString()))
+            {
+                dingdanModel = dingdanModel.Where(p => p.GpsDingDanTime <= Convert.ToDateTime(endDate).AddDays(1).AddMilliseconds(-1));
+            }
+            dingdanModel = dingdanModel.OrderByDescending(p => p.GpsDingDanTime);
+            var total = dingdanModel.Count();
+            var currentPersonList = dingdanModel
+                                           .Skip((pageIndex - 1) * pageSize)
+                                           .Take(pageSize).ToList();
+            int n = (pageIndex - 1) * pageSize;
+            List<GpsDingDanlist> dingdanModels = new List<GpsDingDanlist>();
+            foreach (var obj in currentPersonList)
+            {
+                ChaHuoBaoWeb.Models.ChaHuoBaoModels db = new ChaHuoBaoModels();
+                ChaHuoBaoWeb.Models.GpsDingDanGDG gdgmodel = db.GpsDingDanGDG.Where(g => g.OrderDenno == obj.OrderDenno).First();
+
+                n = n + 1;
+                string zhuangtai = "";
+                GpsDingDanlist dingdanone = new GpsDingDanlist();
+                if (obj.GpsDingDanSH == true)
+                {
+                    zhuangtai = "已审核";
+                }
+                else
+                {
+                    zhuangtai = "未审核";
+                }
+                dingdanone.xuhao = n;
+                dingdanone.UserName = obj.userModel.UserName;
+                dingdanone.GpsDingDanDenno = obj.GpsDingDanDenno;
+                dingdanone.GpsDingDanJinE = obj.GpsDingDanJinE;
+                dingdanone.GpsDingDanShuLiang = obj.GpsDingDanShuLiang;
+                dingdanone.GpsDingDanTime = obj.GpsDingDanTime;
+                dingdanone.GpsDingDanRemark = obj.GpsDingDanRemark;
+                dingdanone.GpsDingDanSH = zhuangtai;
+                dingdanone.DGZZCompany = gdgmodel.DGZZCompany;
+                dingdanone.DGZH = gdgmodel.DGZH;
+                dingdanone.DKPZH = gdgmodel.DKPZH;
+                dingdanModels.Add(dingdanone);
+
+            }
+            var rows = dingdanModels.Select(p => new
+            {
+                id = p.xuhao,
+                UserName = p.UserName,
+                GpsDingDanDenno = p.GpsDingDanDenno,
+                GpsDingDanTime = p.GpsDingDanTime.ToString(),
+                GpsDingDanJinE = p.GpsDingDanJinE,
+                GpsDingDanShuLiang = p.GpsDingDanShuLiang,
+                GpsDingDanRemark = p.GpsDingDanRemark,
+                GpsDingDanSH = p.GpsDingDanSH,
+                DGZZCompany = p.DGZZCompany,
+                DGZH = p.DGZH,
+                DKPZH = p.DKPZH
+            });
+
+            return Json(new { total = total, rows = rows, state = true, msg = "加载成功" }, JsonRequestBehavior.AllowGet);
+        }
+
+        //审核
+        //审核
+        //审核
+        [PermissionAuthorize]
+        public string DataShenhe()
+        {
+            string GpsDingDanDenno = HttpContext.Request["GpsDingDanDenno"];
+            Hashtable hash = new Hashtable();
+            hash["sign"] = "0";
+            hash["msg"] = "用户注册失败！";
+            try
+            {
+                ChaHuoBaoWeb.Models.ChaHuoBaoModels db = new ChaHuoBaoModels();
+                ChaHuoBaoWeb.Models.GpsDingDan dingdanmodel = db.GpsDingDan.Where(g => g.GpsDingDanDenno == GpsDingDanDenno).First();
+                if (dingdanmodel.GpsDingDanSH == true)
+                {
+                    hash["sign"] = "0";
+                    hash["msg"] = "此单据已审核！";
+                }
+                else
+                {
+                    dingdanmodel.GpsDingDanSH = true;
+                    //dingdanmodel.GpsTuiDanShenHeShiJian = DateTime.Now;
+                    db.SaveChanges();
+
+                    IEnumerable<GpsDingDanMingXi> mx = accountdb.GpsDingDanMingXi.Where(x => x.GpsDingDanDenno == dingdanmodel.GpsDingDanDenno);
+
+                    if (mx.Count() > 0)
+                    {
+                        ChaHuoBaoWeb.Models.ChaHuoBaoModels db2 = new ChaHuoBaoModels();
+                        foreach (var dr in mx)
+                        {
+                            Models.GpsDevice GpsDevice = new Models.GpsDevice();
+                            GpsDevice.UserID = dingdanmodel.UserID;
+                            GpsDevice.GpsDeviceID = dr.GpsDeviceID;
+                            db2.GpsDevice.Add(GpsDevice);
+                        }
+                        db2.SaveChanges();
+                    }
+
+                    hash["sign"] = "1";
+                    hash["msg"] = "审核成功";
+                }
+            }
+            catch (Exception ex)
+            {
+                hash["sign"] = "0";
+                hash["msg"] = ex.Message;
+            }
+
+            return JsonHelper.ToJson(hash);
         }
     }
 }

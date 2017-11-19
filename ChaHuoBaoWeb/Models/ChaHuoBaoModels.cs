@@ -24,10 +24,13 @@ namespace ChaHuoBaoWeb.Models
         public DbSet<GpsLocation> GpsLocation { get; set; }
         public DbSet<GpsDevice> GpsDevice { get; set; }
         public DbSet<GpsDingDan> GpsDingDan { get; set; }
+        public DbSet<GpsDingDanGDG> GpsDingDanGDG { get; set; }
+        public DbSet<ChongZhiGDG> ChongZhiGDG { get; set; }
         public DbSet<GpsDingDanMingXi> GpsDingDanMingXi { get; set; }
         public DbSet<GpsTuiDan> GpsTuiDan { get; set; }
         public DbSet<GpsTuiDanMingXi> GpsTuiDanMingXi { get; set; }
         public DbSet<ChongZhi> ChongZhi { get; set; }
+        public DbSet<InvoiceModel> InvoiceModel { get; set; }
         public DbSet<CaoZuoJiLu> CaoZuoJiLu { get; set; }
         public DbSet<JiaGeCeLve> JiaGeCeLve { get; set; }
         public DbSet<XiTongCanShu> XiTongCanShu { get; set; }
@@ -358,6 +361,27 @@ namespace ChaHuoBaoWeb.Models
         [ForeignKey("GpsDingDanDenno")]
         public GpsDingDan GpsDingDanModel { get; set; }
     }
+
+    [Table("GpsDingDanGDG")]
+    public class GpsDingDanGDG
+    { 
+        [Key]
+        [Display(Name = "公对公支付主键")]
+        public string GDGZhiFu { get; set; }
+        [Display(Name = "设备订单支付单号")]
+        public string OrderDenno { get; set; }
+        [Display(Name = "对公转账公司名称")]
+        public string DGZZCompany { get; set; }
+        [Display(Name = "对公账户")]
+        public string DGZH { get; set; }
+        [Display(Name = "打款凭证号")]
+        public string DKPZH { get; set; }
+        [Display(Name = "生成时间")]
+        public DateTime AddTime { get; set; }
+        [ForeignKey("OrderDenno")]
+        public GpsDingDan GpsDingDanModel { get; set; }
+    }
+
     /// <summary>
     /// 设备退单表
     /// </summary>
@@ -450,7 +474,56 @@ namespace ChaHuoBaoWeb.Models
         public bool ZhiFuZhuangTai { get; set; }
         [Display(Name = "充值备注")]
         public string ChongZhiRemark { get; set; }
+        [Display(Name = "充值审核")]
+        public bool ChongZhiSH { get; set; }
     }
+
+    [Table("InvoiceModel")]
+    public class InvoiceModel
+    { 
+        [Key]
+        [Display(Name = "发票主键id")]
+        public string InvoiceId { get; set; }
+        [Display(Name = "发票抬头")]
+        public string InvoiceTitle { get; set; }
+        [Display(Name = "组织机构代码")]
+        public string InvoiceZZJGDM { get; set; }
+        [Display(Name = "联系人")]
+        public string InvoicePerson { get; set; }
+        [Display(Name = "联系电话")]
+        public string InvoiceMobile { get; set; }
+        [Display(Name = "寄送地址")]
+        public string InvoiceAddress { get; set; }
+        [Display(Name = "用户id")]
+        public string UserId { get; set; }
+        [Display(Name = "申领时间")]
+        public DateTime? AddTime { get; set; }
+        [Display(Name = "寄送状态")]
+        public bool IsOut { get; set; }
+        [Display(Name = "发票金额")]
+        public decimal InvoiceJe { get; set; }
+    }
+
+    [Table("ChongZhiGDG")]
+    public class ChongZhiGDG
+    {
+        [Key]
+        [Display(Name = "公对公支付主键")]
+        public string GDGChongZhi { get; set; }
+        [Display(Name = "设备订单支付单号")]
+        public string OrderDenno { get; set; }
+        [Display(Name = "对公转账公司名称")]
+        public string DGZZCompany { get; set; }
+        [Display(Name = "对公账户")]
+        public string DGZH { get; set; }
+        [Display(Name = "打款凭证号")]
+        public string DKPZH { get; set; }
+        [Display(Name = "生成时间")]
+        public DateTime AddTime { get; set; }
+        //[ForeignKey("OrderDenno")]
+        //public ChongZhi ChongZhiModel { get; set; }
+    }
+
     /// <summary>
     /// 操作记录表
     /// </summary>
