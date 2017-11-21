@@ -134,6 +134,13 @@ namespace ChaHuoBaoWeb.Controllers
                     ///获取位置
                     viewmodel = new onroadcarviewmodel();
 
+                    string duration = "";
+                    string distance_str = "";
+
+                    double distance = GetDistance(Convert.ToDouble(yundanmodel.DaoDaZhan_lng.ToString()), Convert.ToDouble(yundanmodel.DaoDaZhan_lat.ToString()), Convert.ToDouble(yundanmodel.Gps_lastlng.ToString()), Convert.ToDouble(yundanmodel.Gps_lastlat.ToString()));
+                    distance_str = "<p style='margin:0;font-size:13px'>剩余里程：" + (distance / 1000).ToString("F2") + "公里</p>";
+                    duration = "<p style='margin:0;font-size:13px'>剩余时间：" + (Convert.ToDecimal((distance / 80000))).ToString("F2") + "小时</p>";
+
                     viewmodel.jingweidu =yundanmodel.Gps_lastlng +","+yundanmodel.Gps_lastlat ;
                     //viewmodel.gpslocation = lbsht["address"].ToString();
                     //viewmodel.gpstime = lbsht["gpstime"].ToString();
@@ -144,6 +151,8 @@ namespace ChaHuoBaoWeb.Controllers
         + "<p style='margin:0;font-size:13px'>建单公司：" + yundanmodel.SuoShuGongSi + "</p>"
         + "<p style='margin:0;font-size:13px'>单号：" + yundanmodel.UserDenno + "</p>"
         + "<p style='margin:0;font-size:13px'>所在位置：" + yundanmodel.Gps_lastinfo + "</p>"
+        + distance_str
+        + duration
         + "<p style='margin:0;font-size:14px;color:Red'>定位时间：" + yundanmodel.Gps_lasttime + "</p>"
         + "<a style='margin:0;font-size:14px' href='/Map?YunDanDenno="+yundanmodel.YunDanDenno+"' target='_blank'>查看轨迹 </a>" 
         + "</div>";
@@ -160,6 +169,40 @@ namespace ChaHuoBaoWeb.Controllers
 
             string jsons = Newtonsoft.Json.JsonConvert.SerializeObject(ht);
             return jsons;
+        }
+
+        //地球半径，单位米
+        private const double EARTH_RADIUS = 6378137;
+
+        /// <summary>
+        /// 计算两点位置的距离，返回两点的距离，单位：米
+        /// 该公式为GOOGLE提供，误差小于0.2米
+        /// </summary>
+        /// <param name="lng1">第一点经度</param>
+        /// <param name="lat1">第一点纬度</param>        
+        /// <param name="lng2">第二点经度</param>
+        /// <param name="lat2">第二点纬度</param>
+        /// <returns></returns>
+        public static double GetDistance(double lng1, double lat1, double lng2, double lat2)
+        {
+            double radLat1 = Rad(lat1);
+            double radLng1 = Rad(lng1);
+            double radLat2 = Rad(lat2);
+            double radLng2 = Rad(lng2);
+            double a = radLat1 - radLat2;
+            double b = radLng1 - radLng2;
+            double result = 2 * Math.Asin(Math.Sqrt(Math.Pow(Math.Sin(a / 2), 2) + Math.Cos(radLat1) * Math.Cos(radLat2) * Math.Pow(Math.Sin(b / 2), 2))) * EARTH_RADIUS;
+            return result;
+        }
+
+        /// <summary>
+        /// 经纬度转化成弧度
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        private static double Rad(double d)
+        {
+            return (double)d * Math.PI / 180d;
         }
 
     }

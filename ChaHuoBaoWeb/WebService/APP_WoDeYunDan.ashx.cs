@@ -52,12 +52,22 @@ namespace ChaHuoBaoWeb.WebService
                         hash["msg"] = "搜索我的运单成功";
 
                         var yundanlist = YunDan_list.ToList();
+                        string duration = "";
+                        string distance_str = "";
                         foreach (var obj in yundanlist)
                         {
                             obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
                             obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
+                            if (obj.IsBangding == true)
+                            {
+                                double distance = GetDistance(Convert.ToDouble(obj.DaoDaZhan_lng.ToString()), Convert.ToDouble(obj.DaoDaZhan_lat.ToString()), Convert.ToDouble(obj.Gps_lastlng.ToString()), Convert.ToDouble(obj.Gps_lastlat.ToString()));
+                                distance_str = (distance / 1000).ToString("F2") + "公里";
+                                duration = (Convert.ToDecimal((distance / 80000))).ToString("F2") + "小时";
+                            }
                         }
                         hash["yundanlist"] = yundanlist;
+                        hash["distance"] = distance_str;
+                        hash["duration"] = duration;
                     }
                     else 
                     {
@@ -87,6 +97,40 @@ namespace ChaHuoBaoWeb.WebService
             {
                 return false;
             }
+        }
+
+        //地球半径，单位米
+        private const double EARTH_RADIUS = 6378137;
+
+        /// <summary>
+        /// 计算两点位置的距离，返回两点的距离，单位：米
+        /// 该公式为GOOGLE提供，误差小于0.2米
+        /// </summary>
+        /// <param name="lng1">第一点经度</param>
+        /// <param name="lat1">第一点纬度</param>        
+        /// <param name="lng2">第二点经度</param>
+        /// <param name="lat2">第二点纬度</param>
+        /// <returns></returns>
+        public static double GetDistance(double lng1, double lat1, double lng2, double lat2)
+        {
+            double radLat1 = Rad(lat1);
+            double radLng1 = Rad(lng1);
+            double radLat2 = Rad(lat2);
+            double radLng2 = Rad(lng2);
+            double a = radLat1 - radLat2;
+            double b = radLng1 - radLng2;
+            double result = 2 * Math.Asin(Math.Sqrt(Math.Pow(Math.Sin(a / 2), 2) + Math.Cos(radLat1) * Math.Cos(radLat2) * Math.Pow(Math.Sin(b / 2), 2))) * EARTH_RADIUS;
+            return result;
+        }
+
+        /// <summary>
+        /// 经纬度转化成弧度
+        /// </summary>
+        /// <param name="d"></param>
+        /// <returns></returns>
+        private static double Rad(double d)
+        {
+            return (double)d * Math.PI / 180d;
         }
     }
 }
