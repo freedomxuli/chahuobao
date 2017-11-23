@@ -56,13 +56,16 @@ namespace ChaHuoBaoWeb.WebService
                         string distance_str = "";
                         foreach (var obj in yundanlist)
                         {
-                            obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
-                            obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
-                            if (obj.IsBangding == true)
+                            if (!string.IsNullOrEmpty(obj.QiShiZhan) && !string.IsNullOrEmpty(obj.DaoDaZhan))
                             {
-                                double distance = GetDistance(Convert.ToDouble(obj.DaoDaZhan_lng.ToString()), Convert.ToDouble(obj.DaoDaZhan_lat.ToString()), Convert.ToDouble(obj.Gps_lastlng.ToString()), Convert.ToDouble(obj.Gps_lastlat.ToString()));
-                                distance_str = (distance / 1000).ToString("F2") + "公里";
-                                duration = (Convert.ToDecimal((distance / 80000))).ToString("F2") + "小时";
+                                obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
+                                obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
+                                if (obj.IsBangding == true)
+                                {
+                                    double distance = GetDistance(Convert.ToDouble(obj.DaoDaZhan_lng.ToString()), Convert.ToDouble(obj.DaoDaZhan_lat.ToString()), Convert.ToDouble(obj.Gps_lastlng.ToString()), Convert.ToDouble(obj.Gps_lastlat.ToString()));
+                                    distance_str = (distance / 1000).ToString("F2") + "公里";
+                                    duration = (Convert.ToDecimal((distance / 80000))).ToString("F2") + "小时";
+                                }
                             }
                         }
                         hash["yundanlist"] = yundanlist;
