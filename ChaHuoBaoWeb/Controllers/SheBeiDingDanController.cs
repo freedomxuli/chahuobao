@@ -12,6 +12,7 @@ using Common;
 namespace ChaHuoBaoWeb.Controllers
 {
     [Authorize]
+    [PermissionAuthorize]
     public class SheBeiDingDanController : Controller
     {
         //设备订单首页

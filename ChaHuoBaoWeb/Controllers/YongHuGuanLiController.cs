@@ -11,6 +11,7 @@ using ChaHuoBaoWeb.Filters;
 namespace ChaHuoBaoWeb.Controllers
 {
     [Authorize]
+    [PermissionAuthorize]
     public class YongHuGuanLiController : Controller
     {
         //

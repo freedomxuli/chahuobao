@@ -12,6 +12,7 @@ using ChaHuoBaoWeb.Filters;
 namespace ChaHuoBaoWeb.Controllers
 {
     [Authorize]
+    [PermissionAuthorize]
     public class SheBeiTuiDanController : Controller
     {
         //设备退单表

@@ -5,10 +5,12 @@ using System.Web;
 using System.Web.Mvc;
 using ChaHuoBaoWeb.Models;
 using System.IO;
+using ChaHuoBaoWeb.Filters;
 
 namespace ChaHuoBaoWeb.Controllers
 {
     [Authorize]
+    [PermissionAuthorize]
     public class APPZhangHaoGuanLiController : Controller
     {
         //

@@ -12,6 +12,7 @@ using Common;
 namespace ChaHuoBaoWeb.Controllers
 {
     [Authorize]
+    [PermissionAuthorize]
     public class InvoiceController : Controller
     {
         //
