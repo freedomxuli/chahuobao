@@ -57,6 +57,7 @@ namespace ChaHuoBaoWeb.WebService
                     ChongZhi.ChongZhiTime = DateTime.Now;
                     ChongZhi.ZhiFuZhuangTai = false;
                     ChongZhi.ChongZhiRemark = ChongZhiRemark_db;
+                    ChongZhi.ChongZhiSH = false;
                     db.ChongZhi.Add(ChongZhi);
                     db.SaveChanges();
                     hash["sign"] = "1";
