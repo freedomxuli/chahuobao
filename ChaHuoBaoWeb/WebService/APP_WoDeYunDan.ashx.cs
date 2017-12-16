@@ -52,25 +52,17 @@ namespace ChaHuoBaoWeb.WebService
                         hash["msg"] = "搜索我的运单成功";
 
                         var yundanlist = YunDan_list.ToList();
-                        string duration = "";
-                        string distance_str = "";
+
                         foreach (var obj in yundanlist)
                         {
-                            if (!string.IsNullOrEmpty(obj.QiShiZhan) && !string.IsNullOrEmpty(obj.DaoDaZhan))
+                            IEnumerable<YunDanDistance> YunDanDistance = db.YunDanDistance.Where(x => x.YunDanDenno == obj.YunDanDenno);
+                            if (YunDanDistance.Count() > 0)
                             {
-                                obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
-                                obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
-                                if (obj.IsBangding == true)
-                                {
-                                    double distance = GetDistance(Convert.ToDouble(obj.DaoDaZhan_lng.ToString()), Convert.ToDouble(obj.DaoDaZhan_lat.ToString()), Convert.ToDouble(obj.Gps_lastlng.ToString()), Convert.ToDouble(obj.Gps_lastlat.ToString()));
-                                    distance_str = (distance / 1000).ToString("F2") + "公里";
-                                    duration = (Convert.ToDecimal((distance / 80000))).ToString("F2") + "小时";
-                                }
+                                obj.Gps_distance = YunDanDistance.First().Gps_distance;
+                                obj.Gps_duration = YunDanDistance.First().Gps_duration;
                             }
                         }
                         hash["yundanlist"] = yundanlist;
-                        hash["distance"] = distance_str;
-                        hash["duration"] = duration;
                     }
                     else 
                     {
