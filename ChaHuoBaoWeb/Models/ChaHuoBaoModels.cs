@@ -511,6 +511,8 @@ namespace ChaHuoBaoWeb.Models
         public string ChongZhiRemark { get; set; }
         [Display(Name = "充值审核")]
         public bool ChongZhiSH { get; set; }
+        [Display(Name = "审核是否通过")]
+        public int? IsShPass { get; set; }
     }
 
     [Table("InvoiceModel")]

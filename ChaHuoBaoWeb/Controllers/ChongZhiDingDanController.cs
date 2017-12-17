@@ -172,6 +172,14 @@ namespace ChaHuoBaoWeb.Controllers
                 {
                     shzhuangtai = "未审核";
                 }
+                string IsShPass = "";
+                if (!string.IsNullOrEmpty(obj.IsShPass.ToString()))
+                {
+                    if (obj.IsShPass == 1)
+                        IsShPass = "通过";
+                    else
+                        IsShPass = "不通过";
+                }
 
                 chongzhione.xuhao = n;
                 chongzhione.OrderDenno = obj.OrderDenno;
@@ -182,6 +190,7 @@ namespace ChaHuoBaoWeb.Controllers
                 chongzhione.ChongZhiRemark = obj.ChongZhiRemark;
                 chongzhione.ChongZhiJinE = obj.ChongZhiJinE;
                 chongzhione.ChongZhiSH = shzhuangtai;
+                chongzhione.IsShPass = IsShPass;
                 chongzhione.DGZZCompany = gdgmodel.DGZZCompany;
                 chongzhione.DGZH = gdgmodel.DGZH;
                 chongzhione.DKPZH = gdgmodel.DKPZH;
@@ -198,6 +207,7 @@ namespace ChaHuoBaoWeb.Controllers
                 ChongZhiRemark = p.ChongZhiRemark,
                 ChongZhiJinE = p.ChongZhiJinE,
                 ChongZhiSH = p.ChongZhiSH,
+                IsShPass = p.IsShPass,
                 DGZZCompany = p.DGZZCompany,
                 DGZH = p.DGZH,
                 DKPZH = p.DKPZH
@@ -230,16 +240,19 @@ namespace ChaHuoBaoWeb.Controllers
                 {
                     chongzhimodel.ChongZhiSH = true;
 
+                    chongzhimodel.IsShPass = Int32.Parse(HttpContext.Request["IsShPass"]);
+
                     db.SaveChanges();
 
-                    ChaHuoBaoWeb.Models.ChaHuoBaoModels db2 = new ChaHuoBaoModels();
+                    if (Int32.Parse(HttpContext.Request["IsShPass"]) == 1) {
+                        ChaHuoBaoWeb.Models.ChaHuoBaoModels db2 = new ChaHuoBaoModels();
+                        ChaHuoBaoWeb.Models.User use = db2.User.Where(x => x.UserID == chongzhimodel.UserID).First();
 
-                    ChaHuoBaoWeb.Models.User use = db2.User.Where(x => x.UserID == chongzhimodel.UserID).First();
+                        use.UserRemainder = use.UserRemainder + chongzhimodel.ChongZhiCiShu;
 
-                    use.UserRemainder = use.UserRemainder + chongzhimodel.ChongZhiCiShu;
-
-                    db2.SaveChanges();
-
+                        db2.SaveChanges();
+                    }
+                    
                     hash["sign"] = "1";
                     hash["msg"] = "审核成功";
                 }
@@ -370,6 +383,8 @@ namespace ChaHuoBaoWeb.Controllers
             public decimal ChongZhiJinE { get; set; }
 
             public string ChongZhiSH { get; set; }
+
+            public string IsShPass { get; set; }
 
             public string DGZZCompany { get; set; }
 

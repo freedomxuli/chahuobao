@@ -6192,6 +6192,7 @@ button.close {
     }
 
     .modal-backdrop.in {
+        z-index:-1;
         filter: alpha(opacity=50);
         opacity: .5;
     }
