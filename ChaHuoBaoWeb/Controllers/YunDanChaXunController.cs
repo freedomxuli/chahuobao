@@ -27,7 +27,7 @@ namespace ChaHuoBaoWeb.Controllers
             IEnumerable<YunDan> yundanModel = accountdb.YunDan.Include("userModelss");
             if (!string.IsNullOrEmpty(UserName))
             {
-                yundanModel = yundanModel.Where(p => p.userModelss.UserName == UserName);
+                yundanModel = yundanModel.Where(p => p.userModelss.UserName.Contains(UserName));
             }
             if (!string.IsNullOrEmpty(QiShiZhan))
             {
@@ -91,6 +91,7 @@ namespace ChaHuoBaoWeb.Controllers
                 yundanone.QiShiZhan = obj.QiShiZhan;
                 yundanone.DaoDaZhan = obj.DaoDaZhan;
                 yundanone.UserDenno = obj.UserDenno;
+                yundanone.UserName = obj.userModelss.UserName;
                 yundanone.SuoShuGongSi = obj.SuoShuGongSi;
                 yundanone.BangDingTime = obj.BangDingTime;
                 yundanone.JieBangTime = obj.JieBangTime;
@@ -104,6 +105,7 @@ namespace ChaHuoBaoWeb.Controllers
             {
                 id = p.xuhao,
                 UserDenno = p.UserDenno,
+                UserName = p.UserName,
                 SuoShuGongSi = p.SuoShuGongSi,
 
                 QiShiZhan = p.QiShiZhan,
@@ -254,6 +256,7 @@ namespace ChaHuoBaoWeb.Controllers
 
             public string YunDanDenno { get; set; }
             public string UserDenno { get; set; }
+            public string UserName { get; set; }
             public string SuoShuGongSi { get; set; }
             public string QiShiZhan { get; set; }
             public string DaoDaZhan { get; set; }
