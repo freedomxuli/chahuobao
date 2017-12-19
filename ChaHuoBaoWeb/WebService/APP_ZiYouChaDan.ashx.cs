@@ -62,8 +62,8 @@ namespace ChaHuoBaoWeb.WebService
                                 var yundanlist = YunDan_list.ToList();
                                 foreach (var obj in yundanlist)
                                 {
-                                    obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
-                                    obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
+                                    //obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
+                                    //obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
 
                                     IEnumerable<YunDanDistance> YunDanDistance = db.YunDanDistance.Where(x => x.YunDanDenno == obj.YunDanDenno);
                                     if (YunDanDistance.Count() > 0)
