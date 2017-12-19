@@ -4,10 +4,12 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ChaHuoBaoWeb.Models;
+using ChaHuoBaoWeb.Filters;
 
 namespace ChaHuoBaoWeb.Controllers
 {
     [Authorize]
+    [PermissionAuthorize]
     public class XiuGaiMiMaController : Controller
     {
         //修改密码首页

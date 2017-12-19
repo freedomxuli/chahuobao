@@ -21,6 +21,7 @@ namespace ChaHuoBaoWeb.Models
         public DbSet<User_Role> User_Role { get; set; }
         public DbSet<Role_QuanXian> Role_QuanXian { get; set; }
         public DbSet<YunDan> YunDan { get; set; }
+        public DbSet<YunDanDistance> YunDanDistance { get; set; }
         public DbSet<GpsLocation> GpsLocation { get; set; }
         public DbSet<GpsDevice> GpsDevice { get; set; }
         public DbSet<GpsDingDan> GpsDingDan { get; set; }
@@ -260,6 +261,40 @@ namespace ChaHuoBaoWeb.Models
         public string DaoDaZhan_lat { get; set; }
         [Display(Name = "到达站经度")]
         public string DaoDaZhan_lng { get; set; }
+        [Display(Name = "剩余路程")]
+        public string Gps_distance { get; set; }
+        [Display(Name = "剩余时间")]
+        public string Gps_duration { get; set; }
+    }
+
+    /// <summary>
+    /// GPS剩余路程表
+    /// </summary>
+    [Table("YunDanDistance")]
+    public class YunDanDistance
+    {
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
+        [Display(Name = "主键ID")]
+        public Int32 ID { get; set; }
+        [Display(Name = "运单系统编号")]
+        public string YunDanDenno { get; set; }
+        [Display(Name = "运单手工编号")]
+        public string UserDenno { get; set; }
+        [Display(Name = "用户ID")]
+        public string UserID { get; set; }
+        [Display(Name = "设备ID")]
+        public string GpsDeviceID { get; set; }
+        [Display(Name = "最新地理纬度")]
+        public string Gps_lastlat { get; set; }
+        [Display(Name = "最新地理经度")]
+        public string Gps_lastlng { get; set; }
+        [Display(Name = "最新定位时间")]
+        public DateTime? Gps_lasttime { get; set; }
+        [Display(Name = "剩余路程")]
+        public string Gps_distance { get; set; }
+        [Display(Name = "剩余时间")]
+        public string Gps_duration { get; set; }
     }
 
     /// <summary>
@@ -476,6 +511,8 @@ namespace ChaHuoBaoWeb.Models
         public string ChongZhiRemark { get; set; }
         [Display(Name = "充值审核")]
         public bool ChongZhiSH { get; set; }
+        [Display(Name = "审核是否通过")]
+        public int? IsShPass { get; set; }
     }
 
     [Table("InvoiceModel")]

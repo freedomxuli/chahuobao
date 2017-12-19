@@ -104,7 +104,7 @@ namespace ChaHuoBaoWeb.WebService
 
             if (type == "GetChaDanAccount")
             {
- context.Response.Write(GetChaDanAccount(type_sub));
+                context.Response.Write(GetChaDanAccount(type_sub));
             }
             if (type == "GetChaDanList")
             {
@@ -161,7 +161,7 @@ namespace ChaHuoBaoWeb.WebService
             }
             if (type_sub == "all_pc")
             {
-                hs["value"] = czjls.Where(g => g.CaoZuoNeiRong.Contains("Pc")).Count();
+                hs["value"] = czjls.Where(g => g.CaoZuoNeiRong.Contains("web")).Count();
             }
             if (type_sub == "today")
             {
@@ -177,7 +177,7 @@ namespace ChaHuoBaoWeb.WebService
             }
             if (type_sub == "today_pc")
             {
-                hs["value"] = czjls.Where(g => g.CaoZuoNeiRong.Contains("Pc") & g.CaoZuoTime > dt1 && g.CaoZuoTime < dt2).Count();
+                hs["value"] = czjls.Where(g => g.CaoZuoNeiRong.Contains("web") & g.CaoZuoTime > dt1 && g.CaoZuoTime < dt2).Count();
             }
            
             List<Hashtable> result = new List<Hashtable>();

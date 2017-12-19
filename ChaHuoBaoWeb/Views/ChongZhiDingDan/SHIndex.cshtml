@@ -132,6 +132,9 @@ td{
                         <th data-field="ChongZhiSH">
                             审核状态
                         </th>
+                        <th data-field="IsShPass">
+                            是否通过
+                        </th>
                         <th data-field="ChongZhiRemark">
                             备注
                         </th>
@@ -159,6 +162,24 @@ td{
             </div>
         </div>
     </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">充值审核</h4>
+                </div>
+                <div class="modal-body">请确认是否审核通过</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" id="SHPass">审核通过</button>
+                    <button type="button" class="btn btn-primary" id="SHNoPass">审核不通过</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
     <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/jquery.min.js"></script>
     <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap.js"></script>
     <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap-table.js"></script>
@@ -262,14 +283,29 @@ td{
                 return;
             }
 
+            $('#myModal').modal({
+                keyboard: true
+            });
+        });
+
+        $("#SHPass").click(function () {
+
+            var $table = $("#exampleTableEvents");
+            json = $table.bootstrapTable('getSelections');
+            if (json == "") {
+                alert("请选中要审核的行!")
+                return;
+            }
             var OrderDenno = json[0].OrderDenno;
+            $('#myModal').modal('hide');
             //            alert(GpsTuiDanDenno);
             $.ajax({
                 url: '/ChongZhiDingDan/DataShenhe',
                 type: 'GET', //GET
                 async: true,    //或false,是否异步
                 data: {
-                    OrderDenno: OrderDenno
+                    OrderDenno: OrderDenno,
+                    IsShPass:1
                 },
                 timeout: 5000,    //超时时间
                 dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
@@ -292,8 +328,51 @@ td{
                 error: function (xhr, textStatus) {
                     alert('没有操作权限权限，请联系管理员');
                 }
-            })
+            });
+        });
 
+        $("#SHNoPass").click(function () {
+
+            var $table = $("#exampleTableEvents");
+            json = $table.bootstrapTable('getSelections');
+            if (json == "") {
+                alert("请选中要审核的行!")
+                return;
+            }
+            var OrderDenno = json[0].OrderDenno;
+            $('#myModal').modal('hide');
+            //            alert(GpsTuiDanDenno);
+            $.ajax({
+                url: '/ChongZhiDingDan/DataShenhe',
+                type: 'GET', //GET
+                async: true,    //或false,是否异步
+                data: {
+                    OrderDenno: OrderDenno,
+                    IsShPass: 2
+                },
+                timeout: 5000,    //超时时间
+                dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                beforeSend: function (xhr) {
+                    console.log(xhr)
+                    console.log('发送前')
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.sign = '1') {
+                        alert(data.msg);
+                        //更新行的审核状态为已审核
+                        $table.bootstrapTable("refresh")
+                    }
+                    else {
+                        //                        json[0].GpsTuiDanShenHeZhuangTai.value = "3333";
+                        alert(data.msg);
+                        
+                    }
+
+                },
+                error: function (xhr, textStatus) {
+                    alert('没有操作权限权限，请联系管理员');
+                }
+            });
         });
 
         $("#daochu").click(function () {

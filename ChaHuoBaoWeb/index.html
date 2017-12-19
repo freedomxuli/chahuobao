@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>运单查询</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1,maximum-scale=1,user-scalable=no">
+		<meta name="apple-mobile-web-app-capable" content="yes">
+		<meta name="apple-mobile-web-app-status-bar-style" content="black">
+		<link rel="stylesheet" href="css/mui.min.css">
+		<style type="text/css">
+			* {
+				-webkit-user-select: none;
+			}
+			
+			.mui-content {
+				top: 45px;
+				height: auto;
+			}
+			
+			.mui-fullscreen {
+				top: 190px;
+				height: auto;
+			}
+			
+			.mui-btn {
+				padding: 8px;
+			}
+			/*.mui-input-group label {
+				width: 30%;
+			}
+			
+			.mui-input-group input {
+				width: 70%;
+			}*/
+		</style>
+	</head>
+
+	<body>
+		<header class="mui-bar mui-bar-nav">
+			<h1 class="mui-title"></h1>
+		</header>
+		<div class="mui-content">
+			<div class="mui-content-padded" style="margin: 5px;">
+				<form class="mui-input-group">
+					<div class="mui-input-row">
+						<label style="width:25%;" class="iconfont_log_reg ">公司:</label>
+						<input id='gongsi' style="width: 75%; float: left;" type="text" class=" mui-input mui-input-clear" style="width:80px;margin-left: 30px;" placeholder="请输入公司名">
+					</div>
+					<div class="mui-input-row">
+						<label style="width:25%;" class="iconfont_log_reg ">单号:</label>
+						<input id='danhao' style="width: 75%; float: left;" type="text" placeholder="请输入单号" class=" mui-input mui-input-clear" style="width:80px;margin-left: 30px;">
+					</div>
+				</form>
+				<div class="mui-content-padded">
+					<button id="search" class="mui-btn mui-btn-block mui-btn-primary ">点击搜索</button>
+				</div>
+			</div>
+		</div>
+		<div id="noyundan" style="text-align: center;visibility: visible;">
+			<p class="mui-h3" style="margin-top: 200px;">未查询到任何运单</p>
+		</div>
+		<div id="slider" class="mui-slider mui-fullscreen" style="visibility: hidden;height: auto;">
+			<div class="mui-slider-group">
+				<div class="mui-slider-item mui-control-content mui-active">
+					<div id="scroll1" class="mui-scroll-wrapper">
+						<div class="mui-scroll">
+							<ul id="wodeyundan_list" class="mui-table-view">
+								<!--<li class="mui-table-view-cell">
+									<div class="mui-input-row ">
+										<div class="mui-input-row ">
+											<label style="width: 25%; ">日期:</label>
+											<label style="width: 25%; "></label>
+											<label style="width: 25%; ">运单号:</label>
+											<label style="width: 25%; "></label>
+										</div>
+										<div class="mui-input-row ">
+											<label style="width: 25%; ">起始站:</label>
+											<label style="width: 25%; "></label>
+											<label style="width: 25%; ">到达站:</label>
+											<label style="width: 25%; "></label>
+										</div>
+										<div class="mui-input-row ">
+											<label style="width: 30%; ">公司名称：</label><label style="width: 70%; "></label>
+										</div>
+										<div class="mui-input-row ">
+											<label style="width: 30%; ">运单备注：</label><label style="width: 70%; "></label>
+										</div>
+										<div class="mui-input-row ">
+											<label style="width: 30%; ">当前位置：</label><label style="width: 70%; "></label>
+										</div>
+										<p class="mui-btn-link mui-pull-right ">查看轨迹</p>
+									</div>
+								</li>-->
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<script src="js/mui.min.js "></script>
+		<script src="js/MyOwnJS/ZiYouChaDan.js?t=1"></script>
+		<script>
+			(function($, doc) {
+				$.init({
+					//swipeBack: false //启用右滑关闭功能
+				});
+				var btn_search = doc.getElementById("search")
+				btn_search.addEventListener('tap', function(e) {
+					if(doc.getElementById("gongsi").value == "" || doc.getElementById("danhao").value == "") {
+						mui.alert("自由查单:公司名与单号都必须填写");
+						document.getElementById("noyundan").style.visibility = "visible";
+						return;
+					}
+					ziyouchadan_load(doc.getElementById("gongsi").value, doc.getElementById("danhao").value);
+				});
+			}(mui, document));
+			(function($) { //阻尼系数
+				var deceleration = mui.os.ios ? 0.003 : 0.0009;
+				$('.mui-scroll-wrapper').scroll({
+					//bounce: false,
+					indicators: true, //是否显示滚动条
+					//deceleration: deceleration
+				});
+			})(mui);
+		</script>
+	</body>
+
+</html>
