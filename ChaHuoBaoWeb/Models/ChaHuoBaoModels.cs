@@ -265,6 +265,32 @@ namespace ChaHuoBaoWeb.Models
         public string Gps_distance { get; set; }
         [Display(Name = "剩余时间")]
         public string Gps_duration { get; set; }
+        [Display(Name = "销售员")]
+        public string SalePerson { get; set; }
+        [Display(Name = "收货单位")]
+        public string Purchaser { get; set; }
+        [Display(Name = "收货人")]
+        public string PurchaserPerson { get; set; }
+        [Display(Name = "收货人联系电话")]
+        public string PurchaserTel { get; set; }
+        [Display(Name = "承运公司")]
+        public string CarrierCompany { get; set; }
+        [Display(Name = "负责人")]
+        public string CarrierPerson { get; set; }
+        [Display(Name = "负责人联系电话")]
+        public string CarrierTel { get; set; }
+        [Display(Name = "到达地详细地址")]
+        public string DaoDaAddress { get; set; }
+        [Display(Name = "起始地详细地址")]
+        public string QiShiAddress { get; set; }
+        [Display(Name = "出发提醒")]
+        public int? IsChuFaMessage { get; set; }
+        [Display(Name = "到达提醒")]
+        public int? IsDaoDaMessage { get; set; }
+        [Display(Name = "起始地区县")]
+        public string QiShiZhan_QX { get; set; }
+        [Display(Name = "到达地区县")]
+        public string DaoDaZhan_QX { get; set; }
     }
 
     /// <summary>
