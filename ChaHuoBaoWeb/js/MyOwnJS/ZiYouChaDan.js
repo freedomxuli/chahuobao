@@ -129,23 +129,26 @@ function ziyouchadan_load(SuoShuGongSi, UserDenno) {
 					}
 					dm += '</label></div>';
 
-					dm += '<div class="mui-input-row ">';
-					dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">剩余路程:</label><label style="width: 25%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
-					if (yundanlist[i].Gps_distance) {
-					    dm += yundanlist[i].Gps_distance;
-					}
-					dm += ' 公里</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">剩余时间:</label><label style="width: 25%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
-					if (yundanlist[i].Gps_duration) {
-					    var hour = Math.floor(yundanlist[i].Gps_duration / 60);
-					    var min = Math.ceil(yundanlist[i].Gps_duration % 60);
-
-					    if (hour) {
-					        dm += hour + '小时';
+					if (yundanlist[i].Gps_distance != "" && yundanlist[i].Gps_distance != null)
+					{
+					    dm += '<div class="mui-input-row ">';
+					    dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">剩余路程:</label><label style="width: 25%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
+					    if (yundanlist[i].Gps_distance) {
+					        dm += yundanlist[i].Gps_distance;
 					    }
-					    dm += min;
-					}
+					    dm += ' 公里</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">剩余时间:</label><label style="width: 25%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
+					    if (yundanlist[i].Gps_duration) {
+					        var hour = Math.floor(yundanlist[i].Gps_duration / 60);
+					        var min = Math.ceil(yundanlist[i].Gps_duration % 60);
 
-					dm += ' 分钟</label></div>';
+					        if (hour) {
+					            dm += hour + '小时';
+					        }
+					        dm += min;
+					    }
+
+					    dm += ' 分钟</label></div>';
+					}
 
 					dm += '<div class="mui-input-row ">';
 					dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">运单备注:</label><label style="width: 75%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';

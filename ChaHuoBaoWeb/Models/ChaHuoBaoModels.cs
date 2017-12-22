@@ -300,7 +300,7 @@ namespace ChaHuoBaoWeb.Models
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
         [Display(Name = "主键ID")]
-        public Int32 ID { get; set; }
+        public string ID { get; set; }
         [Display(Name = "运单系统编号")]
         public string YunDanDenno { get; set; }
         [Display(Name = "最新地理纬度")]
