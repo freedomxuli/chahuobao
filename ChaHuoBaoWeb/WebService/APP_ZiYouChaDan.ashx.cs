@@ -64,12 +64,15 @@ namespace ChaHuoBaoWeb.WebService
                                 {
                                     //obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
                                     //obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
-
-                                    IEnumerable<YunDanDistance> YunDanDistance = db.YunDanDistance.Where(x => x.YunDanDenno == obj.YunDanDenno);
-                                    if (YunDanDistance.Count() > 0)
+                                    IEnumerable<YunDanIsArrive> YunDanIsArrive = db.YunDanIsArrive.Where(x => x.YunDanDenno == obj.YunDanDenno);
+                                    if (YunDanIsArrive.Count() == 0)
                                     {
-                                        obj.Gps_distance = YunDanDistance.First().Gps_distance;
-                                        obj.Gps_duration = YunDanDistance.First().Gps_duration;
+                                        IEnumerable<YunDanDistance> YunDanDistance = db.YunDanDistance.Where(x => x.YunDanDenno == obj.YunDanDenno);
+                                        if (YunDanDistance.Count() > 0)
+                                        {
+                                            obj.Gps_distance = YunDanDistance.First().Gps_distance;
+                                            obj.Gps_duration = YunDanDistance.First().Gps_duration;
+                                        }
                                     }
                                 }
                                 hash["yundanlist"] = yundanlist;
@@ -132,11 +135,15 @@ namespace ChaHuoBaoWeb.WebService
                                 obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
                                 obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
 
-                                IEnumerable<YunDanDistance> YunDanDistance = db.YunDanDistance.Where(x => x.YunDanDenno == obj.YunDanDenno);
-                                if (YunDanDistance.Count() > 0)
+                                IEnumerable<YunDanIsArrive> YunDanIsArrive = db.YunDanIsArrive.Where(x => x.YunDanDenno == obj.YunDanDenno);
+                                if (YunDanIsArrive.Count() == 0)
                                 {
-                                    obj.Gps_distance = YunDanDistance.First().Gps_distance;
-                                    obj.Gps_duration = YunDanDistance.First().Gps_duration;
+                                    IEnumerable<YunDanDistance> YunDanDistance = db.YunDanDistance.Where(x => x.YunDanDenno == obj.YunDanDenno);
+                                    if (YunDanDistance.Count() > 0)
+                                    {
+                                        obj.Gps_distance = YunDanDistance.First().Gps_distance;
+                                        obj.Gps_duration = YunDanDistance.First().Gps_duration;
+                                    }
                                 }
                             }
                             hash["yundanlist"] = yundanlist;

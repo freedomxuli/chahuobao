@@ -21,6 +21,7 @@ namespace ChaHuoBaoWeb.Models
         public DbSet<User_Role> User_Role { get; set; }
         public DbSet<Role_QuanXian> Role_QuanXian { get; set; }
         public DbSet<YunDan> YunDan { get; set; }
+        public DbSet<YunDanIsArrive> YunDanIsArrive { get; set; }
         public DbSet<YunDanDistance> YunDanDistance { get; set; }
         public DbSet<GpsLocation> GpsLocation { get; set; }
         public DbSet<GpsDevice> GpsDevice { get; set; }
@@ -291,6 +292,27 @@ namespace ChaHuoBaoWeb.Models
         public string QiShiZhan_QX { get; set; }
         [Display(Name = "到达地区县")]
         public string DaoDaZhan_QX { get; set; }
+    }
+
+    [Table("YunDanIsArrive")]
+    public class YunDanIsArrive
+    { 
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
+        [Display(Name = "主键ID")]
+        public Int32 ID { get; set; }
+        [Display(Name = "运单系统编号")]
+        public string YunDanDenno { get; set; }
+        [Display(Name = "最新地理纬度")]
+        public string Gps_lastlat { get; set; }
+        [Display(Name = "最新地理经度")]
+        public string Gps_lastlng { get; set; }
+        [Display(Name = "新增时间")]
+        public DateTime? Addtime { get; set; }
+        [Display(Name = "最新地理位置")]
+        public string Gps_lastinfo { get; set; }
+        [Display(Name = "所属公司")]
+        public string Company { get; set; }
     }
 
     /// <summary>
