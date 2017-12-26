@@ -99,10 +99,14 @@
 			</div>
 		</div>
 		<script src="js/mui.min.js "></script>
-		<script src="js/MyOwnJS/ZiYouChaDan.js?t=3"></script>
+		<script src="js/MyOwnJS/ZiYouChaDan.js?t=4"></script>
 		<script>
-			(function($, doc) {
-				$.init({
+		    (function ($, doc) {
+		        if (getCookie('SuoShuGongSi') != "" && getCookie('SuoShuGongSi') != null && getCookie('UserDenno') != "" && getCookie('UserDenno') != null)
+		        {
+		            ziyouchadan_load(getCookie('SuoShuGongSi'), getCookie('UserDenno'));
+		        }
+			    $.init({
 					//swipeBack: false //启用右滑关闭功能
 				});
 				var btn_search = doc.getElementById("search")
