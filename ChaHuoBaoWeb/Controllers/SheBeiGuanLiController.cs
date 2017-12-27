@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using ChaHuoBaoWeb.Models;
 using System.IO;
 using ChaHuoBaoWeb.Filters;
+using System.Collections;
+using Common;
 
 namespace ChaHuoBaoWeb.Controllers
 {
@@ -159,6 +161,55 @@ namespace ChaHuoBaoWeb.Controllers
             book.Write(ms);
             ms.Seek(0, SeekOrigin.Begin);
             return File(ms, "application/vnd.ms-excel", "设备管理.xls");
+        }
+
+        [PermissionAuthorize]
+        public string DataZhiHuan()
+        {
+            string GpsDeviceID = HttpContext.Request["GpsDeviceID"];
+            string GpsDeviceNewID = HttpContext.Request["GpsDeviceNewID"];
+            Hashtable hash = new Hashtable();
+            hash["sign"] = "0";
+            hash["msg"] = "设备置换失败！";
+            try
+            {
+                ChaHuoBaoWeb.Models.ChaHuoBaoModels db = new ChaHuoBaoModels();
+                IEnumerable<GpsDevice> devicelist = db.GpsDevice.Where(g => g.GpsDeviceID == GpsDeviceID);
+                if (devicelist.Count() == 0)
+                {
+                    hash["sign"] = "0";
+                    hash["msg"] = "未找到该置换设备！";
+                }
+                else
+                {
+                    ChaHuoBaoWeb.Models.ChaHuoBaoModels db3 = new ChaHuoBaoModels();
+                    IEnumerable<GpsDevice> devicenewlist = db3.GpsDevice.Where(g => g.GpsDeviceID == GpsDeviceNewID);
+                    if (devicenewlist.Count() > 0)
+                    {
+                        ChaHuoBaoWeb.Models.ChaHuoBaoModels db2 = new ChaHuoBaoModels();
+                        ChaHuoBaoWeb.Models.GpsDevice device = db2.User.Where(x => x.UserID == chongzhimodel.UserID).First();
+
+                        use.UserRemainder = use.UserRemainder + chongzhimodel.ChongZhiCiShu;
+
+                        db2.SaveChanges();
+
+                        hash["sign"] = "1";
+                        hash["msg"] = "置换成功";
+                    }
+                    else
+                    {
+                        hash["sign"] = "0";
+                        hash["msg"] = "新设备号已和用户绑定，不可重复绑定！";
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                hash["sign"] = "0";
+                hash["msg"] = ex.Message;
+            }
+
+            return JsonHelper.ToJson(hash);
         }
     }
 }

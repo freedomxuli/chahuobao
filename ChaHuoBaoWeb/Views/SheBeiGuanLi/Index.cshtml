@@ -117,9 +117,35 @@ td{
                 <button id="daochu" type="button" class="btn btn-default">
                     <span aria-hidden="true" class="glyphicon glyphicon-save"></span>导出
                 </button>
+                <button id="zhihuan" type="button" class="btn btn-default">
+                    <span aria-hidden="true" class="glyphicon glyphicon-save"></span>置换
+                </button>
             </div>
         </div>
     </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">设备置换</h4>
+                </div>
+                <div>
+                    <label class="control-label col-sm-3" for="UserName" style="margin-top: 7px">
+                        新设备号:</label>
+                    <div class="col-sm-3" style="margin-top: 7px">
+                        <input name=" GpsDeviceNEWID" type="text" class="form-control" id="GpsDeviceNEWID" />
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" id="QRZH">确认置换</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
     <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/jquery.min.js"></script>
     <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap.js"></script>
     <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap-table.js"></script>
@@ -149,8 +175,8 @@ td{
                     search: false, //是否显示右上角的搜索框
                     sidePagination: "server", //表格分页的位置
                     queryParams: oTable.queryParams, //参数
-//                    singleSelect: true, //单选checkbox 
-//                    columns: [{ checkbox: true}], //确定显示按钮
+                    singleSelect: true, //单选checkbox 
+                    columns: [{ checkbox: true}], //确定显示按钮
                     clickToSelect: true, //是否启用点击选中行
                     toolbarAlign: 'right', //工具栏对齐方式
                     buttonsAlign: 'right', //按钮对齐方式
@@ -220,6 +246,68 @@ td{
              + "&" + "UserName=" + $('#UserName').val()
              + "&" + "UserCity=" + $('#UserCity').val();
              
+        });
+
+        $("#zhihuan").click(function () {
+            var $table = $("#exampleTableEvents");
+            json = $table.bootstrapTable('getSelections');
+            if (json == "") {
+                alert("请选中要置换的行!")
+                return;
+            }
+
+            $('#myModal').modal({
+                keyboard: true
+            });
+        });
+
+        $("#QRZH").click(function () {
+
+            var $table = $("#exampleTableEvents");
+            json = $table.bootstrapTable('getSelections');
+            if (json == "") {
+                alert("请选中要置换的行!")
+                return;
+            }
+            var GpsDeviceID = json[0].GpsDeviceID;
+            var GpsDeviceNewID = $("#GpsDeviceNEWID").val();
+            if (GpsDeviceNewID == "" || GpsDeviceNewID == null)
+            {
+                alert("请先填写新设备号！");
+                return;
+            }
+            $('#myModal').modal('hide');
+            //            alert(GpsTuiDanDenno);
+            $.ajax({
+                url: '/SheBeiGuanLi/DataZhiHuan',
+                type: 'GET', //GET
+                async: true,    //或false,是否异步
+                data: {
+                    GpsDeviceID: GpsDeviceID,
+                    GpsDeviceNewID: GpsDeviceNewID
+                },
+                timeout: 5000,    //超时时间
+                dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                beforeSend: function (xhr) {
+                    console.log(xhr)
+                    console.log('发送前')
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.sign = '1') {
+                        alert(data.msg);
+                        //更新行的审核状态为已审核
+                        $table.bootstrapTable("refresh")
+                    }
+                    else {
+                        //                        json[0].GpsTuiDanShenHeZhuangTai.value = "3333";
+                        alert(data.msg);
+                    }
+
+                },
+                error: function (xhr, textStatus) {
+                    alert('没有操作权限权限，请联系管理员');
+                }
+            });
         });
 
     </script>
