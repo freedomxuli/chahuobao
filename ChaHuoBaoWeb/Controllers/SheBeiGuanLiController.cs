@@ -184,14 +184,23 @@ namespace ChaHuoBaoWeb.Controllers
                 {
                     ChaHuoBaoWeb.Models.ChaHuoBaoModels db3 = new ChaHuoBaoModels();
                     IEnumerable<GpsDevice> devicenewlist = db3.GpsDevice.Where(g => g.GpsDeviceID == GpsDeviceNewID);
-                    if (devicenewlist.Count() > 0)
+                    if (devicenewlist.Count() == 0)
                     {
                         ChaHuoBaoWeb.Models.ChaHuoBaoModels db2 = new ChaHuoBaoModels();
-                        ChaHuoBaoWeb.Models.GpsDevice device = db2.User.Where(x => x.UserID == chongzhimodel.UserID).First();
+                        ChaHuoBaoWeb.Models.GpsDevice device = db2.GpsDevice.Where(x => x.GpsDeviceID == GpsDeviceID).First();
+                        string ChangeGpsDeviceID = GpsDeviceNewID;
+                        string UserID = device.UserID;
 
-                        use.UserRemainder = use.UserRemainder + chongzhimodel.ChongZhiCiShu;
-
+                        db2.GpsDevice.Remove(device);
                         db2.SaveChanges();
+
+                        ChaHuoBaoWeb.Models.ChaHuoBaoModels db4 = new ChaHuoBaoModels();
+                        GpsDevice gpsnew = new GpsDevice();
+                        gpsnew.GpsDeviceID = ChangeGpsDeviceID;
+                        gpsnew.UserID = UserID;
+                        gpsnew.GpsDeviceRemark = null;
+                        db4.GpsDevice.Add(gpsnew);
+                        db4.SaveChanges();
 
                         hash["sign"] = "1";
                         hash["msg"] = "置换成功";

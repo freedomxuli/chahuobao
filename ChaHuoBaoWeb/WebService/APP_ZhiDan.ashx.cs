@@ -29,6 +29,7 @@ namespace ChaHuoBaoWeb.WebService
             string UserDenno = context.Request["UserDenno"];
             string GpsDeviceID = context.Request["GpsDeviceID"];
             string YunDanRemark = context.Request["YunDanRemark"];
+            string Expect_Hour = context.Request["Expect_Hour"];
             Hashtable hash = new Hashtable();
             hash["sign"] = "0";
             hash["msg"] = "制单失败！";
@@ -54,7 +55,7 @@ namespace ChaHuoBaoWeb.WebService
                             YunDan_GPS.First().IsBangding = false;
                             db.SaveChanges();
                             //设备已定位自己的单子，可自动解绑然后绑定另外运单
-                            hash = create_yundan(UserRemainder, UserID, QiShiZhan, DaoDaZhan, SuoShuGongSi, UserDenno, GpsDeviceID, YunDanRemark);
+                            hash = create_yundan(UserRemainder, UserID, QiShiZhan, DaoDaZhan, SuoShuGongSi, UserDenno, GpsDeviceID, YunDanRemark, Expect_Hour);
                             if (hash["sign"].ToString() == "1")
                             {
                                 User.First().UserRemainder = UserRemainder - 1;
@@ -82,7 +83,7 @@ namespace ChaHuoBaoWeb.WebService
                     else
                     {
                         //设备未绑定，运单直接绑定该设备
-                        hash = create_yundan(UserRemainder, UserID, QiShiZhan, DaoDaZhan, SuoShuGongSi, UserDenno, GpsDeviceID, YunDanRemark);
+                        hash = create_yundan(UserRemainder, UserID, QiShiZhan, DaoDaZhan, SuoShuGongSi, UserDenno, GpsDeviceID, YunDanRemark, Expect_Hour);
                         if (hash["sign"].ToString() == "1")
                         {
                             User.First().UserRemainder = UserRemainder - 1;
@@ -119,7 +120,7 @@ namespace ChaHuoBaoWeb.WebService
             context.Response.End();
         }
 
-        private Hashtable create_yundan(int UserRemainder, string UserID, string QiShiZhan, string DaoDaZhan, string SuoShuGongSi, string UserDenno, string GpsDeviceID, string YunDanRemark)
+        private Hashtable create_yundan(int UserRemainder, string UserID, string QiShiZhan, string DaoDaZhan, string SuoShuGongSi, string UserDenno, string GpsDeviceID, string YunDanRemark, string Expect_Hour)
         {
             Hashtable hash = new Hashtable();
             try
@@ -234,6 +235,10 @@ namespace ChaHuoBaoWeb.WebService
                         yundan_new.Gps_lastinfo = newinfo;
                         yundan_new.IsBangding = true;
                         yundan_new.YunDanRemark = YunDanRemark;
+                        if (string.IsNullOrEmpty(Expect_Hour))
+                            yundan_new.Expect_Hour = null;
+                        else
+                            yundan_new.Expect_Hour = Decimal.Parse(Expect_Hour);
                         yundan_new.QiShiZhan_lat = QiShiZhan_lat;
                         yundan_new.QiShiZhan_lng = QiShiZhan_lng;
                         yundan_new.DaoDaZhan_lat = DaoDaZhan_lat;

@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using ChaHuoBaoWeb.Models;
 using System.IO;
 using ChaHuoBaoWeb.Filters;
+using System.Collections;
+using Common;
 
 namespace ChaHuoBaoWeb.Controllers
 {
@@ -189,7 +191,8 @@ namespace ChaHuoBaoWeb.Controllers
             User userone = accountdb.User.Where(x => x.UserLeiXing == "APP" && x.UserID == UserID).First();
             return View(userone);
         }
-        [HttpPost]
+
+        [PermissionAuthorize]
         public ActionResult ChongZhi(string UserID, string UserName, string UserRemainder, string chongzhicishu, string beizhu)
         {
             User userone = accountdb.User.Where(x => x.UserLeiXing == "APP" && x.UserID == UserID).First();
@@ -282,6 +285,27 @@ namespace ChaHuoBaoWeb.Controllers
             public string UserRemark { get; set; }
 
             public DateTime UserCreateTime { get; set; }
+        }
+
+        [PermissionAuthorize]
+        public string LookPaw()
+        {
+            //string UserPassword = HttpContext.Request["UserPassword"];
+            Hashtable hash = new Hashtable();
+            hash["sign"] = "0";
+            hash["msg"] = "查看失败！";
+            try
+            {
+                hash["sign"] = "1";
+                hash["msg"] = "查看成功";
+            }
+            catch (Exception ex)
+            {
+                hash["sign"] = "0";
+                hash["msg"] = ex.Message;
+            }
+
+            return JsonHelper.ToJson(hash);
         }
     }
 }

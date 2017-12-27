@@ -292,6 +292,8 @@ namespace ChaHuoBaoWeb.Models
         public string QiShiZhan_QX { get; set; }
         [Display(Name = "到达地区县")]
         public string DaoDaZhan_QX { get; set; }
+        [Display(Name = "预计小时数")]
+        public decimal? Expect_Hour { get; set; }
     }
 
     [Table("YunDanIsArrive")]
