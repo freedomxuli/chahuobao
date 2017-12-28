@@ -37,6 +37,7 @@ namespace ChaHuoBaoWeb.Models
         public DbSet<JiaGeCeLve> JiaGeCeLve { get; set; }
         public DbSet<XiTongCanShu> XiTongCanShu { get; set; }
         public DbSet<SearchHistory> SearchHistory { get; set; }
+        public DbSet<ZiYouSearch> ZiYouSearch { get; set; }
     }
     /// <summary>
     /// 用户表
@@ -370,6 +371,23 @@ namespace ChaHuoBaoWeb.Models
         [Display(Name = "备注")]
         public string GpsRemark { get; set; }
     }
+
+    /// <summary>
+    /// 自由查单操作表
+    /// </summary>
+    [Table("ZiYouSearch")]
+    public class ZiYouSearch
+    { 
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
+        [Display(Name = "用户ID")]
+        public string UserID { get; set; }
+        [Display(Name = "所属公司")]
+        public string SuoShuGongSi { get; set; }
+        [Display(Name = "用户订单")]
+        public string UserDenno { get; set; }
+    }
+
     /// <summary>
     /// GPS设备表
     /// </summary>

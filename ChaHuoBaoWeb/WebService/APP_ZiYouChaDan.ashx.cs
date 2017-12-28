@@ -97,67 +97,154 @@ namespace ChaHuoBaoWeb.WebService
                 }
                 else
                 {
-                    IEnumerable<User> User = db.User.Where(x => x.UserName == UserName && x.UserLeiXing == "APP");
-                    string UserID = User.First().UserID;
-                    if (User.Count() > 0)
+                    if (SuoShuGongSi != "" && UserDenno != "")
                     {
-                        IEnumerable<YunDan> YunDan_list = db.YunDan.Where(x => x.UserDenno == UserDenno && x.SuoShuGongSi.Contains(SuoShuGongSi)).OrderByDescending(x => x.BangDingTime);
-                        if (YunDan_list.Count() > 0)
+                        IEnumerable<User> User = db.User.Where(x => x.UserName == UserName && x.UserLeiXing == "APP");
+                        string UserID = User.First().UserID;
+                        if (User.Count() > 0)
                         {
-                            //添加 操作记录
-                            CaoZuoJiLu CaoZuoJiLu = new CaoZuoJiLu();
-                            CaoZuoJiLu.UserID = UserID;
-                            CaoZuoJiLu.CaoZuoLeiXing = "自由查单";
-                            CaoZuoJiLu.CaoZuoNeiRong = "APP内用户自由查单查询，搜索单号：" + UserDenno + "；搜索公司：" + SuoShuGongSi + "。";
-                            CaoZuoJiLu.CaoZuoTime = DateTime.Now;
-                            CaoZuoJiLu.CaoZuoRemark = "";
-                            db.CaoZuoJiLu.Add(CaoZuoJiLu);
-                            db.SaveChanges();
-
-                            //自由查单成功，像搜索历史表中添加公司历史
-                            IEnumerable<SearchHistory> SearchHistory = db.SearchHistory.Where(x => x.UserID == UserID && x.Type == "自由查单_公司" && x.Value == SuoShuGongSi);
-                            if (SearchHistory.Count() == 0)
+                            IEnumerable<YunDan> YunDan_list = db.YunDan.Where(x => x.UserDenno == UserDenno && x.SuoShuGongSi.Contains(SuoShuGongSi)).OrderByDescending(x => x.BangDingTime);
+                            if (YunDan_list.Count() > 0)
                             {
-                                SearchHistory SearchHistory_new = new SearchHistory();
-                                SearchHistory_new.UserID = UserID;
-                                SearchHistory_new.Type = "自由查单_公司";
-                                SearchHistory_new.Value = SuoShuGongSi;
-                                db.SearchHistory.Add(SearchHistory_new);
-                                db.SaveChanges();
-                            }
-
-                            hash["sign"] = "1";
-                            hash["msg"] = "搜索自由查单成功";
-
-                            var yundanlist = YunDan_list.ToList();
-                            foreach (var obj in yundanlist)
-                            {
-                                //obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
-                                //obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
-
-                                IEnumerable<YunDanIsArrive> YunDanIsArrive = db.YunDanIsArrive.Where(x => x.YunDanDenno == obj.YunDanDenno);
-                                if (YunDanIsArrive.Count() == 0)
+                                //添加自由查单记录
+                                IEnumerable<ZiYouSearch> ZiYouList = db.ZiYouSearch.Where(x => x.UserID == UserID);
+                                if (ZiYouList.Count() == 0)
                                 {
-                                    IEnumerable<YunDanDistance> YunDanDistance = db.YunDanDistance.Where(x => x.YunDanDenno == obj.YunDanDenno);
-                                    if (YunDanDistance.Count() > 0)
+                                    ZiYouSearch ziyou = new ZiYouSearch();
+                                    ziyou.UserID = UserID;
+                                    ziyou.SuoShuGongSi = SuoShuGongSi;
+                                    ziyou.UserDenno = UserDenno;
+                                    db.ZiYouSearch.Add(ziyou);
+                                    db.SaveChanges();
+                                }
+                                else
+                                {
+                                    ZiYouList.First().SuoShuGongSi = SuoShuGongSi;
+                                    ZiYouList.First().UserDenno = UserDenno;
+                                    db.SaveChanges();
+                                }
+
+                                //添加 操作记录
+                                CaoZuoJiLu CaoZuoJiLu = new CaoZuoJiLu();
+                                CaoZuoJiLu.UserID = UserID;
+                                CaoZuoJiLu.CaoZuoLeiXing = "自由查单";
+                                CaoZuoJiLu.CaoZuoNeiRong = "APP内用户自由查单查询，搜索单号：" + UserDenno + "；搜索公司：" + SuoShuGongSi + "。";
+                                CaoZuoJiLu.CaoZuoTime = DateTime.Now;
+                                CaoZuoJiLu.CaoZuoRemark = "";
+                                db.CaoZuoJiLu.Add(CaoZuoJiLu);
+                                db.SaveChanges();
+
+                                //自由查单成功，像搜索历史表中添加公司历史
+                                IEnumerable<SearchHistory> SearchHistory = db.SearchHistory.Where(x => x.UserID == UserID && x.Type == "自由查单_公司" && x.Value == SuoShuGongSi);
+                                if (SearchHistory.Count() == 0)
+                                {
+                                    SearchHistory SearchHistory_new = new SearchHistory();
+                                    SearchHistory_new.UserID = UserID;
+                                    SearchHistory_new.Type = "自由查单_公司";
+                                    SearchHistory_new.Value = SuoShuGongSi;
+                                    db.SearchHistory.Add(SearchHistory_new);
+                                    db.SaveChanges();
+                                }
+
+                                hash["sign"] = "1";
+                                hash["msg"] = "搜索自由查单成功";
+
+                                var yundanlist = YunDan_list.ToList();
+                                foreach (var obj in yundanlist)
+                                {
+                                    //obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
+                                    //obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
+
+                                    IEnumerable<YunDanIsArrive> YunDanIsArrive = db.YunDanIsArrive.Where(x => x.YunDanDenno == obj.YunDanDenno);
+                                    if (YunDanIsArrive.Count() == 0)
                                     {
-                                        obj.Gps_distance = YunDanDistance.First().Gps_distance;
-                                        obj.Gps_duration = YunDanDistance.First().Gps_duration;
+                                        IEnumerable<YunDanDistance> YunDanDistance = db.YunDanDistance.Where(x => x.YunDanDenno == obj.YunDanDenno);
+                                        if (YunDanDistance.Count() > 0)
+                                        {
+                                            obj.Gps_distance = YunDanDistance.First().Gps_distance;
+                                            obj.Gps_duration = YunDanDistance.First().Gps_duration;
+                                        }
                                     }
                                 }
+                                hash["yundanlist"] = yundanlist;
                             }
-                            hash["yundanlist"] = yundanlist;
+                            else
+                            {
+                                hash["sign"] = "2";
+                                hash["msg"] = "自由为空";
+                            }
                         }
                         else
                         {
-                            hash["sign"] = "2";
-                            hash["msg"] = "自由为空";
+                            hash["sign"] = "0";
+                            hash["msg"] = "用户不存在";
                         }
                     }
                     else
                     {
-                        hash["sign"] = "0";
-                        hash["msg"] = "用户不存在";
+                        IEnumerable<User> User = db.User.Where(x => x.UserName == UserName && x.UserLeiXing == "APP");
+                        string UserID = User.First().UserID;
+                        if (User.Count() > 0)
+                        {
+                            IEnumerable<ZiYouSearch> ziyoulist = db.ZiYouSearch.Where(x => x.UserID == UserID);
+                            if (ziyoulist.Count() > 0)
+                            {
+                                UserDenno = ziyoulist.First().UserDenno;
+                                SuoShuGongSi = ziyoulist.First().SuoShuGongSi;
+
+                                IEnumerable<YunDan> YunDan_list = db.YunDan.Where(x => x.UserDenno == UserDenno && x.SuoShuGongSi.Contains(SuoShuGongSi)).OrderByDescending(x => x.BangDingTime);
+                                if (YunDan_list.Count() > 0)
+                                {
+                                    //添加 操作记录
+                                    CaoZuoJiLu CaoZuoJiLu = new CaoZuoJiLu();
+                                    CaoZuoJiLu.UserID = UserID;
+                                    CaoZuoJiLu.CaoZuoLeiXing = "自由查单";
+                                    CaoZuoJiLu.CaoZuoNeiRong = "APP内用户自由查单查询，搜索单号：" + UserDenno + "；搜索公司：" + SuoShuGongSi + "。";
+                                    CaoZuoJiLu.CaoZuoTime = DateTime.Now;
+                                    CaoZuoJiLu.CaoZuoRemark = "";
+                                    db.CaoZuoJiLu.Add(CaoZuoJiLu);
+                                    db.SaveChanges();
+
+                                    hash["sign"] = "1";
+                                    hash["msg"] = "搜索自由查单成功";
+
+                                    var yundanlist = YunDan_list.ToList();
+                                    foreach (var obj in yundanlist)
+                                    {
+                                        //obj.QiShiZhan = obj.QiShiZhan.Split(' ')[1].ToString();
+                                        //obj.DaoDaZhan = obj.DaoDaZhan.Split(' ')[1].ToString();
+
+                                        IEnumerable<YunDanIsArrive> YunDanIsArrive = db.YunDanIsArrive.Where(x => x.YunDanDenno == obj.YunDanDenno);
+                                        if (YunDanIsArrive.Count() == 0)
+                                        {
+                                            IEnumerable<YunDanDistance> YunDanDistance = db.YunDanDistance.Where(x => x.YunDanDenno == obj.YunDanDenno);
+                                            if (YunDanDistance.Count() > 0)
+                                            {
+                                                obj.Gps_distance = YunDanDistance.First().Gps_distance;
+                                                obj.Gps_duration = YunDanDistance.First().Gps_duration;
+                                            }
+                                        }
+                                    }
+                                    hash["yundanlist"] = yundanlist;
+                                }
+                                else
+                                {
+                                    hash["sign"] = "2";
+                                    hash["msg"] = "自由为空";
+                                }
+                            }
+                            else
+                            {
+                                hash["sign"] = "2";
+                                hash["msg"] = "自由为空";
+                            }
+                        }
+                        else
+                        {
+                            hash["sign"] = "0";
+                            hash["msg"] = "用户不存在";
+                        }
+                        
                     }
                 }
             }
