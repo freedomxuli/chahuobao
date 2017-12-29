@@ -192,7 +192,7 @@ namespace ChaHuoBaoWeb.Controllers
             return View(userone);
         }
 
-        [PermissionAuthorize]
+        [HttpPost]
         public ActionResult ChongZhi(string UserID, string UserName, string UserRemainder, string chongzhicishu, string beizhu)
         {
             User userone = accountdb.User.Where(x => x.UserLeiXing == "APP" && x.UserID == UserID).First();
@@ -289,6 +289,27 @@ namespace ChaHuoBaoWeb.Controllers
 
         [PermissionAuthorize]
         public string LookPaw()
+        {
+            //string UserPassword = HttpContext.Request["UserPassword"];
+            Hashtable hash = new Hashtable();
+            hash["sign"] = "0";
+            hash["msg"] = "查看失败！";
+            try
+            {
+                hash["sign"] = "1";
+                hash["msg"] = "查看成功";
+            }
+            catch (Exception ex)
+            {
+                hash["sign"] = "0";
+                hash["msg"] = ex.Message;
+            }
+
+            return JsonHelper.ToJson(hash);
+        }
+
+        [PermissionAuthorize]
+        public string ChongZhiQX()
         {
             //string UserPassword = HttpContext.Request["UserPassword"];
             Hashtable hash = new Hashtable();

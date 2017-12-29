@@ -88,30 +88,30 @@ function ziyouchadan_load(SuoShuGongSi, UserDenno) {
 				    //					dm += '</label><label style="width: 35%; padding-left: 0px; padding-right: 0px">公司名称:</label><label style="width: 65%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
 				    //					dm += yundanlist[i].SuoShuGongSi;
 				    //					dm += '</label></div>';
-					if (yundanlist[i].SalePerson != null && yundanlist[i].SalePerson != "") {
-					    dm += '<div class="mui-input-row ">';
-					    dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">销售员:</label><label style="width: 75%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
-					    dm += yundanlist[i].SalePerson
-					    dm += '</label></div>';
-					}
+					//if (yundanlist[i].SalePerson != null && yundanlist[i].SalePerson != "") {
+					//    dm += '<div class="mui-input-row ">';
+					//    dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">销售员:</label><label style="width: 75%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
+					//    dm += yundanlist[i].SalePerson
+					//    dm += '</label></div>';
+					//}
 
-					if (yundanlist[i].Purchaser != null && yundanlist[i].Purchaser != "") {
-					    dm += '<div class="mui-input-row ">';
-					    dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">收货地址:</label><label style="width: 75%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
-					    dm += yundanlist[i].Purchaser
-					    dm += '</label></div>';
-					}
+					//if (yundanlist[i].Purchaser != null && yundanlist[i].Purchaser != "") {
+					//    dm += '<div class="mui-input-row ">';
+					//    dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">收货地址:</label><label style="width: 75%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
+					//    dm += yundanlist[i].Purchaser
+					//    dm += '</label></div>';
+					//}
 
-					dm += '<div class="mui-input-row ">';
-					if (yundanlist[i].PurchaserPerson != null && yundanlist[i].PurchaserPerson != "") {
-					    dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">收货人:</label><label style="width: 25%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
-					    dm += yundanlist[i].PurchaserPerson;
-					}
-					if (yundanlist[i].PurchaserTel != null && yundanlist[i].PurchaserTel != "") {
-					    dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">联系方式:</label><label style="width: 25%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
-					    dm += yundanlist[i].PurchaserTel;
-					}
-					dm += '</label></div>';
+					//dm += '<div class="mui-input-row ">';
+					//if (yundanlist[i].PurchaserPerson != null && yundanlist[i].PurchaserPerson != "") {
+					//    dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">收货人:</label><label style="width: 25%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
+					//    dm += yundanlist[i].PurchaserPerson;
+					//}
+					//if (yundanlist[i].PurchaserTel != null && yundanlist[i].PurchaserTel != "") {
+					//    dm += '</label><label style="width: 25%; padding-left: 0px; padding-right: 0px">联系方式:</label><label style="width: 25%; padding-left: 0px; padding-right: 0px;margin-left: -15px;">';
+					//    dm += yundanlist[i].PurchaserTel;
+					//}
+					//dm += '</label></div>';
 
 					if (yundanlist[i].CarrierCompany != null && yundanlist[i].CarrierCompany != "") {
 					    dm += '<div class="mui-input-row ">';

@@ -256,8 +256,35 @@
                 alert("请选中要充值的用户");
                 return;
             }
-            var UserID = json[0].UserID;
-            location.href = "/APPZhangHaoGuanLi/ChongZhi/?UserID=" + UserID;
+
+            $.ajax({
+                url: '/APPZhangHaoGuanLi/ChongZhiQX',
+                type: 'GET', //GET
+                async: true,    //或false,是否异步
+                data: {
+                    UserID: json[0].UserID
+                },
+                timeout: 5000,    //超时时间
+                dataType: 'json',    //返回的数据格式：json/xml/html/script/jsonp/text
+                beforeSend: function (xhr) {
+                    console.log(xhr)
+                    console.log('发送前')
+                },
+                success: function (data, textStatus, jqXHR) {
+                    if (data.sign = '1') {
+                        var UserID = json[0].UserID;
+                        location.href = "/APPZhangHaoGuanLi/ChongZhi/?UserID=" + UserID;
+                    }
+                    else {
+                        //                        json[0].GpsTuiDanShenHeZhuangTai.value = "3333";
+                        alert(data.msg);
+                    }
+
+                },
+                error: function (xhr, textStatus) {
+                    alert('没有操作权限权限，请联系管理员');
+                }
+            });
         });
         //修改
         $("#btn_edit").click(function () {
