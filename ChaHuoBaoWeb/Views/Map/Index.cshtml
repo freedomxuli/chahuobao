@@ -17,8 +17,13 @@
 <body>
     <div id="container">
     </div>
+    <div style="position:absolute;right:0;top:0;width:30%;height:30%;z-index:9999;background-color:#fff;border-left:1px solid #000;border-bottom:1px solid #000;">
+        <ul style="overflow-y:scroll;padding:0px;margin:0px;height:100%;" id="dotlist">
+        </ul>
+    </div>
     <script type="text/javascript">
         $(document).ready(function () {
+            var dotlist = "";
             $.ajax({
                 //提交数据的类型 POST GET
                 type: "POST",
@@ -41,11 +46,6 @@
                         var daodazhan_lat = jsondata.location_result.daodazhan_lat;
 
                         var locationlst = jsondata.location_result.locationlst;
-
-                        console.log(qishizhan_lng);
-                        console.log(qishizhan_lat);
-                        console.log(daodazhan_lng);
-                        console.log(daodazhan_lat);
 
                         jiazaimap(qishizhan_lng, qishizhan_lat, daodazhan_lng, daodazhan_lat, locationlst);
                     }
@@ -82,8 +82,6 @@
                 })
             });
             for (var i = 0, marker; i < locationlst.length; i++) {
-                console.log(locationlst[i].Gps_lng);
-                console.log(locationlst[i].Gps_lat);
                 var marker = new AMap.Marker({
                     position: [locationlst[i].Gps_lng, locationlst[i].Gps_lat],
                     map: map,
@@ -94,6 +92,11 @@
                 marker.content =locationlst[i].Gps_info+"("+getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time))+")";
                 marker.on('click', markerClick);
                 marker.emit('click', { target: marker });
+            }
+            for (var i = locationlst.length - 1; i > 0; i--)
+            {
+                dotlist = "<li style='font-size:8px;list-style-type:none;border-bottom:1px solid #000;padding-top:5px;padding-bottom:5px;'>" + locationlst[i].Gps_info + "</li>";
+                $("#dotlist").append(dotlist);
             }
             function markerClick(e) {
                 infoWindow.setContent(e.target.content);

@@ -96,6 +96,7 @@ namespace ChaHuoBaoWeb.Controllers
 
         //导出我的设备表内容
         //导出excel
+        [PermissionAuthorize]
         public FileResult Export(string GpsDeviceID, string UserName, string UserCity,string sortName, string sortOrder)
         {
             //获取list数据

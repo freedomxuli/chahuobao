@@ -267,6 +267,7 @@ namespace ChaHuoBaoWeb.Controllers
         }
 
         ////导出excel充值订单表内容
+        [PermissionAuthorize]
         public FileResult Export(string UserName, string OrderDenno, string ZhiFuZhuangTai, DateTime? startDate, DateTime? endDate, string sortName, string sortOrder)
         {
 

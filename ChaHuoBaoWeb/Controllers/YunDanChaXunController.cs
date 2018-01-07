@@ -122,7 +122,7 @@ namespace ChaHuoBaoWeb.Controllers
 
         }
 
-
+        [PermissionAuthorize]
         public FileResult Export(string UserName, string QiShiZhan, string DaoDaZhan, string SuoShuGongSi, string UserDenno, string GpsDeviceID, string IsBangding, DateTime? startDate, DateTime? endDate, string sortName, string sortOrder)
         {
 

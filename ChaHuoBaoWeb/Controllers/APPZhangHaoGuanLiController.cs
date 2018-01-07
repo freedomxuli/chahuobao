@@ -98,6 +98,7 @@ namespace ChaHuoBaoWeb.Controllers
 
         ///导出excel账号管理表表内容
         //////导出excel账号管理表表内容
+        [PermissionAuthorize]
         public FileResult Export(string UserName, string UserCity, string sortName, string sortOrder)
         {
 

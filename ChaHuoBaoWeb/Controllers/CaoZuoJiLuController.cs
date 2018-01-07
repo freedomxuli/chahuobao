@@ -86,6 +86,7 @@ namespace ChaHuoBaoWeb.Controllers
 
         //////导出excel操作记录表内容
         //////导出excel操作记录表内容
+        [PermissionAuthorize]
         public FileResult Export(string UserName, string UserCity, string YunDanBianHao, string CaoZuoLeiXing, DateTime? startDate, DateTime? endDate, string sortName, string sortOrder)
         {
 

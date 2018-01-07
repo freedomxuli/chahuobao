@@ -204,6 +204,7 @@ namespace ChaHuoBaoWeb.Controllers
         }
 
         //用户管理导出
+        [PermissionAuthorize]
         public FileResult Export(string UserName, DateTime? startDate, DateTime? endDate, string sortName, string sortOrder)
         {
 

@@ -94,6 +94,7 @@ namespace ChaHuoBaoWeb.Controllers
 
         //导出excel设备订单表内容
         //导出excel
+        [PermissionAuthorize]
         public FileResult Export(string GpsDingDanDenno, string UserName, DateTime? startDate, DateTime? endDate, string sortName, string sortOrder)
         {
             //获取list数据

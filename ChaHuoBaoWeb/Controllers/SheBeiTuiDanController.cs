@@ -218,6 +218,7 @@ namespace ChaHuoBaoWeb.Controllers
         //导出excel
 
         ////导出excel设备退单表内容
+        [PermissionAuthorize]
         public FileResult Export(string GpsTuiDanDenno, string GpsTuiDanTuiHuanZhuangTai, string GpsTuiDanShenHeZhuangTai,string UserName, string UserCity, string sortName, string sortOrder)
         {
             //YeWuGuanLi/GetSheBeiTuiDanViewList_toExcel
