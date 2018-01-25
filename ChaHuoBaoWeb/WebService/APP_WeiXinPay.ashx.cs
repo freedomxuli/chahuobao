@@ -115,10 +115,11 @@ namespace ChaHuoBaoWeb.WebService
                 var jsonStr = payment.Pay(total_fee, OrderDenno, dingdanmiaoshu, "47.96.248.12");
                 hs["sign"] = "1";
                 hs["msg"] = jsonStr;
+                ChaHuoBaoWeb.MvcApplication.log4nethelper.Info("成功："+jsonStr);
             }
             catch (Exception ex)
             {
-                ChaHuoBaoWeb.MvcApplication.log4nethelper.Debug(ex);
+                ChaHuoBaoWeb.MvcApplication.log4nethelper.Info("错误：" + ex);
                 hs["sign"] = "0";
                 hs["msg"] = ex.Message;
 

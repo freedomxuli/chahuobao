@@ -12,7 +12,6 @@ using Common;
 namespace ChaHuoBaoWeb.Controllers
 {
     [Authorize]
-    [PermissionAuthorize]
     public class APPZhangHaoGuanLiController : Controller
     {
         //

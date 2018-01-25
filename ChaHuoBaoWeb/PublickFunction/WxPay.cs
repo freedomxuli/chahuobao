@@ -93,9 +93,10 @@ namespace ChaHuoBaoWeb.Wxpay
             var xe = PostDataToWeiXin(packageParameter);
             //为响应客户端的请求准备数据 
             var timeStamp = MakeTimestamp();
-            //ChaHuoBaoWeb.MvcApplication.log4nethelper.Debug(xe);
+            ChaHuoBaoWeb.MvcApplication.log4nethelper.Info(xe);
             if (xe.Element("result_code").Value.ToString() == "FAIL")
             {
+                ChaHuoBaoWeb.MvcApplication.log4nethelper.Info(xe.Element("err_code_des").Value.ToString());
                 throw new Exception(xe.Element("err_code_des").Value.ToString());//err_code_des
             }
             var prepayId = xe.Element("prepay_id").Value;
@@ -121,8 +122,9 @@ namespace ChaHuoBaoWeb.Wxpay
                 sign = paySign
             };
             var serializer = new JavaScriptSerializer();
-            return result = serializer.Serialize(obj);
 
+            //ChaHuoBaoWeb.MvcApplication.log4nethelper.Info(serializer.Serialize(obj));
+            return result = serializer.Serialize(obj);
 
         }
 

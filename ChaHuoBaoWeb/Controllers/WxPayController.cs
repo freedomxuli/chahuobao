@@ -26,7 +26,7 @@ namespace ChaHuoBaoWeb
                 string resultFromWx = getPostStr();
                 var res = XDocument.Parse(resultFromWx);
                 //通信成功
-                ChaHuoBaoWeb.MvcApplication.log4nethelper.Debug(res.Element("xml").Element("return_code").Value);
+                ChaHuoBaoWeb.MvcApplication.log4nethelper.Info(res.Element("xml").Element("return_code").Value);
                 if (res.Element("xml").Element("return_code").Value == "SUCCESS")
                 {
                     if (res.Element("xml").Element("result_code").Value == "SUCCESS")
