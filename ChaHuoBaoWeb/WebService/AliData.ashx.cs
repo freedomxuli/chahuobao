@@ -120,7 +120,14 @@ namespace ChaHuoBaoWeb.WebService
             {
                 context.Response.Write(GetYunDanSumLst());
             }
-
+            if (type == "GetDKCDL")
+            {
+                context.Response.Write(GetDKCDL());
+            }
+            if (type == "GetCDLBYTIME")
+            {
+                context.Response.Write(GetCDLBYTIME());
+            }
 
         }
 
@@ -649,6 +656,35 @@ namespace ChaHuoBaoWeb.WebService
             lst = lst.OrderByDescending(g => g.account).ToList();
             return JsonHelper.ToJson(lst);
         }
+
+        private string GetDKCDL()
+        {
+            IQueryable<ChaHuoBaoWeb.Models.CaoZuoJiLu> czjls = chbdb.CaoZuoJiLu.Where(g => g.CaoZuoLeiXing == "自由查单" || g.CaoZuoLeiXing == "我的运单");
+            List<dkcdl> lst = new List<dkcdl>();
+            lst.Add(new dkcdl { x = "PC", y = czjls.Where(g => g.CaoZuoNeiRong.Contains("web")).Count(), s = "1" });
+            lst.Add(new dkcdl { x = "APP", y = czjls.Where(g => g.CaoZuoNeiRong.Contains("App")).Count(), s = "1" });
+            lst.Add(new dkcdl { x = "微信", y = czjls.Where(g => g.CaoZuoNeiRong.Contains("微信")).Count(), s = "1" });
+            return JsonHelper.ToJson(lst);
+        }
+
+        private string GetCDLBYTIME()
+        {
+            IQueryable<ChaHuoBaoWeb.Models.CaoZuoJiLu> czjls = chbdb.CaoZuoJiLu.Where(g => g.CaoZuoLeiXing == "自由查单" || g.CaoZuoLeiXing == "我的运单");
+            List<dkcdl> lst = new List<dkcdl>();
+
+            int week = (int)DateTime.Today.DayOfWeek;
+            if (week == 0) week = 7; //周日
+            DateTime beginDate = DateTime.Today.AddDays(-(week - 1));
+            DateTime endDate = beginDate.AddDays(6);
+
+            DateTime beginDateM = new DateTime(DateTime.Today.Year, DateTime.Today.Month, 1);
+            DateTime endDateM = beginDate.AddMonths(1).AddDays(-1);
+
+            lst.Add(new dkcdl { x = "周", y = czjls.Where(g => g.CaoZuoTime >= beginDate && g.CaoZuoTime < endDate).Count(), s = "1" });
+            lst.Add(new dkcdl { x = "月", y = czjls.Where(g => g.CaoZuoTime >= beginDateM && g.CaoZuoTime < endDateM).Count(), s = "1" });
+            lst.Add(new dkcdl { x = "总额", y = czjls.Where(g => g.CaoZuoTime < DateTime.Now).Count(), s = "1" });
+            return JsonHelper.ToJson(lst);
+        }
     }
 
 
@@ -680,6 +716,15 @@ namespace ChaHuoBaoWeb.WebService
     {
         public string x { get; set; }
         public Int32 y { get; set; }
+    }
+    /// <summary>
+    /// 查单量
+    /// </summary>
+    public class dkcdl
+    {
+        public string x { get; set; }
+        public Int32 y { get; set; }
+        public string s { get; set; }
     }
     /// <summary>
     ///  在线GPS总量
