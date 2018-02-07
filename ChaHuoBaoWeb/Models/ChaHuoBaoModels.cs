@@ -24,6 +24,7 @@ namespace ChaHuoBaoWeb.Models
         public DbSet<YunDanIsArrive> YunDanIsArrive { get; set; }
         public DbSet<YunDanDistance> YunDanDistance { get; set; }
         public DbSet<GpsLocation> GpsLocation { get; set; }
+        public DbSet<GpsLocation2> GpsLocation2 { get; set; }
         public DbSet<GpsDevice> GpsDevice { get; set; }
         public DbSet<GpsDingDan> GpsDingDan { get; set; }
         public DbSet<GpsDingDanGDG> GpsDingDanGDG { get; set; }
@@ -36,6 +37,7 @@ namespace ChaHuoBaoWeb.Models
         public DbSet<CaoZuoJiLu> CaoZuoJiLu { get; set; }
         public DbSet<JiaGeCeLve> JiaGeCeLve { get; set; }
         public DbSet<XiTongCanShu> XiTongCanShu { get; set; }
+        public DbSet<GpsDeviceTable> GpsDeviceTable { get; set; }
         public DbSet<SearchHistory> SearchHistory { get; set; }
         public DbSet<ZiYouSearch> ZiYouSearch { get; set; }
     }
@@ -353,6 +355,30 @@ namespace ChaHuoBaoWeb.Models
     /// </summary>
     [Table("GpsLocation")]
     public class GpsLocation
+    {
+        [Key]
+        [Display(Name = "Gps定位ID")]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int GpsLocationID { get; set; }
+        [Display(Name = "设备ID")]
+        public string GpsDeviceID { get; set; }
+        [Display(Name = "地理纬度")]
+        public string Gps_lat { get; set; }
+        [Display(Name = "地理经度")]
+        public string Gps_lng { get; set; }
+        [Display(Name = "定位时间")]
+        public DateTime Gps_time { get; set; }
+        [Display(Name = "地理位置")]
+        public string Gps_info { get; set; }
+        [Display(Name = "备注")]
+        public string GpsRemark { get; set; }
+    }
+
+    /// <summary>
+    /// GPS定位表2
+    /// </summary>
+    [Table("GpsLocation2")]
+    public class GpsLocation2
     {
         [Key]
         [Display(Name = "Gps定位ID")]
@@ -707,5 +733,23 @@ namespace ChaHuoBaoWeb.Models
         public string Type { get; set; }
         [Display(Name = "值")]
         public string Value { get; set; }
+    }
+
+    /// <summary>
+    /// 系统参数配置
+    /// </summary>
+    [Table("GpsDeviceTable")]
+    public class GpsDeviceTable
+    {
+        [Key]
+        [Display(Name = "ID")]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int ID { get; set; }
+        [Display(Name = "设备前缀号")]
+        public string DeviceCode { get; set; }
+        [Display(Name = "对应数据表")]
+        public string TableName { get; set; }
+        [Display(Name = "设置同步的分钟数")]
+        public int DeviceTime { get; set; }
     }
 }

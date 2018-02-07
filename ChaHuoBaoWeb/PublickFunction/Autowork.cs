@@ -30,6 +30,11 @@ namespace ChaHuoBaoWeb.PublickFunction
             int shijianjiange = Convert.ToInt32(shijianjiange_str);
             Schedule<LocationJob>().ToRunNow().AndEvery(shijianjiange).Minutes();
 
+            //分区插入数据
+            IEnumerable<GpsDeviceTable> GpsDeviceTime_8630 = db.GpsDeviceTable.Where(x => x.DeviceCode == "8630");
+            int gpstime8630 = GpsDeviceTime_8630.First().DeviceTime;
+            Schedule<LocationJob2>().ToRunNow().AndEvery(gpstime8630).Minutes();
+
             // Schedule an IJob to run once, delayed by a specific time interval
             // 延迟一个指定时间间隔执行一次计划任务。（当然，这个间隔依然可以是秒、分、时、天、月、年等。）
             //Schedule<MyJob>().ToRunOnceIn(5).Seconds();
@@ -249,6 +254,115 @@ namespace ChaHuoBaoWeb.PublickFunction
                         pgl.GpsDeviceID = yd.GpsDeviceID;
                         pgl.GpsRemark = "自动定位";
                         db.GpsLocation.Add(pgl);
+                        db.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ChaHuoBaoWeb.MvcApplication.log4nethelper.Debug(ex);
+            }
+        }
+
+        public System.Collections.Hashtable Gethttpresult(string url, string data)
+        {
+            WebRequest request = WebRequest.Create(url);
+            Encoding encode = Encoding.GetEncoding("utf-8");
+            request.Method = "POST";
+            Byte[] byteArray = encode.GetBytes(data);
+            request.ContentType = "application/x-www-form-urlencoded";
+
+            request.ContentLength = byteArray.Length;
+            Stream dataStream = request.GetRequestStream();
+            dataStream.Write(byteArray, 0, byteArray.Length);
+            dataStream.Close();
+            WebResponse response = request.GetResponse();
+
+            dataStream = response.GetResponseStream();
+            StreamReader reader = new StreamReader(dataStream, encode);
+            String responseFromServer = reader.ReadToEnd();
+            string outStr = responseFromServer;
+            reader.Close();
+            dataStream.Close();
+            response.Close();
+
+            Hashtable hashTable = JsonConvert.DeserializeObject<Hashtable>(outStr);
+            return hashTable;
+        }
+
+    }
+
+    public class LocationJob2 : IJob
+    {
+
+        void IJob.Execute()
+        {
+            Models.ChaHuoBaoModels db = new Models.ChaHuoBaoModels();
+            string gpsvid = "";
+            string gpsvkey = "";
+            //Boolean gpsvupdate = false;
+            try
+            {
+                IEnumerable<Models.YunDan> yundans = db.YunDan.Where(g => g.IsBangding == true && g.GpsDeviceID.StartsWith("8630")).ToList();
+                ChaHuoBaoWeb.MvcApplication.log4nethelper.Info("计划任务：获取运单位置" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                foreach (Models.YunDan yd in yundans)
+                {
+                    //'获取最新位置，如果有更新则插入location，同时更新yundan中的最新gps信息
+                    if (string.IsNullOrEmpty(yd.GpsDevicevid))
+                    {
+                        Hashtable gpsinfo = Gethttpresult("http://101.37.253.238:89/gpsonline/GPSAPI", "version=1&method=vLoginSystem&name=" + yd.GpsDeviceID + "&pwd=123456");
+                        if (gpsinfo["success"].ToString().ToUpper() != "True".ToUpper())
+                        {
+                            ChaHuoBaoWeb.MvcApplication.log4nethelper.Error("获取车辆vkey，vid失败 单号：" + yd.UserDenno + " 设备ID:" + yd.GpsDeviceID + "  " + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+                            continue;
+                        }
+                        gpsvid = gpsinfo["vid"].ToString();
+                        gpsvkey = gpsinfo["vKey"].ToString();
+                        //gpsvupdate = true;
+                    }
+                    else
+                    {
+                        gpsvid = yd.GpsDevicevid;
+                        gpsvkey = yd.GpsDevicevKey;
+                    }
+
+                    Hashtable gpslocation = Gethttpresult("http://101.37.253.238:89/gpsonline/GPSAPI", "version=1&method=loadLocation&vid=" + gpsvid + "&vKey=" + gpsvkey + "");
+                    if (gpslocation["success"].ToString().ToUpper() != "True".ToUpper())
+                    {
+                        //获取位置失败，记录日志。
+                        ChaHuoBaoWeb.MvcApplication.log4nethelper.Error("获取位置失败,单号：" + yd.UserDenno + " 设备ID" + yd.GpsDeviceID + " userID:" + yd.UserID + "  " + JsonConvert.SerializeObject(gpslocation));
+                        continue;
+                    }
+                    Newtonsoft.Json.Linq.JArray ja = (Newtonsoft.Json.Linq.JArray)Newtonsoft.Json.JsonConvert.DeserializeObject(gpslocation["locs"].ToString());
+                    string newgpstime = ja.First()["gpstime"].ToString();
+                    //newgpstime = newgpstime.Substring(0, newgpstime.Length - 2);
+                    string newlng = ja.First()["lng"].ToString();
+                    //newlng = newlng.Substring(0, newlng.Length - 2);
+                    string newlat = ja.First()["lat"].ToString();
+                    //newlat = newlat.Substring(0, newlat.Length - 2);
+                    string newinfo = ja.First()["info"].ToString();
+                    //newinfo = newinfo.Substring(0, newinfo.Length - 2);
+                    //DateTime gpstm =  DateTime.Parse("1970-01-01 00:00:00");
+                    long time_JAVA_Long = long.Parse(newgpstime);// 1207969641193;//java长整型日期，毫秒为单位          
+                    DateTime dt_1970 = new DateTime(1970, 1, 1, 0, 0, 0);
+                    long tricks_1970 = dt_1970.Ticks;//1970年1月1日刻度      
+                    long time_tricks = tricks_1970 + time_JAVA_Long * 10000;//日志日期刻度  
+                    DateTime gpstm = new DateTime(time_tricks).AddHours(8);//转化为DateTime
+
+                    IEnumerable<GpsLocation2> locations = db.GpsLocation2.Where(g => g.Gps_time == gpstm & g.GpsDeviceID == yd.GpsDeviceID);
+
+                    if (locations.Count() == 0)
+                    {
+
+                        //'写入location表，更新运单表，要注意判断gps时间，不要重复写入
+                        GpsLocation2 pgl = new GpsLocation2();
+                        pgl.Gps_info = newinfo;
+                        pgl.Gps_lat = newlat;
+                        pgl.Gps_lng = newlng;
+                        pgl.Gps_time = gpstm;
+                        pgl.GpsDeviceID = yd.GpsDeviceID;
+                        pgl.GpsRemark = "自动定位";
+                        db.GpsLocation2.Add(pgl);
                         db.SaveChanges();
                     }
                 }

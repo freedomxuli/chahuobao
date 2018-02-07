@@ -186,12 +186,9 @@ namespace ChaHuoBaoWeb.WebService
             {
                 hs["value"] = czjls.Where(g => g.CaoZuoNeiRong.Contains("web") & g.CaoZuoTime > dt1 && g.CaoZuoTime < dt2).Count();
             }
-           
+
             List<Hashtable> result = new List<Hashtable>();
             result.Add(hs);
-
-
-
 
             return JsonHelper.ToJson(result);
         }
