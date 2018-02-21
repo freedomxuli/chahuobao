@@ -76,7 +76,7 @@ namespace ChaHuoBaoWeb.Controllers
                     CaoZuoJiLu CaoZuoJiLu = new CaoZuoJiLu();
                     CaoZuoJiLu.UserID = UserID;
                     CaoZuoJiLu.CaoZuoLeiXing = "运单轨迹";
-                    CaoZuoJiLu.CaoZuoNeiRong = "APP内用户运单轨迹查询，运单系统单号："+YunDanDenno+"。";
+                    CaoZuoJiLu.CaoZuoNeiRong = "APP内用户运单轨迹查询，运单系统单号：" + YunDanDenno + "。";
                     CaoZuoJiLu.CaoZuoTime = DateTime.Now;
                     CaoZuoJiLu.CaoZuoRemark = "";
                     db.CaoZuoJiLu.Add(CaoZuoJiLu);

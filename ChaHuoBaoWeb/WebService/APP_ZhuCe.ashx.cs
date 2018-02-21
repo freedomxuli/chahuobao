@@ -49,6 +49,7 @@ namespace ChaHuoBaoWeb.WebService
                     newUser.UserCity = UserCity;
                     newUser.UserRemainder = 0;
                     newUser.UserRemark = "APP注册用户";
+                    newUser.UserWxEnable = true;
                     db.User.Add(newUser);
 
                     //添加 操作记录

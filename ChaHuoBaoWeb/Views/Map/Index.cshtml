@@ -95,7 +95,7 @@
             }
             for (var i = locationlst.length - 1; i > 0; i--)
             {
-                dotlist = "<li style='font-size:8px;list-style-type:none;border-bottom:1px solid #000;padding-top:5px;padding-bottom:5px;'>" + locationlst[i].Gps_info + "</li>";
+                dotlist = "<li style='font-size:8px;list-style-type:none;border-bottom:1px solid #000;padding-top:5px;padding-bottom:5px;'>（" + locationlst[i].Gps_time + "）" + locationlst[i].Gps_info + "</li>";
                 $("#dotlist").append(dotlist);
             }
             function markerClick(e) {
