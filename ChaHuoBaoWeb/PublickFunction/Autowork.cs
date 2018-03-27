@@ -183,8 +183,10 @@ namespace ChaHuoBaoWeb.PublickFunction
             //Boolean gpsvupdate = false;
             try
             {
-                IEnumerable<Models.YunDan> yundans = db.YunDan.Where(g => g.IsBangding == true).ToList();
+                DateTime sztime = DateTime.Now.AddMonths(-1);
+                IEnumerable<Models.YunDan> yundans = db.YunDan.Where(g => g.IsBangding == true & g.BangDingTime > sztime).ToList();
                 ChaHuoBaoWeb.MvcApplication.log4nethelper.Info("计划任务：获取运单位置" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
+
                 foreach (Models.YunDan yd in yundans)
                 {
                     //'获取最新位置，如果有更新则插入location，同时更新yundan中的最新gps信息
@@ -235,7 +237,6 @@ namespace ChaHuoBaoWeb.PublickFunction
                     {
 
                         //'写入location表，更新运单表，要注意判断gps时间，不要重复写入
-                        GpsLocation pgl = new GpsLocation();
                         //写入定位表，更新运单表
                         Models.YunDan updateyundan = db.YunDan.Where(g => g.YunDanDenno == yd.YunDanDenno).First();
                         updateyundan.Gps_lasttime = gpstm;
@@ -247,6 +248,7 @@ namespace ChaHuoBaoWeb.PublickFunction
                             updateyundan.GpsDevicevid = gpsvid;
                             updateyundan.GpsDevicevKey = gpsvkey;
                         }
+                        GpsLocation pgl = new GpsLocation();
                         pgl.Gps_info = newinfo;
                         pgl.Gps_lat = newlat;
                         pgl.Gps_lng = newlng;
@@ -254,9 +256,9 @@ namespace ChaHuoBaoWeb.PublickFunction
                         pgl.GpsDeviceID = yd.GpsDeviceID;
                         pgl.GpsRemark = "自动定位";
                         db.GpsLocation.Add(pgl);
-                        db.SaveChanges();
                     }
                 }
+                db.SaveChanges();
             }
             catch (Exception ex)
             {
@@ -363,9 +365,9 @@ namespace ChaHuoBaoWeb.PublickFunction
                         pgl.GpsDeviceID = yd.GpsDeviceID;
                         pgl.GpsRemark = "自动定位";
                         db.GpsLocation2.Add(pgl);
-                        db.SaveChanges();
                     }
                 }
+                db.SaveChanges();
             }
             catch (Exception ex)
             {

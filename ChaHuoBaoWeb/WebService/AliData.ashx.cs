@@ -569,37 +569,44 @@ namespace ChaHuoBaoWeb.WebService
             //"fromInfo": "起点",
             //"toInfo": "终点"
             //IEnumerable<ChaHuoBaoWeb.Models.GpsDevice> devices = from x in chbdb.GpsDevice select x;
-            List<Hashtable> hss = new List<Hashtable>();
-            Hashtable hs = new Hashtable();
-            IEnumerable<ChaHuoBaoWeb.Models.YunDan> yundans = from x in chbdb.YunDan where x.IsBangding == true select x;
-            foreach (ChaHuoBaoWeb.Models.YunDan yd in yundans)
+            try
             {
-                hs = new Hashtable();
-                string fromgps = yd.QiShiZhan_lng + "," + yd.QiShiZhan_lat;
-                string togps = yd.DaoDaZhan_lng + "," + yd.DaoDaZhan_lat;
-                if (string.IsNullOrEmpty(yd.QiShiZhan_lng))
+                List<Hashtable> hss = new List<Hashtable>();
+                Hashtable hs = new Hashtable();
+                IEnumerable<ChaHuoBaoWeb.Models.YunDan> yundans = from x in chbdb.YunDan where x.IsBangding == true select x;
+                foreach (ChaHuoBaoWeb.Models.YunDan yd in yundans)
                 {
-                    hs["from"] = new ChaHuoBaoWeb.PublickFunction.Map().getmapinfobyaddress(yd.QiShiZhan, "")["location"].ToString();
-                }
-                else
-                {
-                    hs["from"] = fromgps;
-                }
-                if (string.IsNullOrEmpty(yd.DaoDaZhan_lng))
-                {
+                    hs = new Hashtable();
+                    string fromgps = yd.QiShiZhan_lng + "," + yd.QiShiZhan_lat;
+                    string togps = yd.DaoDaZhan_lng + "," + yd.DaoDaZhan_lat;
+                    if (string.IsNullOrEmpty(yd.QiShiZhan_lng))
+                    {
+                        hs["from"] = new ChaHuoBaoWeb.PublickFunction.Map().getmapinfobyaddress(yd.QiShiZhan, "")["location"].ToString();
+                    }
+                    else
+                    {
+                        hs["from"] = fromgps;
+                    }
+                    if (string.IsNullOrEmpty(yd.DaoDaZhan_lng))
+                    {
 
-                    hs["to"] = new ChaHuoBaoWeb.PublickFunction.Map().getmapinfobyaddress(yd.DaoDaZhan, "")["location"].ToString();
-                }
-                else
-                {
-                    hs["to"] = togps;
-                }
-                hs["fromInfo"] = yd.QiShiZhan;
-                hs["toInfo"] = yd.DaoDaZhan;
-                hss.Add(hs);
+                        hs["to"] = new ChaHuoBaoWeb.PublickFunction.Map().getmapinfobyaddress(yd.DaoDaZhan, "")["location"].ToString();
+                    }
+                    else
+                    {
+                        hs["to"] = togps;
+                    }
+                    hs["fromInfo"] = yd.QiShiZhan;
+                    hs["toInfo"] = yd.DaoDaZhan;
+                    hss.Add(hs);
 
+                }
+                return JsonHelper.ToJson(hss);
             }
-            return JsonHelper.ToJson(hss);
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
 
         private string GetDeviceAccountByProvince()
