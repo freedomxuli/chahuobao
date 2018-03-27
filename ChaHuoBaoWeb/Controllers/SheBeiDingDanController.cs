@@ -31,7 +31,7 @@ namespace ChaHuoBaoWeb.Controllers
             IEnumerable<GpsDingDan> dingdanModel = accountdb.GpsDingDan.Include("userModel");
             if (!string.IsNullOrEmpty(GpsDingDanDenno))
             {
-                dingdanModel = dingdanModel.Where(p => p.GpsDingDanDenno == GpsDingDanDenno);
+                dingdanModel = dingdanModel.Where(p => p.OrderDenno == GpsDingDanDenno);
             }
             if (!string.IsNullOrEmpty(UserName))
             {
@@ -67,7 +67,7 @@ namespace ChaHuoBaoWeb.Controllers
                 }
                 dingdanone.xuhao = n;
                 dingdanone.UserName = obj.userModel.UserName;
-                dingdanone.GpsDingDanDenno = obj.GpsDingDanDenno;
+                dingdanone.GpsDingDanDenno = obj.OrderDenno;
                 dingdanone.GpsDingDanJinE = obj.GpsDingDanJinE;
                 dingdanone.GpsDingDanShuLiang = obj.GpsDingDanShuLiang;
                 dingdanone.GpsDingDanTime = obj.GpsDingDanTime;
@@ -101,7 +101,7 @@ namespace ChaHuoBaoWeb.Controllers
             IEnumerable<GpsDingDan> dingdanModel = accountdb.GpsDingDan.Include("userModel");
             if (!string.IsNullOrEmpty(GpsDingDanDenno))
             {
-                dingdanModel = dingdanModel.Where(p => p.GpsDingDanDenno == GpsDingDanDenno);
+                dingdanModel = dingdanModel.Where(p => p.OrderDenno == GpsDingDanDenno);
 
             }
             if (!string.IsNullOrEmpty(UserName))
@@ -134,7 +134,7 @@ namespace ChaHuoBaoWeb.Controllers
                 }
 
                 dingdanone.UserName = obj.userModel.UserName;
-                dingdanone.GpsDingDanDenno = obj.GpsDingDanDenno;
+                dingdanone.GpsDingDanDenno = obj.OrderDenno;
                 dingdanone.GpsDingDanJinE = obj.GpsDingDanJinE;
                 dingdanone.GpsDingDanShuLiang = obj.GpsDingDanShuLiang;
                 dingdanone.GpsDingDanTime = obj.GpsDingDanTime;
@@ -165,7 +165,7 @@ namespace ChaHuoBaoWeb.Controllers
             {
                 NPOI.SS.UserModel.IRow rowtemp = sheet1.CreateRow(i + 1);
                 rowtemp.CreateCell(0).SetCellValue(z);
-                rowtemp.CreateCell(1).SetCellValue(list[i].GpsDingDanDenno);
+                rowtemp.CreateCell(1).SetCellValue(list[i].OrderDenno);
                 rowtemp.CreateCell(2).SetCellValue(list[i].UserName);
                 rowtemp.CreateCell(3).SetCellValue(list[i].GpsDingDanShuLiang);
                 rowtemp.CreateCell(4).SetCellValue(list[i].GpsDingDanJinE.ToString());
@@ -189,6 +189,8 @@ namespace ChaHuoBaoWeb.Controllers
             public string UserName { get; set; }
 
             public string GpsDingDanDenno { get; set; }
+
+            public string OrderDenno { get; set; }
 
             public string UserID { get; set; }
 
@@ -224,7 +226,7 @@ namespace ChaHuoBaoWeb.Controllers
             dingdanModel = dingdanModel.Where(p => p.GpsDingDanZhiFuLeiXing == "公对公");
             if (!string.IsNullOrEmpty(GpsDingDanDenno))
             {
-                dingdanModel = dingdanModel.Where(p => p.GpsDingDanDenno == GpsDingDanDenno);
+                dingdanModel = dingdanModel.Where(p => p.OrderDenno == GpsDingDanDenno);
 
             }
             if (!string.IsNullOrEmpty(UserName))
@@ -274,7 +276,7 @@ namespace ChaHuoBaoWeb.Controllers
                 }
                 dingdanone.xuhao = n;
                 dingdanone.UserName = obj.userModel.UserName;
-                dingdanone.GpsDingDanDenno = obj.GpsDingDanDenno;
+                dingdanone.GpsDingDanDenno = obj.OrderDenno;
                 dingdanone.GpsDingDanJinE = obj.GpsDingDanJinE;
                 dingdanone.GpsDingDanShuLiang = obj.GpsDingDanShuLiang;
                 dingdanone.GpsDingDanTime = obj.GpsDingDanTime;
@@ -317,7 +319,7 @@ namespace ChaHuoBaoWeb.Controllers
             try
             {
                 ChaHuoBaoWeb.Models.ChaHuoBaoModels db = new ChaHuoBaoModels();
-                ChaHuoBaoWeb.Models.GpsDingDan dingdanmodel = db.GpsDingDan.Where(g => g.GpsDingDanDenno == GpsDingDanDenno).First();
+                ChaHuoBaoWeb.Models.GpsDingDan dingdanmodel = db.GpsDingDan.Where(g => g.OrderDenno == GpsDingDanDenno).First();
                 if (dingdanmodel.GpsDingDanSH == true)
                 {
                     hash["sign"] = "0";

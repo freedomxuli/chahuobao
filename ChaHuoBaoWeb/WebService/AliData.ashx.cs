@@ -138,7 +138,9 @@ namespace ChaHuoBaoWeb.WebService
         }
         private string GetYunDanSumLst()
         {
-            var ydsumlst = chbdb.YunDan.GroupBy(g => g.SuoShuGongSi).Select(s => new { com = s.Key, count = s.Count() }).OrderByDescending(o=>o.count);
+            DateTime dt1 = DateTime.Now.Date;
+            DateTime dt2 = DateTime.Now.AddDays(1).Date.AddSeconds(-1);
+            var ydsumlst = chbdb.YunDan.Where(g => g.BangDingTime > dt1 && g.BangDingTime < dt2).GroupBy(g => g.SuoShuGongSi).Select(s => new { com = s.Key, count = s.Count() }).OrderByDescending(o => o.count);
             return JsonHelper.ToJson(ydsumlst);
         }
         private string GetChaDanList()
