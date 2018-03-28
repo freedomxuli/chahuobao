@@ -46,7 +46,6 @@
                         var daodazhan_lat = jsondata.location_result.daodazhan_lat;
 
                         var locationlst = jsondata.location_result.locationlst;
-
                         jiazaimap(qishizhan_lng, qishizhan_lat, daodazhan_lng, daodazhan_lat, locationlst);
                     }
                     else {
@@ -82,20 +81,37 @@
                 })
             });
             for (var i = 0, marker; i < locationlst.length; i++) {
-                var marker = new AMap.Marker({
-                    position: [locationlst[i].Gps_lng, locationlst[i].Gps_lat],
-                    map: map,
-                    icon: new AMap.Icon({
-                        image: "../../Images/zaitu.png"
-                    })
-                });
-                marker.content =locationlst[i].Gps_info+"("+getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time))+")";
-                marker.on('click', markerClick);
-                marker.emit('click', { target: marker });
+                if (locationlst[i].GpsRemark == "1") {
+                    var marker = new AMap.Marker({
+                        position: [locationlst[i].Gps_lng, locationlst[i].Gps_lat],
+                        map: map,
+                        icon: new AMap.Icon({
+                            image: "../../Images/zaitu.png"
+                        })
+                    });
+                    marker.content = locationlst[i].Gps_info + "(" + getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time)) + ")";
+                    marker.on('click', markerClick);
+                    marker.emit('click', { target: marker });
+                }
+                else {
+                    var marker = new AMap.Marker({
+                        position: [locationlst[i].Gps_lng, locationlst[i].Gps_lat],
+                        map: map,
+                        icon: new AMap.Icon({
+                            image: "../../Images/zaitu3.png"
+                        })
+                    });
+                    marker.content = locationlst[i].Gps_info + "(" + getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time)) + ")";
+                    marker.on('click', markerClick);
+                    marker.emit('click', { target: marker });
+                }
             }
             for (var i = locationlst.length - 1; i > 0; i--)
             {
-                dotlist = "<li style='font-size:8px;list-style-type:none;border-bottom:1px solid #000;padding-top:5px;padding-bottom:5px;'>（" + getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time)) + "）" + locationlst[i].Gps_info + "</li>";
+                if (locationlst[i].GpsRemark == "1")
+                    dotlist = "<li style='font-size:8px;list-style-type:none;border-bottom:1px solid #000;padding-top:5px;padding-bottom:5px;'>【在途】（" + getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time)) + "）" + locationlst[i].Gps_info + "</li>";
+                else
+                    dotlist = "<li style='font-size:8px;list-style-type:none;border-bottom:1px solid #000;padding-top:5px;padding-bottom:5px;'>【返程】（" + getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time)) + "）" + locationlst[i].Gps_info + "</li>";
                 $("#dotlist").append(dotlist);
             }
             function markerClick(e) {

@@ -63,10 +63,30 @@ namespace ChaHuoBaoWeb.Controllers
                 //}
                 DateTime BangDingTime_new = yundandt.BangDingTime.AddHours(-1);
                 IEnumerable<GpsLocation> gpslocations = db.GpsLocation.Where(g => g.GpsDeviceID == yundandt.GpsDeviceID & g.Gps_time > BangDingTime_new);
-                if (yundandt.IsBangding == false)
+                int num = db.YunDanIsArrive.Where(g => g.YunDanDenno == YunDanDenno).Count();
+                if (num == 0)
                 {
-                    gpslocations = gpslocations.Where(g => g.Gps_time < yundandt.JieBangTime);
+                    if (yundandt.IsBangding == false)
+                    {
+                        gpslocations = gpslocations.Where(g => g.Gps_time < yundandt.JieBangTime);
+                    }
                 }
+                else
+                {
+                    ChaHuoBaoWeb.Models.YunDanIsArrive arrivedt  = db.YunDanIsArrive.Where(g => g.YunDanDenno == YunDanDenno).First();
+                    foreach (var dr in gpslocations)
+                    {
+                        if (dr.Gps_time <= arrivedt.Addtime)
+                        {
+                            dr.GpsRemark = "1";
+                        }
+                        else
+                        {
+                            dr.GpsRemark = "2";
+                        }
+                    }
+                }
+                
                 viewmodel.locationlst = gpslocations.ToList();
                 hash["location_result"] = viewmodel;
 
