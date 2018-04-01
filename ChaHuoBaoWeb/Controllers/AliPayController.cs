@@ -92,6 +92,46 @@ namespace ChaHuoBaoWeb
                                 }
                             }
                         }
+                        else if (orderdenno.StartsWith("03"))
+                        {
+                            Models.GpsDingDanSale dingdanmode = db.GpsDingDanSale.Where(g => g.OrderDenno == orderdenno).First();
+                            if (dingdanmode.GpsDingDanJinE.ToString("0.00") == total_amount)
+                            {
+                                string UserID = dingdanmode.UserID;
+                                //添加 操作记录
+                                Models.CaoZuoJiLu CaoZuoJiLu = new Models.CaoZuoJiLu();
+                                CaoZuoJiLu.UserID = UserID;
+                                CaoZuoJiLu.CaoZuoLeiXing = "销售";
+                                CaoZuoJiLu.CaoZuoNeiRong = "APP内用户销售，支付方式：支付宝；支付单号：" + orderdenno + "；支付金额：" + total_amount + "。";
+                                CaoZuoJiLu.CaoZuoTime = DateTime.Now;
+                                CaoZuoJiLu.CaoZuoRemark = "";
+                                db.CaoZuoJiLu.Add(CaoZuoJiLu);
+
+                                dingdanmode.GpsDingDanZhiFuZhuangTai = true;
+                                dingdanmode.GpsDingDanZhiFuShiJian = DateTime.Now;
+                                db.SaveChanges();
+
+
+                                string GpsDingDanDenno = dingdanmode.GpsDingDanDenno;
+                                IEnumerable<Models.GpsDingDanSaleMingXi> GpsDingDanMingXi = db.GpsDingDanSaleMingXi.Where(x => x.GpsDingDanDenno == GpsDingDanDenno);
+                                if (GpsDingDanMingXi.Count() > 0)
+                                {
+                                    foreach (var obj in GpsDingDanMingXi)
+                                    {
+                                        Models.GpsDevice GpsDevice = new Models.GpsDevice();
+                                        GpsDevice.UserID = UserID;
+                                        GpsDevice.GpsDeviceID = obj.GpsDeviceID;
+                                        db.GpsDevice.Add(GpsDevice);
+
+                                        Models.GpsDeviceSale GpsDeviceSale = new Models.GpsDeviceSale();
+                                        GpsDeviceSale.UserID = UserID;
+                                        GpsDeviceSale.GpsDeviceID = obj.GpsDeviceID;
+                                        db.GpsDeviceSale.Add(GpsDeviceSale);
+                                    }
+                                    db.SaveChanges();
+                                }
+                            }
+                        }
                         ///验证参数，更新运单信息，此处需要注意支付宝返回的消息可能会有重复
                         return "success";
                     }

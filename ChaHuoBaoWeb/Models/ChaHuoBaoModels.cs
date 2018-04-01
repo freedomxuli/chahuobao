@@ -26,10 +26,13 @@ namespace ChaHuoBaoWeb.Models
         public DbSet<GpsLocation> GpsLocation { get; set; }
         public DbSet<GpsLocation2> GpsLocation2 { get; set; }
         public DbSet<GpsDevice> GpsDevice { get; set; }
+        public DbSet<GpsDeviceSale> GpsDeviceSale { get; set; }
         public DbSet<GpsDingDan> GpsDingDan { get; set; }
+        public DbSet<GpsDingDanSale> GpsDingDanSale { get; set; }
         public DbSet<GpsDingDanGDG> GpsDingDanGDG { get; set; }
         public DbSet<ChongZhiGDG> ChongZhiGDG { get; set; }
         public DbSet<GpsDingDanMingXi> GpsDingDanMingXi { get; set; }
+        public DbSet<GpsDingDanSaleMingXi> GpsDingDanSaleMingXi { get; set; }
         public DbSet<GpsTuiDan> GpsTuiDan { get; set; }
         public DbSet<GpsTuiDanMingXi> GpsTuiDanMingXi { get; set; }
         public DbSet<ChongZhi> ChongZhi { get; set; }
@@ -431,11 +434,68 @@ namespace ChaHuoBaoWeb.Models
         [Display(Name = "备注")]
         public string GpsDeviceRemark { get; set; }
     }
+
+    /// <summary>
+    /// GPS设备表
+    /// </summary>
+    [Table("GpsDeviceSale")]
+    public class GpsDeviceSale
+    {
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
+        [Display(Name = "设备ID")]
+        public string GpsDeviceID { get; set; }
+        [Display(Name = "用户ID")]
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public User usermodel { get; set; }
+        [Display(Name = "备注")]
+        public string GpsDeviceRemark { get; set; }
+    }
+
     /// <summary>
     /// 设备订单表
     /// </summary>
     [Table("GpsDingDan")]
     public class GpsDingDan
+    {
+        [Key]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
+        [Display(Name = "设备订单单号")]
+        public string GpsDingDanDenno { get; set; }
+        [Display(Name = "用户ID")]
+        public string UserID { get; set; }
+        [ForeignKey("UserID")]
+        public User userModel { get; set; }
+        [Display(Name = "设备订单生成状态")]
+        public bool GpsDingDanIsEnd { get; set; }
+        [Display(Name = "设备订单数量")]
+        public int GpsDingDanShuLiang { get; set; }
+        [Display(Name = "设备订单金额")]
+        public decimal GpsDingDanJinE { get; set; }
+        [Display(Name = "设备订单支付类型")]
+        public string GpsDingDanZhiFuLeiXing { get; set; }
+        [Display(Name = "设备订单支付状态")]
+        public bool GpsDingDanZhiFuZhuangTai { get; set; }
+        [Display(Name = "设备订单时间")]
+        public DateTime GpsDingDanTime { get; set; }
+        [Display(Name = "设备订单支付时间")]
+        public DateTime? GpsDingDanZhiFuShiJian { get; set; }
+        [Display(Name = "设备订单备注")]
+        public string GpsDingDanRemark { get; set; }
+        [Display(Name = "设备订单支付单号")]
+        public string OrderDenno { get; set; }
+        [Display(Name = "公对公审核状态")]
+        public bool GpsDingDanSH { get; set; }
+        //[ForeignKey("GpsDingDanDenno")]
+        //public ICollection<GpsDingDanMingXi> GpsDingDanMingXiList { set; get; }
+
+    }
+    /// <summary>
+    /// 设备销售订单表
+    /// </summary>
+    [Table("GpsDingDanSale")]
+    public class GpsDingDanSale
     {
         [Key]
         [DatabaseGeneratedAttribute(DatabaseGeneratedOption.None)]
@@ -489,6 +549,28 @@ namespace ChaHuoBaoWeb.Models
         public string GpsDingDanMingXiRemark { get; set; }
         [ForeignKey("GpsDingDanDenno")]
         public GpsDingDan GpsDingDanModel { get; set; }
+    }
+
+    /// <summary>
+    /// 设备销售订单明细表
+    /// </summary>
+    [Table("GpsDingDanSaleMingXi")]
+    public class GpsDingDanSaleMingXi
+    {
+        [Key]
+        [Display(Name = "设备订单明细ID")]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int GpsDingDanMingXiID { get; set; }
+        [Display(Name = "设备订单单号")]
+        public string GpsDingDanDenno { get; set; }
+        [Display(Name = "设备ID")]
+        public string GpsDeviceID { get; set; }
+        [Display(Name = "设备订单明细扫描时间")]
+        public DateTime GpsDingDanMingXiTime { get; set; }
+        [Display(Name = "设备订单明细备注")]
+        public string GpsDingDanMingXiRemark { get; set; }
+        [ForeignKey("GpsDingDanDenno")]
+        public GpsDingDanSale GpsDingDanSaleModel { get; set; }
     }
 
     [Table("GpsDingDanGDG")]

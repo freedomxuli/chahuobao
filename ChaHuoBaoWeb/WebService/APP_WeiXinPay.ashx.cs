@@ -108,6 +108,26 @@ namespace ChaHuoBaoWeb.WebService
                     total_fee = (Int64)(dingdanmodel.GpsDingDanJinE * 100);//费用 1分钱（测试）
 
                 }
+                else if (OrderDenno.StartsWith("03"))
+                {
+                    ChaHuoBaoWeb.Models.GpsDingDanSale dingdanmodel = db.GpsDingDanSale.Where(g => g.OrderDenno == OrderDenno).First();
+                    if (dingdanmodel.GpsDingDanZhiFuZhuangTai)
+                    {
+                        ChaHuoBaoWeb.MvcApplication.log4nethelper.Debug("此订单已完成付款！");
+                        throw new Exception("此订单已完成付款！");
+                    }
+                    //充值描述
+                    //data.body = "设备押金支付-测试";
+                    //data.out_trade_no = dingdanmodel.OrderDenno;
+                    //data.subject = "设备押金支付 - 测试";
+                    //data.total_amount = dingdanmodel.GpsDingDanJinE.ToString("0.00");
+
+                    //订单编号
+                    //out_trade_no = OrderDenno; //Guid.NewGuid().ToString().Replace("-", "");
+                    dingdanmiaoshu = "设备销售支付";
+                    total_fee = (Int64)(dingdanmodel.GpsDingDanJinE * 100);//费用 1分钱（测试）
+
+                }
 
                 var payment = new Payment();
                 //var orderId = "TS" + DateTime.Now.ToString("yyyyMMddhhmmssffff");

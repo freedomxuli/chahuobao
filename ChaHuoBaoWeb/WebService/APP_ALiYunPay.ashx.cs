@@ -101,6 +101,24 @@ namespace ChaHuoBaoWeb.WebService
                     total_fee = (Double)(dingdanmodel.GpsDingDanJinE);//费用 1分钱（测试）
 
                 }
+                else if (OrderDenno.StartsWith("03"))
+                {
+                    ChaHuoBaoWeb.Models.GpsDingDanSale dingdanmodel = db.GpsDingDanSale.Where(g => g.OrderDenno == OrderDenno).First();
+                    if (dingdanmodel.GpsDingDanZhiFuZhuangTai)
+                    {
+                        ChaHuoBaoWeb.MvcApplication.log4nethelper.Debug("此销售订单已完成付款！");
+                        throw new Exception("此销售订单已完成付款！");
+                    }
+                    //充值描述
+                    data.body = "设备销售支付";
+                    data.out_trade_no = dingdanmodel.OrderDenno;
+                    data.subject = "设备销售支付";
+                    data.total_amount = dingdanmodel.GpsDingDanJinE.ToString("0.00");
+
+                    //订单编号
+                    out_trade_no = OrderDenno; //Guid.NewGuid().ToString().Replace("-", "");
+                    total_fee = (Double)(dingdanmodel.GpsDingDanJinE);//费用 1分钱（测试）
+                }
 
 
 
