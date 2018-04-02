@@ -30,6 +30,7 @@ namespace ChaHuoBaoWeb.Models
         public DbSet<GpsDingDan> GpsDingDan { get; set; }
         public DbSet<GpsDingDanSale> GpsDingDanSale { get; set; }
         public DbSet<GpsDingDanGDG> GpsDingDanGDG { get; set; }
+        public DbSet<GpsDingDanSaleGDG> GpsDingDanSaleGDG { get; set; }
         public DbSet<ChongZhiGDG> ChongZhiGDG { get; set; }
         public DbSet<GpsDingDanMingXi> GpsDingDanMingXi { get; set; }
         public DbSet<GpsDingDanSaleMingXi> GpsDingDanSaleMingXi { get; set; }
@@ -591,6 +592,26 @@ namespace ChaHuoBaoWeb.Models
         public DateTime AddTime { get; set; }
         [ForeignKey("OrderDenno")]
         public GpsDingDan GpsDingDanModel { get; set; }
+    }
+
+    [Table("GpsDingDanSaleGDG")]
+    public class GpsDingDanSaleGDG
+    {
+        [Key]
+        [Display(Name = "公对公支付主键")]
+        public string GDGZhiFu { get; set; }
+        [Display(Name = "设备订单支付单号")]
+        public string OrderDenno { get; set; }
+        [Display(Name = "对公转账公司名称")]
+        public string DGZZCompany { get; set; }
+        [Display(Name = "对公账户")]
+        public string DGZH { get; set; }
+        [Display(Name = "打款凭证号")]
+        public string DKPZH { get; set; }
+        [Display(Name = "生成时间")]
+        public DateTime AddTime { get; set; }
+        [ForeignKey("OrderDenno")]
+        public GpsDingDanSale GpsDingDanModel { get; set; }
     }
 
     /// <summary>

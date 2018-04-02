@@ -516,7 +516,7 @@ namespace ChaHuoBaoWeb.Controllers
             foreach (var obj in currentPersonList)
             {
                 ChaHuoBaoWeb.Models.ChaHuoBaoModels db = new ChaHuoBaoModels();
-                ChaHuoBaoWeb.Models.GpsDingDanGDG gdgmodel = db.GpsDingDanGDG.Where(g => g.OrderDenno == obj.OrderDenno).First();
+                ChaHuoBaoWeb.Models.GpsDingDanSaleGDG gdgmodel = db.GpsDingDanSaleGDG.Where(g => g.OrderDenno == obj.OrderDenno).First();
 
                 n = n + 1;
                 string zhuangtai = "";
