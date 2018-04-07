@@ -13,7 +13,7 @@ namespace ChaHuoBaoWeb
         protected void Page_Load(object sender, EventArgs e)
         {
             GetYanZhengMa getyanzhenma = new GetYanZhengMa();
-            string yanzhengma = getyanzhenma.testmessage();
+            //string yanzhengma = getyanzhenma.testmessage();
             int aa = 0;
         }
     }
