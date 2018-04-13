@@ -24,16 +24,16 @@ namespace ChaHuoBaoWeb.PublickFunction
             // Schedule an IJob to run at an interval
             // 立即执行每两秒一次的计划任务。（指定一个时间间隔运行，根据自己需求，可以是秒、分、时、天、月、年等。）
 
-            ChaHuoBaoModels db = new ChaHuoBaoModels();
-            IEnumerable<XiTongCanShu> XiTongCanShu_shijianjiange = db.XiTongCanShu.Where(x => x.Name == "DingWeiShiJianJianGe");
-            string shijianjiange_str = XiTongCanShu_shijianjiange.First().Value;
-            int shijianjiange = Convert.ToInt32(shijianjiange_str);
-            Schedule<LocationJob>().ToRunNow().AndEvery(shijianjiange).Minutes();
+            //ChaHuoBaoModels db = new ChaHuoBaoModels();
+            //IEnumerable<XiTongCanShu> XiTongCanShu_shijianjiange = db.XiTongCanShu.Where(x => x.Name == "DingWeiShiJianJianGe");
+            //string shijianjiange_str = XiTongCanShu_shijianjiange.First().Value;
+            //int shijianjiange = Convert.ToInt32(shijianjiange_str);
+            //Schedule<LocationJob>().ToRunNow().AndEvery(shijianjiange).Minutes();
 
             //分区插入数据
-            IEnumerable<GpsDeviceTable> GpsDeviceTime_8630 = db.GpsDeviceTable.Where(x => x.DeviceCode == "8630");
-            int gpstime8630 = GpsDeviceTime_8630.First().DeviceTime;
-            Schedule<LocationJob2>().ToRunNow().AndEvery(gpstime8630).Minutes();
+            //IEnumerable<GpsDeviceTable> GpsDeviceTime_8630 = db.GpsDeviceTable.Where(x => x.DeviceCode == "8630");
+            //int gpstime8630 = GpsDeviceTime_8630.First().DeviceTime;
+            //Schedule<LocationJob2>().ToRunNow().AndEvery(gpstime8630).Minutes();
 
             // Schedule an IJob to run once, delayed by a specific time interval
             // 延迟一个指定时间间隔执行一次计划任务。（当然，这个间隔依然可以是秒、分、时、天、月、年等。）
@@ -183,7 +183,7 @@ namespace ChaHuoBaoWeb.PublickFunction
             //Boolean gpsvupdate = false;
             try
             {
-                DateTime sztime = DateTime.Now.AddMonths(-1);
+                DateTime sztime = DateTime.Now.AddDays(-10);
                 IEnumerable<Models.YunDan> yundans = db.YunDan.Where(g => g.IsBangding == true & g.BangDingTime > sztime).ToList();
                 ChaHuoBaoWeb.MvcApplication.log4nethelper.Info("计划任务：获取运单位置" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
 

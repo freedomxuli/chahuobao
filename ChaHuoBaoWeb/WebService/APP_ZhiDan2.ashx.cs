@@ -83,7 +83,7 @@ namespace ChaHuoBaoWeb.WebService
                         else
                         {
                             hash["sign"] = "0";
-                            hash["msg"] = "制单失败（设备已被绑定到其他用户：" + YunDan_GPS_userid + "）";
+                            hash["msg"] = "制单失败（设备已被绑定到其他用户）";
                         }
                     }
                     else

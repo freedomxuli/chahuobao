@@ -81,7 +81,7 @@
                 })
             });
             for (var i = 0, marker; i < locationlst.length; i++) {
-                if (locationlst[i].GpsRemark == "1") {
+                if (locationlst[i].GpsRemark == "1" || locationlst[i].GpsRemark == "自动定位") {
                     var marker = new AMap.Marker({
                         position: [locationlst[i].Gps_lng, locationlst[i].Gps_lat],
                         map: map,
@@ -108,7 +108,7 @@
             }
             for (var i = locationlst.length - 1; i > 0; i--)
             {
-                if (locationlst[i].GpsRemark == "1")
+                if (locationlst[i].GpsRemark == "1" || locationlst[i].GpsRemark == "自动定位")
                     dotlist = "<li style='font-size:8px;list-style-type:none;border-bottom:1px solid #000;padding-top:5px;padding-bottom:5px;'>【在途】（" + getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time)) + "）" + locationlst[i].Gps_info + "</li>";
                 else
                     dotlist = "<li style='font-size:8px;list-style-type:none;border-bottom:1px solid #000;padding-top:5px;padding-bottom:5px;'>【返程】（" + getDateTime(ConvertJSONDateToJSDate(locationlst[i].Gps_time)) + "）" + locationlst[i].Gps_info + "</li>";
