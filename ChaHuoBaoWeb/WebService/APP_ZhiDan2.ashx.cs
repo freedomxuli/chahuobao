@@ -170,7 +170,11 @@ namespace ChaHuoBaoWeb.WebService
                                 ChaHuoBaoWeb.MvcApplication.log4nethelper.Info("APP制单操作=>GPSID：" + GpsDeviceID + ";制单时间：" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ";hash_sign" + hash["sign"].ToString() + ";gpsvid:" + gpsvid + ";gpsvkey:" + gpsvkey);
 
                                 LocationJob locajob = new LocationJob();
-                                Hashtable gpslocation = locajob.Gethttpresult("http://101.37.253.238:89/gpsonline/GPSAPI", "version=1&method=loadLocation&vid=" + gpsvid + "&vKey=" + gpsvkey + "");
+                                Hashtable gpslocation = locajob.GethttpresultBybsj("http://47.98.58.55:8998/gpsonline/GPSAPI?method=loadLocation&DeviceID=" + GpsDeviceID + "");
+                                if (gpslocation["success"].ToString().ToUpper() != "True".ToUpper())
+                                {
+                                    gpslocation = locajob.Gethttpresult("http://101.37.253.238:89/gpsonline/GPSAPI", "version=1&method=loadLocation&vid=" + gpsvid + "&vKey=" + gpsvkey + "");
+                                }
 
                                 string newlng = "";
                                 string newlat = "";
@@ -290,8 +294,11 @@ namespace ChaHuoBaoWeb.WebService
                         ChaHuoBaoWeb.MvcApplication.log4nethelper.Info("APP制单操作=>GPSID：" + GpsDeviceID + ";制单时间：" + DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + ";hash_sign" + hash["sign"].ToString() + ";gpsvid:" + gpsvid + ";gpsvkey:" + gpsvkey);
 
                         LocationJob locajob = new LocationJob();
-                        Hashtable gpslocation = locajob.Gethttpresult("http://101.37.253.238:89/gpsonline/GPSAPI", "version=1&method=loadLocation&vid=" + gpsvid + "&vKey=" + gpsvkey + "");
-
+                        Hashtable gpslocation = locajob.GethttpresultBybsj("http://47.98.58.55:8998/gpsonline/GPSAPI?method=loadLocation&DeviceID=" + GpsDeviceID + "");
+                        if (gpslocation["success"].ToString().ToUpper() != "True".ToUpper())
+                        {
+                            gpslocation = locajob.Gethttpresult("http://101.37.253.238:89/gpsonline/GPSAPI", "version=1&method=loadLocation&vid=" + gpsvid + "&vKey=" + gpsvkey + "");
+                        }
                         string newlng = "";
                         string newlat = "";
                         string newinfo = "";
