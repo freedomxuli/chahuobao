@@ -38,20 +38,26 @@ namespace ChaHuoBaoWeb.WebService
                 if (GpsDingDan.Count() > 0)
                 {
                     string GpsDingDanDenno = GpsDingDan.First().GpsDingDanDenno;
-                    IEnumerable<GpsDingDanMingXi> GpsDingDanMingXi = db.GpsDingDanMingXi.Where(x => x.GpsDingDanDenno == GpsDingDanDenno);
+                    IEnumerable<GpsDingDanMingXi> GpsDingDanMingXi = db.GpsDingDanMingXi.Where(x => x.GpsDingDanDenno == GpsDingDanDenno && x.GpsDeviceID.StartsWith("1919"));
                     int GpsDingDanShuLiang = GpsDingDanMingXi.Count();
                     IEnumerable<JiaGeCeLve> JiaGeCeLve = db.JiaGeCeLve.Where(x => x.JiaGeCeLveLeiXing == "YaJin" && x.JiaGeCeLveCiShu==1);
                     decimal GpsDingDanJinE = JiaGeCeLve.First().JiaGeCeLveJinE;
+
+                    IEnumerable<GpsDingDanMingXi> GpsDingDanMingXi2 = db.GpsDingDanMingXi.Where(x => x.GpsDingDanDenno == GpsDingDanDenno && x.GpsDeviceID.StartsWith("8630"));
+                    int GpsDingDanShuLiang2 = GpsDingDanMingXi2.Count();
+                    IEnumerable<JiaGeCeLve> JiaGeCeLve2 = db.JiaGeCeLve.Where(x => x.JiaGeCeLveLeiXing == "YaJin3" && x.JiaGeCeLveCiShu == 1);
+                    decimal GpsDingDanJinE2 = JiaGeCeLve2.First().JiaGeCeLveJinE;
+
                     GpsDingDan.First().GpsDingDanIsEnd = true;
-                    GpsDingDan.First().GpsDingDanShuLiang = GpsDingDanShuLiang;
-                    GpsDingDan.First().GpsDingDanJinE = GpsDingDanShuLiang * GpsDingDanJinE;
+                    GpsDingDan.First().GpsDingDanShuLiang = GpsDingDanShuLiang + GpsDingDanShuLiang2;
+                    GpsDingDan.First().GpsDingDanJinE = GpsDingDanShuLiang * GpsDingDanJinE + GpsDingDanShuLiang2 * GpsDingDanJinE2;
 
 
                     //添加 操作记录
                     CaoZuoJiLu CaoZuoJiLu = new CaoZuoJiLu();
                     CaoZuoJiLu.UserID = UserID;
                     CaoZuoJiLu.CaoZuoLeiXing = "生成订单列表";
-                    CaoZuoJiLu.CaoZuoNeiRong = "APP内用户生成订单列表，订单列表单号：" + GpsDingDanDenno + "；设备数量：" + GpsDingDanShuLiang + "；订单列表押金：" + GpsDingDanShuLiang * GpsDingDanJinE + "。";
+                    CaoZuoJiLu.CaoZuoNeiRong = "APP内用户生成订单列表，订单列表单号：" + GpsDingDanDenno + "；设备数量：" + (GpsDingDanShuLiang + GpsDingDanShuLiang2) + "；订单列表押金：" + (GpsDingDanShuLiang * GpsDingDanJinE + GpsDingDanShuLiang2 * GpsDingDanJinE2) + "。";
                     CaoZuoJiLu.CaoZuoTime = DateTime.Now;
                     CaoZuoJiLu.CaoZuoRemark = "";
                     db.CaoZuoJiLu.Add(CaoZuoJiLu);
@@ -59,7 +65,7 @@ namespace ChaHuoBaoWeb.WebService
                     db.SaveChanges();
                     hash["sign"] = "1";
                     hash["msg"] = "提交订单成功！";
-                    hash["GpsDingDanJinE"] = GpsDingDanShuLiang * GpsDingDanJinE;
+                    hash["GpsDingDanJinE"] = GpsDingDanShuLiang * GpsDingDanJinE + GpsDingDanShuLiang2 * GpsDingDanJinE2;
                 }
             }
             catch (Exception ex)

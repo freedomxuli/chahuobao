@@ -97,6 +97,7 @@
                         for (var i = 0; i < fileText.length; i++) {
                             tels += fileText[i].replace("\r", "") + ",";
                         }
+                        console.log(tels);
                         $.ajax({
                             url: '/SendMessage/SendM',
                             type: 'GET', //GET
@@ -122,6 +123,8 @@
 
                             },
                             error: function (xhr, textStatus) {
+                                console.log(xhr);
+                                console.log(textStatus);
                                 alert('没有操作权限权限，请联系管理员');
                             }
                         });
