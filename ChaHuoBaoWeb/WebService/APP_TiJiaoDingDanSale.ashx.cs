@@ -38,20 +38,26 @@ namespace ChaHuoBaoWeb.WebService
                 if (GpsDingDanSale.Count() > 0)
                 {
                     string GpsDingDanDenno = GpsDingDanSale.First().GpsDingDanDenno;
-                    IEnumerable<GpsDingDanSaleMingXi> GpsDingDanSaleMingXi = db.GpsDingDanSaleMingXi.Where(x => x.GpsDingDanDenno == GpsDingDanDenno);
+                    IEnumerable<GpsDingDanSaleMingXi> GpsDingDanSaleMingXi = db.GpsDingDanSaleMingXi.Where(x => x.GpsDingDanDenno == GpsDingDanDenno && x.GpsDeviceID.StartsWith("2020"));
                     int GpsDingDanShuLiang = GpsDingDanSaleMingXi.Count();
                     IEnumerable<JiaGeCeLve> JiaGeCeLve = db.JiaGeCeLve.Where(x => x.JiaGeCeLveLeiXing == "Goumai" && x.JiaGeCeLveCiShu == 1);
                     decimal GpsDingDanJinE = JiaGeCeLve.First().JiaGeCeLveJinE;
+
+                    IEnumerable<GpsDingDanSaleMingXi> GpsDingDanSaleMingXi2 = db.GpsDingDanSaleMingXi.Where(x => x.GpsDingDanDenno == GpsDingDanDenno && x.GpsDeviceID.StartsWith("8630"));
+                    int GpsDingDanShuLiang2 = GpsDingDanSaleMingXi2.Count();
+                    IEnumerable<JiaGeCeLve> JiaGeCeLve2 = db.JiaGeCeLve.Where(x => x.JiaGeCeLveLeiXing == "Goumai3" && x.JiaGeCeLveCiShu == 1);
+                    decimal GpsDingDanJinE2 = JiaGeCeLve.First().JiaGeCeLveJinE;
+
                     GpsDingDanSale.First().GpsDingDanIsEnd = true;
-                    GpsDingDanSale.First().GpsDingDanShuLiang = GpsDingDanShuLiang;
-                    GpsDingDanSale.First().GpsDingDanJinE = GpsDingDanShuLiang * GpsDingDanJinE;
+                    GpsDingDanSale.First().GpsDingDanShuLiang = GpsDingDanShuLiang + GpsDingDanShuLiang2;
+                    GpsDingDanSale.First().GpsDingDanJinE = GpsDingDanShuLiang * GpsDingDanJinE + GpsDingDanShuLiang2 * GpsDingDanJinE2;
 
 
                     //添加 操作记录
                     CaoZuoJiLu CaoZuoJiLu = new CaoZuoJiLu();
                     CaoZuoJiLu.UserID = UserID;
                     CaoZuoJiLu.CaoZuoLeiXing = "生成销售订单列表";
-                    CaoZuoJiLu.CaoZuoNeiRong = "APP内用户生成销售订单列表，销售订单列表单号：" + GpsDingDanDenno + "；设备数量：" + GpsDingDanShuLiang + "；销售订单列表金额：" + GpsDingDanShuLiang * GpsDingDanJinE + "。";
+                    CaoZuoJiLu.CaoZuoNeiRong = "APP内用户生成销售订单列表，销售订单列表单号：" + GpsDingDanDenno + "；设备数量：" + (GpsDingDanShuLiang + GpsDingDanShuLiang2) + "；销售订单列表金额：" + (GpsDingDanShuLiang * GpsDingDanJinE + GpsDingDanShuLiang2 * GpsDingDanJinE2) + "。";
                     CaoZuoJiLu.CaoZuoTime = DateTime.Now;
                     CaoZuoJiLu.CaoZuoRemark = "";
                     db.CaoZuoJiLu.Add(CaoZuoJiLu);
@@ -59,7 +65,7 @@ namespace ChaHuoBaoWeb.WebService
                     db.SaveChanges();
                     hash["sign"] = "1";
                     hash["msg"] = "提交销售订单成功！";
-                    hash["GpsDingDanJinE"] = GpsDingDanShuLiang * GpsDingDanJinE;
+                    hash["GpsDingDanJinE"] = GpsDingDanShuLiang * GpsDingDanJinE + GpsDingDanShuLiang2 * GpsDingDanJinE2;
                 }
             }
             catch (Exception ex)
