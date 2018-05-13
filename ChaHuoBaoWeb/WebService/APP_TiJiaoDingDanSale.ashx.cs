@@ -46,7 +46,7 @@ namespace ChaHuoBaoWeb.WebService
                     IEnumerable<GpsDingDanSaleMingXi> GpsDingDanSaleMingXi2 = db.GpsDingDanSaleMingXi.Where(x => x.GpsDingDanDenno == GpsDingDanDenno && x.GpsDeviceID.StartsWith("8630"));
                     int GpsDingDanShuLiang2 = GpsDingDanSaleMingXi2.Count();
                     IEnumerable<JiaGeCeLve> JiaGeCeLve2 = db.JiaGeCeLve.Where(x => x.JiaGeCeLveLeiXing == "Goumai3" && x.JiaGeCeLveCiShu == 1);
-                    decimal GpsDingDanJinE2 = JiaGeCeLve.First().JiaGeCeLveJinE;
+                    decimal GpsDingDanJinE2 = JiaGeCeLve2.First().JiaGeCeLveJinE;
 
                     GpsDingDanSale.First().GpsDingDanIsEnd = true;
                     GpsDingDanSale.First().GpsDingDanShuLiang = GpsDingDanShuLiang + GpsDingDanShuLiang2;
