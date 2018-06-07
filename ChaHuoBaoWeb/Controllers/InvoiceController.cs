@@ -27,7 +27,7 @@ namespace ChaHuoBaoWeb.Controllers
         [HttpPost]
         public ActionResult Index(string IsOut, DateTime? startDate, DateTime? endDate, string sortName, string sortOrder, int pageIndex = 1, int pageSize = 10)
         {
-            IEnumerable<InvoiceModel> invoiceModel = accountdb.InvoiceModel;
+            IEnumerable<InvoiceModel> invoiceModel = accountdb.InvoiceModel.Include("userModelss");
 
             if (IsOut != "0")
             {
@@ -79,6 +79,7 @@ namespace ChaHuoBaoWeb.Controllers
                 invoiceone.IsOut = zhuangtai;
                 invoiceone.InvoiceJe = obj.InvoiceJe;
                 invoiceone.AddTime = (DateTime)obj.AddTime;
+                invoiceone.UserName = obj.userModelss.UserName;
                 invoiceModels.Add(invoiceone);
 
             }
@@ -94,7 +95,8 @@ namespace ChaHuoBaoWeb.Controllers
                 InvoiceAddress = p.InvoiceAddress,
                 IsOut = p.IsOut,
                 InvoiceJe = p.InvoiceJe,
-                AddTime = p.AddTime.ToString()
+                AddTime = p.AddTime.ToString(),
+                UserName = p.UserName
             });
 
             return Json(new { total = total, rows = rows, state = true, msg = "加载成功" }, JsonRequestBehavior.AllowGet);
@@ -123,6 +125,8 @@ namespace ChaHuoBaoWeb.Controllers
             public decimal InvoiceJe { get; set; }
 
             public DateTime AddTime { get; set; }
+
+            public string UserName { get; set; }
         }
 
         //审核

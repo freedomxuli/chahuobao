@@ -736,6 +736,8 @@ namespace ChaHuoBaoWeb.Models
         public bool IsOut { get; set; }
         [Display(Name = "发票金额")]
         public decimal InvoiceJe { get; set; }
+        [ForeignKey("UserId")]
+        public User userModelss { get; set; }
     }
 
     [Table("ChongZhiGDG")]
