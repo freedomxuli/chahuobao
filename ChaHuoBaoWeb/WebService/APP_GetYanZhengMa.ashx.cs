@@ -43,7 +43,7 @@ namespace ChaHuoBaoWeb.WebService
                     else
                     {
                         GetYanZhengMa getyanzhenma = new GetYanZhengMa();
-                        string yanzhengma = getyanzhenma.yanzhengma("查货宝", "SMS_137666565", UserName);
+                        string yanzhengma = getyanzhenma.yanzhengma("查货app", "SMS_137666565", UserName);
                         if (string.IsNullOrEmpty(yanzhengma) == false)
                         {
                             if (yanzhengma.Length == 6)
@@ -61,7 +61,7 @@ namespace ChaHuoBaoWeb.WebService
                     if (User.Count() > 0)
                     {
                         GetYanZhengMa getyanzhenma = new GetYanZhengMa();
-                        string yanzhengma = getyanzhenma.yanzhengma("查货宝", "SMS_90005025", UserName);
+                        string yanzhengma = getyanzhenma.yanzhengma("查货app", "SMS_137666565", UserName);
                         if (string.IsNullOrEmpty(yanzhengma) == false)
                         {
                             if (yanzhengma.Length == 6)
@@ -85,7 +85,7 @@ namespace ChaHuoBaoWeb.WebService
                     if (User.Count() > 0)
                     {
                         GetYanZhengMa getyanzhenma = new GetYanZhengMa();
-                        string yanzhengma = getyanzhenma.yanzhengma("查货宝", "SMS_90005025", UserName);
+                        string yanzhengma = getyanzhenma.yanzhengma("查货app", "SMS_137666565", UserName);
                         if (string.IsNullOrEmpty(yanzhengma) == false)
                         {
                             if (yanzhengma.Length == 6)
