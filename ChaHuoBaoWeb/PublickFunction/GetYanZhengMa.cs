@@ -19,7 +19,7 @@ namespace ChaHuoBaoWeb.PublickFunction
             string product = "Dysmsapi";//短信API产品名称（短信产品名固定，无需修改）
             string domain = "dysmsapi.aliyuncs.com";//短信API产品域名（接口地址固定，无需修改）
             //IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", "your accessKey", "your accessSecret");
-            IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", "LTAInFKxKypz1WBu", "yZqAbVE8OcXSCOVj1VxISme32mhp1X");
+            IClientProfile profile = DefaultProfile.GetProfile("cn-hangzhou", "LTAIELSMzx2Cwd7Y", "8RlnYhbfjFPenoeUZFojgsEKMS39TE");
             DefaultProfile.AddEndpoint("cn-hangzhou", "cn-hangzhou", product, domain);
             IAcsClient client = new DefaultAcsClient(profile);
             SendSmsRequest request = new SendSmsRequest();
