@@ -186,6 +186,7 @@ namespace ChaHuoBaoWeb.Controllers
                 }
                 yundanone.UserDenno = obj.UserDenno;
                 yundanone.SuoShuGongSi = obj.SuoShuGongSi;
+                yundanone.UserName = obj.userModelss.UserName;
 
                 yundanone.QiShiZhan = obj.QiShiZhan;
                 yundanone.DaoDaZhan = obj.DaoDaZhan;
@@ -209,16 +210,17 @@ namespace ChaHuoBaoWeb.Controllers
             row1.CreateCell(0).SetCellValue("序号");
             row1.CreateCell(1).SetCellValue("运单编号");
             row1.CreateCell(2).SetCellValue("所属公司");
+            row1.CreateCell(3).SetCellValue("建单用户");
 
-            row1.CreateCell(3).SetCellValue("起始站");
-            row1.CreateCell(4).SetCellValue("到达站");
+            row1.CreateCell(4).SetCellValue("起始站");
+            row1.CreateCell(5).SetCellValue("到达站");
 
-            row1.CreateCell(5).SetCellValue("设备标识");
-            row1.CreateCell(6).SetCellValue("绑定时间");
-            row1.CreateCell(7).SetCellValue("解绑时间");
-            row1.CreateCell(8).SetCellValue("绑定状态");
-            row1.CreateCell(9).SetCellValue("最新记录地址");
-            row1.CreateCell(10).SetCellValue("备注");
+            row1.CreateCell(6).SetCellValue("设备标识");
+            row1.CreateCell(7).SetCellValue("绑定时间");
+            row1.CreateCell(8).SetCellValue("解绑时间");
+            row1.CreateCell(9).SetCellValue("绑定状态");
+            row1.CreateCell(10).SetCellValue("最新记录地址");
+            row1.CreateCell(11).SetCellValue("备注");
 
             //将数据逐步写入sheet1各个行
             int z = 1;
@@ -228,17 +230,18 @@ namespace ChaHuoBaoWeb.Controllers
                 rowtemp.CreateCell(0).SetCellValue(z);
                 rowtemp.CreateCell(1).SetCellValue(list[i].UserDenno);
                 rowtemp.CreateCell(2).SetCellValue(list[i].SuoShuGongSi);
+                rowtemp.CreateCell(3).SetCellValue(list[i].UserName);
 
-                rowtemp.CreateCell(3).SetCellValue(list[i].QiShiZhan);
-                rowtemp.CreateCell(4).SetCellValue(list[i].DaoDaZhan);
+                rowtemp.CreateCell(4).SetCellValue(list[i].QiShiZhan);
+                rowtemp.CreateCell(5).SetCellValue(list[i].DaoDaZhan);
 
 
-                rowtemp.CreateCell(5).SetCellValue(list[i].GpsDeviceID);
-                rowtemp.CreateCell(6).SetCellValue(list[i].BangDingTime.ToString());
-                rowtemp.CreateCell(7).SetCellValue(list[i].JieBangTime.ToString());
-                rowtemp.CreateCell(8).SetCellValue(list[i].bnagding);
-                rowtemp.CreateCell(9).SetCellValue(list[i].Gps_lastinfo);
-                rowtemp.CreateCell(10).SetCellValue(list[i].YunDanRemark);
+                rowtemp.CreateCell(6).SetCellValue(list[i].GpsDeviceID);
+                rowtemp.CreateCell(7).SetCellValue(list[i].BangDingTime.ToString());
+                rowtemp.CreateCell(8).SetCellValue(list[i].JieBangTime.ToString());
+                rowtemp.CreateCell(9).SetCellValue(list[i].bnagding);
+                rowtemp.CreateCell(10).SetCellValue(list[i].Gps_lastinfo);
+                rowtemp.CreateCell(11).SetCellValue(list[i].YunDanRemark);
 
                 z = z + 1;
             }

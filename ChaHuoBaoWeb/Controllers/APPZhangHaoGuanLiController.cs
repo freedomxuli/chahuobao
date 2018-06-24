@@ -222,8 +222,8 @@ namespace ChaHuoBaoWeb.Controllers
                 //添加 操作记录
                 CaoZuoJiLu CaoZuoJiLu = new Models.CaoZuoJiLu();
                 CaoZuoJiLu.UserID = UserID;
-                CaoZuoJiLu.CaoZuoLeiXing = "充值";
-                CaoZuoJiLu.CaoZuoNeiRong = "WEB内用户充值，充值方式：手动操作；充值人：" + HttpContext.User.Identity.Name + "；充值次数：" + chongzhicishu + "；充值备注：" + beizhu + "。";
+                CaoZuoJiLu.CaoZuoLeiXing = "划拨";
+                CaoZuoJiLu.CaoZuoNeiRong = "WEB内用户划拨，划拨方式：手动操作；划拨人：" + HttpContext.User.Identity.Name + "；划拨次数：" + chongzhicishu + "；划拨备注：" + beizhu + "。";
                 CaoZuoJiLu.CaoZuoTime = DateTime.Now;
                 CaoZuoJiLu.CaoZuoRemark = "";
                 accountdb.CaoZuoJiLu.Add(CaoZuoJiLu);
@@ -231,7 +231,7 @@ namespace ChaHuoBaoWeb.Controllers
             }
             else
             {
-                ViewData["msg"] = "充值次数不可为空！";
+                ViewData["msg"] = "划拨次数不可为空！";
             }
             return View(userone);
         }

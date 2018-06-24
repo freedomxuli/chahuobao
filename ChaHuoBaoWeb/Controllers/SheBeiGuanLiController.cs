@@ -146,6 +146,7 @@ namespace ChaHuoBaoWeb.Controllers
                 ChaHuoBaoWeb.Models.GpsDevice dingdanmodel = db.GpsDevice.Where(g => g.GpsDeviceID == GpsDeviceID).First();
                 ChaHuoBaoWeb.Models.GpsDeviceSale dingdansalemodel = db.GpsDeviceSale.Where(g => g.GpsDeviceID == GpsDeviceID).First();
                 db.GpsDevice.Remove(dingdanmodel);
+                db.SaveChanges();
                 db.GpsDeviceSale.Remove(dingdansalemodel);
                 db.SaveChanges();
 
