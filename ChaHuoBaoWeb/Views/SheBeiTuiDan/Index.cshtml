@@ -145,6 +145,40 @@ td{
             </div>
         </div>
     </div>
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel">设备退单审核</h4>
+                </div>
+                <div class="modal-body">请确认？</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" id="SHPass">是</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
+    <!-- 模态框（Modal） -->
+    <div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h4 class="modal-title" id="myModalLabel1">打款审核</h4>
+                </div>
+                <div class="modal-body">请确认？</div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                    <button type="button" class="btn btn-success" id="SHPass1">是</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div>
+    <!-- /.modal -->
     <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/jquery.min.js"></script>
     <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap.js"></script>
     <script type="text/javascript" src="../../Content/bootstarp/bootstarp_js/bootstrap-table.js"></script>
@@ -258,7 +292,21 @@ td{
                 return;
             }
 
+            $('#myModal').modal({
+                keyboard: true
+            });
+        });
+
+        $("#SHPass").click(function () {
+
+            var $table = $("#exampleTableEvents");
+            json = $table.bootstrapTable('getSelections');
+            if (json == "") {
+                alert("请选中要审核的行!")
+                return;
+            }
             var GpsTuiDanDenno = json[0].GpsTuiDanDenno;
+            $('#myModal').modal('hide');
             //            alert(GpsTuiDanDenno);
             $.ajax({
                 url: '/SheBeiTuiDan/DataShenhe',
@@ -289,7 +337,6 @@ td{
                     alert('没有操作权限权限，请联系管理员');
                 }
             })
-
         });
 
 
@@ -301,7 +348,21 @@ td{
                 return;
             }
 
+            $('#myModal1').modal({
+                keyboard: true
+            });
+        });
+
+        $("#SHPass1").click(function () {
+
+            var $table = $("#exampleTableEvents");
+            json = $table.bootstrapTable('getSelections');
+            if (json == "") {
+                alert("请选中要审核的行!")
+                return;
+            }
             var GpsTuiDanDenno = json[0].GpsTuiDanDenno;
+            $('#myModal1').modal('hide');
             //            alert(GpsTuiDanDenno);
             $.ajax({
                 url: '/SheBeiTuiDan/DataDakuan',
@@ -332,7 +393,6 @@ td{
                     alert('没有操作权限权限，请联系管理员');
                 }
             })
-
         });
     </script>
 </body>
