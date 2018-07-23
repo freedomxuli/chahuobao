@@ -24,6 +24,7 @@ namespace ChaHuoBaoWeb.Models
         public DbSet<YunDanIsArrive> YunDanIsArrive { get; set; }
         public DbSet<YunDanDistance> YunDanDistance { get; set; }
         public DbSet<GpsLocation> GpsLocation { get; set; }
+        public DbSet<GpsLocationHis> GpsLocationHis { get; set; }
         public DbSet<GpsLocation2> GpsLocation2 { get; set; }
         public DbSet<GpsDevice> GpsDevice { get; set; }
         public DbSet<GpsDeviceSale> GpsDeviceSale { get; set; }
@@ -359,6 +360,30 @@ namespace ChaHuoBaoWeb.Models
     /// </summary>
     [Table("GpsLocation")]
     public class GpsLocation
+    {
+        [Key]
+        [Display(Name = "Gps定位ID")]
+        [DatabaseGeneratedAttribute(DatabaseGeneratedOption.Identity)]
+        public int GpsLocationID { get; set; }
+        [Display(Name = "设备ID")]
+        public string GpsDeviceID { get; set; }
+        [Display(Name = "地理纬度")]
+        public string Gps_lat { get; set; }
+        [Display(Name = "地理经度")]
+        public string Gps_lng { get; set; }
+        [Display(Name = "定位时间")]
+        public DateTime Gps_time { get; set; }
+        [Display(Name = "地理位置")]
+        public string Gps_info { get; set; }
+        [Display(Name = "备注")]
+        public string GpsRemark { get; set; }
+    }
+
+    /// <summary>
+    /// GPS定位表
+    /// </summary>
+    [Table("GpsLocationHis")]
+    public class GpsLocationHis
     {
         [Key]
         [Display(Name = "Gps定位ID")]

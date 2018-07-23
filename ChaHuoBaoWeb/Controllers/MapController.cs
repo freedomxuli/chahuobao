@@ -29,81 +29,165 @@ namespace ChaHuoBaoWeb.Controllers
             Hashtable hash = new Hashtable();
             try
             {
-                Map_yundanviewModel viewmodel = new Map_yundanviewModel();
-                viewmodel.locationlst = new List<GpsLocation>();
-                hash["sign"] = "0";
-                hash["msg"] = "获取运单信息失败！";
                 ChaHuoBaoModels db = new ChaHuoBaoModels();
-                ChaHuoBaoWeb.Models.YunDan yundandt;
+                bool ishis = false;
                 if (string.IsNullOrEmpty(UserID) == false)
                 {
-                     yundandt = db.YunDan.Where(g => g.YunDanDenno == YunDanDenno & g.UserID == UserID).First();
+                    if (db.YunDan.Where(g => g.YunDanDenno == YunDanDenno & g.UserID == UserID & g.IsBangding == false).Count() > 0)
+                        ishis = true;
                 }
                 else
                 {
-                    yundandt = db.YunDan.Where(g => g.YunDanDenno == YunDanDenno ).First();
+                    if (db.YunDan.Where(g => g.YunDanDenno == YunDanDenno & g.IsBangding == false).Count() > 0)
+                        ishis = true;
                 }
-                hash["sign"] = "1";
-                hash["msg"] = "获取运单信息成功！";
-                viewmodel.qishizhan_lng = yundandt.QiShiZhan_lng;
-                viewmodel.qishizhan_lat = yundandt.QiShiZhan_lat;
-                viewmodel.daodazhan_lng = yundandt.DaoDaZhan_lng;
-                viewmodel.daodazhan_lat = yundandt.DaoDaZhan_lat;
-                //Hashtable addresshash = new ChaHuoBaoWeb.PublickFunction.Map().getmapinfobyaddress(yundandt.QiShiZhan, "");
-                //if (addresshash["sign"] == "1")
-                //{
-                //    viewmodel.qishizhan_lng = addresshash["location"].ToString().Split(',')[0];
-                //    viewmodel.qishizhan_lat = addresshash["location"].ToString().Split(',')[1];
-                //}
-                //Hashtable daozhanaddresshash = new ChaHuoBaoWeb.PublickFunction.Map().getmapinfobyaddress(yundandt.DaoDaZhan, "");
-                //if (daozhanaddresshash["sign"] == "1")
-                //{
-                //    viewmodel.daodazhan_lng = daozhanaddresshash["location"].ToString().Split(',')[0];
-                //    viewmodel.daodazhan_lat = daozhanaddresshash["location"].ToString().Split(',')[1];
-                //}
-                DateTime BangDingTime_new = yundandt.BangDingTime.AddHours(-1);
-                IEnumerable<GpsLocation> gpslocations = db.GpsLocation.Where(g => g.GpsDeviceID == yundandt.GpsDeviceID & g.Gps_time > BangDingTime_new);
-                int num = db.YunDanIsArrive.Where(g => g.YunDanDenno == YunDanDenno).Count();
-                if (num == 0)
+                if (!ishis)
                 {
-                    if (yundandt.IsBangding == false)
+                    Map_yundanviewModel viewmodel = new Map_yundanviewModel();
+                    viewmodel.locationlst = new List<GpsLocation>();
+                    hash["sign"] = "0";
+                    hash["msg"] = "获取运单信息失败！";
+                    ChaHuoBaoWeb.Models.YunDan yundandt;
+                    if (string.IsNullOrEmpty(UserID) == false)
                     {
-                        gpslocations = gpslocations.Where(g => g.Gps_time < yundandt.JieBangTime);
+                        if (db.YunDan.Where(g => g.YunDanDenno == YunDanDenno & g.UserID == UserID & g.IsBangding == false).Count() > 0)
+                            ishis = true;
+                        yundandt = db.YunDan.Where(g => g.YunDanDenno == YunDanDenno & g.UserID == UserID).First();
+                    }
+                    else
+                    {
+                        if (db.YunDan.Where(g => g.YunDanDenno == YunDanDenno & g.IsBangding == false).Count() > 0)
+                            ishis = true;
+                        yundandt = db.YunDan.Where(g => g.YunDanDenno == YunDanDenno).First();
+                    }
+                    hash["sign"] = "1";
+                    hash["msg"] = "获取运单信息成功！";
+                    viewmodel.qishizhan_lng = yundandt.QiShiZhan_lng;
+                    viewmodel.qishizhan_lat = yundandt.QiShiZhan_lat;
+                    viewmodel.daodazhan_lng = yundandt.DaoDaZhan_lng;
+                    viewmodel.daodazhan_lat = yundandt.DaoDaZhan_lat;
+
+                    DateTime BangDingTime_new = yundandt.BangDingTime.AddHours(-1);
+                    IEnumerable<GpsLocation> gpslocations = db.GpsLocation.Where(g => g.GpsDeviceID == yundandt.GpsDeviceID & g.Gps_time > BangDingTime_new);
+                    int num = db.YunDanIsArrive.Where(g => g.YunDanDenno == YunDanDenno).Count();
+                    if (num == 0)
+                    {
+                        if (yundandt.IsBangding == false)
+                        {
+                            gpslocations = gpslocations.Where(g => g.Gps_time < yundandt.JieBangTime);
+                        }
+                    }
+                    else
+                    {
+                        ChaHuoBaoWeb.Models.YunDanIsArrive arrivedt = db.YunDanIsArrive.Where(g => g.YunDanDenno == YunDanDenno).First();
+                        foreach (var dr in gpslocations)
+                        {
+                            if (dr.Gps_time <= arrivedt.Addtime)
+                            {
+                                dr.GpsRemark = "1";
+                            }
+                            else
+                            {
+                                dr.GpsRemark = "2";
+                            }
+                        }
+                    }
+
+                    viewmodel.locationlst = gpslocations.ToList();
+                    hash["location_result"] = viewmodel;
+
+                    if (hash["sign"] == "1")
+                    {
+                        //添加 操作记录
+                        CaoZuoJiLu CaoZuoJiLu = new CaoZuoJiLu();
+                        CaoZuoJiLu.UserID = UserID;
+                        CaoZuoJiLu.CaoZuoLeiXing = "运单轨迹";
+                        CaoZuoJiLu.CaoZuoNeiRong = "APP内用户运单轨迹查询，运单系统单号：" + YunDanDenno + "。";
+                        CaoZuoJiLu.CaoZuoTime = DateTime.Now;
+                        CaoZuoJiLu.CaoZuoRemark = "";
+                        db.CaoZuoJiLu.Add(CaoZuoJiLu);
+                        db.SaveChanges();
                     }
                 }
                 else
                 {
-                    ChaHuoBaoWeb.Models.YunDanIsArrive arrivedt  = db.YunDanIsArrive.Where(g => g.YunDanDenno == YunDanDenno).First();
-                    foreach (var dr in gpslocations)
+                    MapHis_yundanviewModel viewmodel = new MapHis_yundanviewModel();
+                    viewmodel.locationlst = new List<GpsLocationHis>();
+                    hash["sign"] = "0";
+                    hash["msg"] = "获取运单信息失败！";
+                    ChaHuoBaoWeb.Models.YunDan yundandt;
+                    if (string.IsNullOrEmpty(UserID) == false)
                     {
-                        if (dr.Gps_time <= arrivedt.Addtime)
+                        if (db.YunDan.Where(g => g.YunDanDenno == YunDanDenno & g.UserID == UserID & g.IsBangding == false).Count() > 0)
+                            ishis = true;
+                        yundandt = db.YunDan.Where(g => g.YunDanDenno == YunDanDenno & g.UserID == UserID).First();
+                    }
+                    else
+                    {
+                        if (db.YunDan.Where(g => g.YunDanDenno == YunDanDenno & g.IsBangding == false).Count() > 0)
+                            ishis = true;
+                        yundandt = db.YunDan.Where(g => g.YunDanDenno == YunDanDenno).First();
+                    }
+                    hash["sign"] = "1";
+                    hash["msg"] = "获取运单信息成功！";
+                    viewmodel.qishizhan_lng = yundandt.QiShiZhan_lng;
+                    viewmodel.qishizhan_lat = yundandt.QiShiZhan_lat;
+                    viewmodel.daodazhan_lng = yundandt.DaoDaZhan_lng;
+                    viewmodel.daodazhan_lat = yundandt.DaoDaZhan_lat;
+                    //Hashtable addresshash = new ChaHuoBaoWeb.PublickFunction.Map().getmapinfobyaddress(yundandt.QiShiZhan, "");
+                    //if (addresshash["sign"] == "1")
+                    //{
+                    //    viewmodel.qishizhan_lng = addresshash["location"].ToString().Split(',')[0];
+                    //    viewmodel.qishizhan_lat = addresshash["location"].ToString().Split(',')[1];
+                    //}
+                    //Hashtable daozhanaddresshash = new ChaHuoBaoWeb.PublickFunction.Map().getmapinfobyaddress(yundandt.DaoDaZhan, "");
+                    //if (daozhanaddresshash["sign"] == "1")
+                    //{
+                    //    viewmodel.daodazhan_lng = daozhanaddresshash["location"].ToString().Split(',')[0];
+                    //    viewmodel.daodazhan_lat = daozhanaddresshash["location"].ToString().Split(',')[1];
+                    //}
+                    DateTime BangDingTime_new = yundandt.BangDingTime.AddHours(-1);
+                    IEnumerable<GpsLocationHis> gpslocations = db.GpsLocationHis.Where(g => g.GpsDeviceID == yundandt.GpsDeviceID & g.Gps_time > BangDingTime_new);
+                    int num = db.YunDanIsArrive.Where(g => g.YunDanDenno == YunDanDenno).Count();
+                    if (num == 0)
+                    {
+                        if (yundandt.IsBangding == false)
                         {
-                            dr.GpsRemark = "1";
-                        }
-                        else
-                        {
-                            dr.GpsRemark = "2";
+                            gpslocations = gpslocations.Where(g => g.Gps_time < yundandt.JieBangTime);
                         }
                     }
+                    else
+                    {
+                        ChaHuoBaoWeb.Models.YunDanIsArrive arrivedt = db.YunDanIsArrive.Where(g => g.YunDanDenno == YunDanDenno).First();
+                        foreach (var dr in gpslocations)
+                        {
+                            if (dr.Gps_time <= arrivedt.Addtime)
+                            {
+                                dr.GpsRemark = "1";
+                            }
+                            else
+                            {
+                                dr.GpsRemark = "2";
+                            }
+                        }
+                    }
+
+                    viewmodel.locationlst = gpslocations.ToList();
+                    hash["location_result"] = viewmodel;
+
+                    if (hash["sign"] == "1")
+                    {
+                        //添加 操作记录
+                        CaoZuoJiLu CaoZuoJiLu = new CaoZuoJiLu();
+                        CaoZuoJiLu.UserID = UserID;
+                        CaoZuoJiLu.CaoZuoLeiXing = "运单轨迹";
+                        CaoZuoJiLu.CaoZuoNeiRong = "APP内用户运单轨迹查询，运单系统单号：" + YunDanDenno + "。";
+                        CaoZuoJiLu.CaoZuoTime = DateTime.Now;
+                        CaoZuoJiLu.CaoZuoRemark = "";
+                        db.CaoZuoJiLu.Add(CaoZuoJiLu);
+                        db.SaveChanges();
+                    }
                 }
-                
-                viewmodel.locationlst = gpslocations.ToList();
-                hash["location_result"] = viewmodel;
-
-                if (hash["sign"] == "1")
-                {
-                    //添加 操作记录
-                    CaoZuoJiLu CaoZuoJiLu = new CaoZuoJiLu();
-                    CaoZuoJiLu.UserID = UserID;
-                    CaoZuoJiLu.CaoZuoLeiXing = "运单轨迹";
-                    CaoZuoJiLu.CaoZuoNeiRong = "APP内用户运单轨迹查询，运单系统单号：" + YunDanDenno + "。";
-                    CaoZuoJiLu.CaoZuoTime = DateTime.Now;
-                    CaoZuoJiLu.CaoZuoRemark = "";
-                    db.CaoZuoJiLu.Add(CaoZuoJiLu);
-                    db.SaveChanges();
-                }
-
-
             }
             catch (Exception ex)
             {
@@ -125,6 +209,19 @@ namespace ChaHuoBaoWeb.Controllers
             { get; set; }
 
             public List<ChaHuoBaoWeb.Models.GpsLocation> locationlst { get; set; }
+        }
+
+        public class MapHis_yundanviewModel
+        {
+            public string qishizhan_lng { get; set; }
+            public string qishizhan_lat
+            { get; set; }
+
+            public string daodazhan_lng { get; set; }
+            public string daodazhan_lat
+            { get; set; }
+
+            public List<ChaHuoBaoWeb.Models.GpsLocationHis> locationlst { get; set; }
         }
 
         public ActionResult OnRoadCarList()
